@@ -4,8 +4,8 @@ import ru.ifmo.se.pokemon.*;
 
 public class Sigilyph extends Pokemon {
 
-    public Sigilyph() {
-        super("Sigilyph", 18);
+    public Sigilyph(String name) {
+        super(name, 18);
         setStats(72, 58, 80, 103, 80, 97);
         setType(Type.FLYING, Type.PSYCHIC);
 
@@ -20,24 +20,24 @@ public class Sigilyph extends Pokemon {
 
 class DreamEater extends PhysicalMove {
     public DreamEater() {
-        super(Type.PSYCHIC, 100, 100);
+        super(Type.PSYCHIC, 100, 1);
     }
 }
 
 class FlashCannon extends SpecialMove {
     public FlashCannon() {
-        super(Type.STEEL, 80, 100);
+        super(Type.STEEL, 80, 1);
     }
 }
 
 class Psybeam extends SpecialMove {
     public Psybeam() {
-        super(Type.PSYCHIC, 65, 100);
+        super(Type.PSYCHIC, 65, 1);
     }
 }
 
 class Roost extends StatusMove {
     public Roost() {
-        super();
+        super(Type.FLYING, 0, 1);
     }
 }

@@ -5,8 +5,8 @@ import ru.ifmo.se.pokemon.SpecialMove;
 import ru.ifmo.se.pokemon.Type;
 
 public class Dewgong extends Seel {
-    public Dewgong() {
-        super("Dewgong", 47);
+    public Dewgong(String name) {
+        super(name, 47);
         setStats(90, 70, 80, 70, 95, 70);
         setType(Type.WATER, Type.ICE);
 
@@ -21,6 +21,6 @@ public class Dewgong extends Seel {
 
 class FrostBreath extends SpecialMove {
     FrostBreath() {
-        super(Type.ICE, 60, 90);
+        super(Type.ICE, 60, 0.9);
     }
 }

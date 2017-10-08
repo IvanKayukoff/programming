@@ -5,8 +5,8 @@ import ru.ifmo.se.pokemon.SpecialMove;
 import ru.ifmo.se.pokemon.Type;
 
 public class Flygon extends Vibrava {
-    Flygon() {
-        super("Flygon", 1);
+    public Flygon(String name) {
+        super(name, 29);
         setStats(80, 100, 80, 80, 80, 100);
         setType(Type.DRAGON, Type.GROUND);
 
@@ -19,9 +19,8 @@ public class Flygon extends Vibrava {
     }
 }
 
-/** Dragon Breath deals damage and has a 30% chance of paralyzing the target. */
 class DragonBreath extends SpecialMove {
     DragonBreath() {
-        super(Type.DRAGON, 60, 100);
+        super(Type.DRAGON, 60, 1);
     }
 }

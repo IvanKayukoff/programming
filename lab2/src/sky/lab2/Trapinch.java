@@ -5,8 +5,8 @@ import ru.ifmo.se.pokemon.*;
 import java.lang.management.MonitorInfo;
 
 public class Trapinch extends Pokemon {
-    Trapinch() {
-        super("Trapinch", 1);
+    public Trapinch(String name) {
+        super(name, 1);
         setStats(45 ,100, 45, 45, 45, 10);
         setType(Type.GROUND);
 
@@ -16,23 +16,19 @@ public class Trapinch extends Pokemon {
         setMove(moves);
     }
 
-    Trapinch (String name, int level) {
+    protected Trapinch (String name, int level) {
         super(name, level);
     }
 }
 
-/** Double Team raises the user's Evasiveness by one stage, thus making the user more
- *  difficult to hit.
- **/
 class DoubleTeam extends StatusMove {
     DoubleTeam() {
-        super(Type.NORMAL, 0 ,0);
+        super(Type.NORMAL, 0 ,1);
     }
 }
 
-/** Confide lowers the target's Special Attack by one stage. */
 class Confide extends StatusMove {
     Confide() {
-        super(Type.NORMAL, 0, 0);
+        super(Type.NORMAL, 0, 1);
     }
 }

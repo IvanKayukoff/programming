@@ -3,8 +3,8 @@ package sky.lab2;
 import ru.ifmo.se.pokemon.*;
 
 public class Seel extends Pokemon {
-    public Seel() {
-        super("Seel", 47);
+    public Seel(String name) {
+        super(name, 47);
         setStats(65, 45, 55, 45, 70, 45);
         setType(Type.WATER);
 
@@ -15,34 +15,25 @@ public class Seel extends Pokemon {
         setMove(moves);
     }
 
-    public Seel(String name, int level) {
+    protected Seel(String name, int level) {
         super(name, level);
     }
 }
 
-
 class Waterfall extends PhysicalMove {
     public Waterfall() {
-        super(Type.WATER, 80, 100);
+        super(Type.WATER, 80, 1);
     }
 }
 
 class AquaRing extends StatusMove {
     public AquaRing() {
-
+        super(Type.WATER, 0 ,1);
     }
 }
 
 class IceBeam extends SpecialMove {
-    /** Ice Beam deals damage and has a 10% chance of freezing the target. */
     public IceBeam() {
-        super(Type.ICE, 90, 100);
-    }
-
-    @Override
-    protected void applyOppEffects(Pokemon p) {
-        if (Math.random() < 0.1) {
-            Effect.freeze(p);
-        }
+        super(Type.ICE, 90, 1);
     }
 }

@@ -3,8 +3,8 @@ package sky.lab2;
 import ru.ifmo.se.pokemon.*;
 
 public class Vibrava extends Trapinch {
-    Vibrava() {
-        super("Vibrava", 29);
+    public Vibrava(String name) {
+        super(name, 29);
         setStats(50 ,70, 50, 50, 50, 70);
         setType(Type.GROUND, Type.DRAGON);
 
@@ -15,17 +15,13 @@ public class Vibrava extends Trapinch {
         setMove(moves);
     }
 
-    Vibrava(String name, int level) {
+    protected Vibrava(String name, int level) {
         super(name, level);
     }
 }
 
-/** Bug Buzz deals damage and has a 10% chance of lowering the
- *  target's Special Defense by one stage.
- **/
 class BugBuzz extends SpecialMove {
     BugBuzz() {
-        super(Type.BUG, 90 ,100);
+        super(Type.BUG, 90, 1);
     }
-
 }
