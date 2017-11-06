@@ -1,8 +1,6 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
 import ru.ifmo.se.pokemon.*;
-
-import java.lang.management.MonitorInfo;
 
 public class Trapinch extends Pokemon {
     public Trapinch(String name) {
@@ -25,10 +23,20 @@ class DoubleTeam extends StatusMove {
     DoubleTeam() {
         super(Type.NORMAL, 0 ,1);
     }
+
+    @Override
+    protected String describe() {
+        return "DoubleTeam";
+    }
 }
 
 class Confide extends StatusMove {
     Confide() {
         super(Type.NORMAL, 0, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "Confide";
     }
 }

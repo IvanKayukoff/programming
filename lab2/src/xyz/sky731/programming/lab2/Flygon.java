@@ -1,8 +1,6 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
-import ru.ifmo.se.pokemon.Move;
-import ru.ifmo.se.pokemon.SpecialMove;
-import ru.ifmo.se.pokemon.Type;
+import ru.ifmo.se.pokemon.*;
 
 public class Flygon extends Vibrava {
     public Flygon(String name) {
@@ -22,5 +20,10 @@ public class Flygon extends Vibrava {
 class DragonBreath extends SpecialMove {
     DragonBreath() {
         super(Type.DRAGON, 60, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "DragonBreath";
     }
 }

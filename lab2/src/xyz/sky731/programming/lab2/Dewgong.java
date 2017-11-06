@@ -1,4 +1,4 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
 import ru.ifmo.se.pokemon.Move;
 import ru.ifmo.se.pokemon.SpecialMove;
@@ -22,5 +22,10 @@ public class Dewgong extends Seel {
 class FrostBreath extends SpecialMove {
     FrostBreath() {
         super(Type.ICE, 60, 0.9);
+    }
+
+    @Override
+    protected String describe() {
+        return "FrostBreath";
     }
 }

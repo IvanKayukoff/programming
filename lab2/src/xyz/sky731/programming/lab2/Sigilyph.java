@@ -1,4 +1,4 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
 import ru.ifmo.se.pokemon.*;
 
@@ -22,11 +22,20 @@ class DreamEater extends PhysicalMove {
     public DreamEater() {
         super(Type.PSYCHIC, 100, 1);
     }
+
+    @Override
+    protected String describe() {
+        return "DreamEater";
+    }
 }
 
 class FlashCannon extends SpecialMove {
     public FlashCannon() {
         super(Type.STEEL, 80, 1);
+    }
+    @Override
+    protected String describe() {
+        return "FlashCannon";
     }
 }
 
@@ -34,10 +43,20 @@ class Psybeam extends SpecialMove {
     public Psybeam() {
         super(Type.PSYCHIC, 65, 1);
     }
+
+    @Override
+    protected String describe() {
+        return "Psybeam";
+    }
 }
 
 class Roost extends StatusMove {
     public Roost() {
         super(Type.FLYING, 0, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "Roost";
     }
 }

@@ -1,8 +1,8 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
 import ru.ifmo.se.pokemon.*;
 
-public class Seel extends Pokemon {
+class Seel extends Pokemon {
     public Seel(String name) {
         super(name, 47);
         setStats(65, 45, 55, 45, 70, 45);
@@ -18,11 +18,18 @@ public class Seel extends Pokemon {
     protected Seel(String name, int level) {
         super(name, level);
     }
+
+
 }
 
 class Waterfall extends PhysicalMove {
     public Waterfall() {
         super(Type.WATER, 80, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "Waterfall";
     }
 }
 
@@ -30,10 +37,20 @@ class AquaRing extends StatusMove {
     public AquaRing() {
         super(Type.WATER, 0 ,1);
     }
+
+    @Override
+    protected String describe() {
+        return "AquaRing";
+    }
 }
 
 class IceBeam extends SpecialMove {
     public IceBeam() {
         super(Type.ICE, 90, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "IceBeam";
     }
 }

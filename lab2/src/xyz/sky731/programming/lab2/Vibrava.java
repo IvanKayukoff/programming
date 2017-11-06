@@ -1,4 +1,4 @@
-package sky.lab2;
+package xyz.sky731.programming.lab2;
 
 import ru.ifmo.se.pokemon.*;
 
@@ -23,5 +23,10 @@ public class Vibrava extends Trapinch {
 class BugBuzz extends SpecialMove {
     BugBuzz() {
         super(Type.BUG, 90, 1);
+    }
+
+    @Override
+    protected String describe() {
+        return "BugBuzz";
     }
 }
