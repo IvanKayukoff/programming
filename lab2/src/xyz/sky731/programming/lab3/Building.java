@@ -14,13 +14,11 @@ public abstract class Building {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Building building = (Building) o;
-
-        if (cost != building.cost) return false;
-
-        return true;
+        if (o != null && o instanceof Building) {
+            Building building = (Building) o;
+            if (cost != building.cost) return false;
+            return true;
+        } else return false;
     }
 
     @Override
@@ -30,6 +28,6 @@ public abstract class Building {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return cost;
     }
 }

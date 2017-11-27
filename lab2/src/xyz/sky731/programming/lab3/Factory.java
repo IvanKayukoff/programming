@@ -8,47 +8,57 @@ public class Factory extends Building implements Workable {
 
     private int money = 0;
     private List<Human> employers = null;
-    private Set<Department> departmentsSet;
+    private List<Department> departments;
     private Human hostess = null;
 
     public Factory(Human[] employers, Human hostess) {
         super(0);
         this.employers = new ArrayList<Human>();
-        departmentsSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        this.departments = new ArrayList<Department>();
         for (Human human: employers) {
             this.employers.add(human);
         }
         this.hostess = hostess;
+        hostess.addBuildings(this);
+    }
+
+    public boolean isBig() {
+        return departments.size() > 2 ? true : false;
     }
 
     public void addDepartment(Department department) {
         if (department == null) return;
-        departmentsSet.add(department);
+        departments.add(department);
+        departments.add(department);
     }
 
     @Override
     public StatusOfDepartment work() {
-        if (departmentsSet.size() == 0) return StatusOfDepartment.RUINED;
-        for (Department element: departmentsSet) {
-            if (element.work() == StatusOfDepartment.RUINED) {
-                sellDepartment(element);
-                if (departmentsSet.size() == 0) {
+        if (departments.size() == 0) return StatusOfDepartment.RUINED;
+        for (int i = 0; i < departments.size(); i++) {
+            if (departments.get(i).work() == StatusOfDepartment.RUINED) {
+                departments.remove(i);
+                System.out.println(hostess.getName() + " продал помещение для завода");
+                if (departments.size() == 0) {
                     return StatusOfDepartment.RUINED;
-                }
+                } else return StatusOfDepartment.WORKING;
             } else {
-                giveSalary(element);
+                giveSalary(departments.get(i));
             }
-
         }
         return StatusOfDepartment.WORKING;
     }
 
     public void decCookedSaltCost() {
-        for (Department department: departmentsSet) {
+        for (Department department: departments) {
             if (department.getCookedSaltCost() > 0) {
                 department.setCookedSaltCost(department.getCookedSaltCost() - 1);
             }
         }
+    }
+
+    public int getMoney() {
+        return money;
     }
 
     private void giveSalary(Department department) {
@@ -77,7 +87,7 @@ public class Factory extends Building implements Workable {
 
     private void sellDepartment (Department department) {
         money += department.getCost();
-        departmentsSet.remove(department);
+        departments.remove(department);
     }
 
     protected void addMoney(int money) {
@@ -86,28 +96,46 @@ public class Factory extends Building implements Workable {
 
     @Override
     public String toString() {
-        return "Завод с " + departmentsSet.size() + " помещениями, имеющий "
+        return "Завод " + hostess.getName() + " с " + departments.size() + " помещениями, имеющий "
                 + money + " сантиков";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Factory)) return false;
 
         Factory factory = (Factory) o;
 
         if (money != factory.money) return false;
-        if (employers != null ? !employers.equals(factory.employers) : factory.employers != null) return false;
-        if (departmentsSet != null ? !departmentsSet.equals(factory.departmentsSet) : factory.departmentsSet != null)
+        if (employers != null ? !employers.equals(factory.employers) :
+                factory.employers != null) return false;
+        if (departments != null ? !departments.equals(factory.departments) :
+                factory.departments != null)
             return false;
-        if (hostess != null ? !hostess.equals(factory.hostess) : factory.hostess != null) return false;
+        if (hostess != null ? !hostess.equals(factory.hostess) :
+                factory.hostess != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + money;
+        result = 31 * result + (employers != null ? employers.hashCode() : 0);
+        result = 31 * result + (departments != null ? departments.hashCode() : 0);
+        result = 31 * result + (hostess != null ? hostess.hashCode() : 0);
+        if (employers != null && employers.size() > 0) {
+            for (Human emp : employers) {
+                result = 31 * result + (emp != null ? emp.hashCode() : 0);
+            }
+        }
+        if (departments != null && departments.size() > 0) {
+            for (Department dep : departments) {
+                result = 31 * result + (dep != null ? dep.hashCode() : 0);
+            }
+        }
+        return result;
     }
 }

@@ -3,54 +3,37 @@ package xyz.sky731.programming.lab3;
 import java.util.Objects;
 
 public class CookedSalt {
-    private int cost = 0;
     private int count = 0;
-    public CookedSalt(int cost) {
-        this.cost = cost;
-    }
 
-    public void decCost() {
-        cost--;
-    }
-
-    public void cookSalt() {
+    protected void addSalt() {
         count++;
     }
 
-    protected int sell() {
-        int money = cost * count;
-        count = 0;
-        return money;
-    }
-
-    public int getCost() {
-        return cost;
+    protected int sell(int cost) {
+        if (Market.buySalt(cost)) {
+            int money = cost * count;
+            count = 0;
+            return money;
+        } else return 0;
     }
 
     @Override
     public String toString() {
-        return count + " готовой соли по цене " + cost + " за каждую";
+        return count + " готовой соли";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof CookedSalt)) return false;
 
         CookedSalt that = (CookedSalt) o;
-
-        if (cost != that.cost) return false;
         if (count != that.count) return false;
-
         return true;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
-    }
-
-    protected void setCost(int cost) {
-        this.cost = cost;
+        return count;
     }
 }

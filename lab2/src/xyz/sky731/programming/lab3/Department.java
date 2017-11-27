@@ -6,8 +6,9 @@ import java.util.Random;
 public class Department extends Building implements Workable {
     private Factory factory = null;
     private int money = 0;
-    private Crystals crystals = new Crystals(5);
-    private CookedSalt cookedSalt = new CookedSalt(30);
+    private Crystals crystals = new Crystals();
+    private CookedSalt cookedSalt = new CookedSalt();
+    private int cookedSaltCost = 0;
 
     public Department(int cost, Factory factory) {
         super(cost);
@@ -15,24 +16,29 @@ public class Department extends Building implements Workable {
     }
 
     protected void setCookedSaltCost(int cost) {
-        cookedSalt.setCost(cost);
+        cookedSaltCost = cost;
     }
 
     protected int getCookedSaltCost() {
-        return cookedSalt.getCost();
+        return cookedSaltCost;
     }
 
     @Override
     public StatusOfDepartment work() {
-        if (money < crystals.getCost()) {
-            money += factory.giveMoney(crystals.getCost() - money);
+        if (money < Market.getCrystalCost()) {
+            money += factory.giveMoney(Market.getCrystalCost() - money);
         }
-        if (money >= crystals.getCost()) {
-            crystals.buyCrystal();
-            money -= crystals.getCost();
+        if (buyCrystal()) {
             crystals.useCrystal();
-            cookedSalt.cookSalt();
-            money += cookedSalt.sell();
+            cookedSalt.addSalt();
+            int profit = cookedSalt.sell(cookedSaltCost);
+            if (profit == 0) {
+                cookedSaltCost = Market.getAvgSaltCost();
+                money += cookedSalt.sell(cookedSaltCost);
+            } else {
+                money += profit;
+            }
+            money += cookedSalt.sell(cookedSaltCost);
             factory.getMoney(money);
             money = 0;
             return StatusOfDepartment.WORKING;
@@ -41,10 +47,18 @@ public class Department extends Building implements Workable {
         }
     }
 
+    private boolean buyCrystal() {
+        if (money >= Market.getCrystalCost()) {
+            crystals.addCrystal();
+            money -= Market.getCrystalCost();
+            return true;
+        } else return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Department)) return false;
 
         Department that = (Department) o;
 
@@ -63,6 +77,12 @@ public class Department extends Building implements Workable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + (factory != null ? factory.hashCode() : 0);
+        result = 31 * result + money;
+        result = 31 * result + (crystals != null ? crystals.hashCode() : 0);
+        result = 31 * result + (cookedSalt != null ? cookedSalt.hashCode() : 0);
+        result = 31 * result + cookedSaltCost;
+        return result;
     }
 }
