@@ -23,7 +23,7 @@ public abstract class Building {
 
     @Override
     public String toString() {
-        return "Здание стоимостью " + cost + " сантиков";
+        return "Недвижимость стоимостью " + cost + " сантиков";
     }
 
     @Override

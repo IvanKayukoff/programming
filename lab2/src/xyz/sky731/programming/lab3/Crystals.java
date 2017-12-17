@@ -2,7 +2,7 @@ package xyz.sky731.programming.lab3;
 
 import java.util.Objects;
 
-class Crystals {
+public class Crystals {
     private int count = 0;
 
     protected void addCrystal() {
@@ -11,6 +11,10 @@ class Crystals {
 
     protected void useCrystal() {
         count--;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     @Override

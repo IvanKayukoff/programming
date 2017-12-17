@@ -10,13 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e9c939c-895d-433f-9b71-49e62afc7389" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/testing/Func.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/testing/NotFunc.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/testing/Tests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/DepartmentEx.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Place.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/testing/Main.java" afterPath="$PROJECT_DIR$/src/testing/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java" afterPath="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,69 +28,106 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <expand />
+    <select />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="lab0" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Market.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Market.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/testing/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1344">
-              <caret line="64" column="76" lean-forward="false" selection-start-line="64" selection-start-column="76" selection-end-line="64" selection-end-column="76" />
+            <state relative-caret-position="126">
+              <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Workable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Workable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="3" column="29" lean-forward="false" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dewgong.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab2/Dewgong.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Building.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="16" column="21" lean-forward="false" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Factory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1866">
-              <caret line="113" column="44" lean-forward="false" selection-start-line="113" selection-start-column="44" selection-end-line="113" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+      <file leaf-file-name="JAVA/xyz.sky731.programming.lab3" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/xyz.sky731.programming.lab3">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>xyz.sky731.programming.lab3</OriginalElement>
+              <nodes>
+                <node x="157.0" y="248.0">xyz.sky731.programming.lab3.StatusOfDepartment</node>
+                <node x="392.5" y="91.0">xyz.sky731.programming.lab3.Place</node>
+                <node x="173.0" y="405.0">xyz.sky731.programming.lab3.Bredlam</node>
+                <node x="0.0" y="248.0">xyz.sky731.programming.lab3.Ownable</node>
+                <node x="148.0" y="481.0">xyz.sky731.programming.lab3.Market</node>
+                <node x="230.5" y="0.0">xyz.sky731.programming.lab3.Building</node>
+                <node x="282.5" y="91.0">xyz.sky731.programming.lab3.Home</node>
+                <node x="7.0" y="329.0">xyz.sky731.programming.lab3.Human</node>
+                <node x="0.0" y="172.0">xyz.sky731.programming.lab3.DepartmentEx</node>
+                <node x="0.0" y="405.0">xyz.sky731.programming.lab3.CookedSalt</node>
+                <node x="51.89285714285717" y="0.0">xyz.sky731.programming.lab3.Workable</node>
+                <node x="0.0" y="481.0">xyz.sky731.programming.lab3.Crystals</node>
+                <node x="8.5" y="91.0">xyz.sky731.programming.lab3.Department</node>
+                <node x="162.5" y="91.0">xyz.sky731.programming.lab3.Factory</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="xyz.sky731.programming.lab3.Human" target="xyz.sky731.programming.lab3.Ownable">
+                  <point x="0.0" y="-15.5" />
+                  <point x="0.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Place" target="xyz.sky731.programming.lab3.Building">
+                  <point x="0.0" y="-15.5" />
+                  <point x="435.5" y="61.0" />
+                  <point x="321.5" y="61.0" />
+                  <point x="39.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Building">
+                  <point x="33.5" y="-15.5" />
+                  <point x="109.0" y="61.0" />
+                  <point x="243.5" y="61.0" />
+                  <point x="-39.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.DepartmentEx" target="xyz.sky731.programming.lab3.Department">
+                  <point x="0.0" y="-15.5" />
+                  <point x="0.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Workable">
+                  <point x="-25.0" y="-15.5" />
+                  <point x="187.5" y="51.0" />
+                  <point x="137.39285714285717" y="51.0" />
+                  <point x="28.5" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Building">
+                  <point x="25.0" y="-15.5" />
+                  <point x="237.5" y="71.0" />
+                  <point x="269.5" y="71.0" />
+                  <point x="-13.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Home" target="xyz.sky731.programming.lab3.Building">
+                  <point x="0.0" y="-15.5" />
+                  <point x="327.5" y="71.0" />
+                  <point x="295.5" y="71.0" />
+                  <point x="13.0" y="15.5" />
+                </edge>
+                <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Workable">
+                  <point x="-33.5" y="-15.5" />
+                  <point x="42.0" y="71.0" />
+                  <point x="80.39285714285717" y="71.0" />
+                  <point x="-28.5" y="15.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="0.693609022556391" x="-158.41869918699183" y="336.0162601626016" />
+              <SelectedNodes />
+              <Categories />
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
             </state>
           </provider>
         </entry>
@@ -96,8 +135,8 @@
       <file leaf-file-name="Human.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1995">
-              <caret line="105" column="61" lean-forward="false" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
+            <state relative-caret-position="420">
+              <caret line="44" column="69" lean-forward="true" selection-start-line="44" selection-start-column="69" selection-end-line="44" selection-end-column="69" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,11 +147,90 @@
       <file leaf-file-name="Bredlam.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="29" column="34" lean-forward="false" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
+            <state relative-caret-position="336">
+              <caret line="16" column="39" lean-forward="false" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Building.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+              <folding>
+                <element signature="e#559#560#0" expanded="true" />
+                <element signature="e#629#630#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Place.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Place.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="14" column="40" lean-forward="true" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+              <folding>
+                <element signature="e#113#114#0" expanded="true" />
+                <element signature="e#140#141#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Factory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="36" lean-forward="true" selection-start-line="0" selection-start-column="36" selection-end-line="0" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3625#3626#0" expanded="true" />
+                <element signature="e#3655#3656#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Crystals.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+              <folding>
+                <element signature="e#259#260#0" expanded="true" />
+                <element signature="e#287#288#0" expanded="true" />
+                <element signature="e#695#696#0" expanded="true" />
+                <element signature="e#723#724#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Department.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-126">
+              <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#357#358#0" expanded="true" />
+                <element signature="e#387#388#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DepartmentEx.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/DepartmentEx.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -123,8 +241,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -159,9 +277,11 @@
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/CookedSalt.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Place.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Market.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Home.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/testing/Tests.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/DepartmentEx.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java" root0="SKIP_INSPECTION" />
@@ -173,8 +293,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/sky/lab2/Pokemon.java" />
         <option value="$PROJECT_DIR$/src/sky/lab2/pokemons/Pokemon.java" />
         <option value="$PROJECT_DIR$/src/sky/lab2/pokemons/Seel.java" />
         <option value="$PROJECT_DIR$/Pokemon.jar!/ru/ifmo/se/pokemon/Battle.class" />
@@ -211,19 +329,21 @@
         <option value="$PROJECT_DIR$/src/testing/Moonlighter.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Market.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/CookedSalt.java" />
-        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java" />
-        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Home.java" />
-        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/StatusOfDepartment.java" />
-        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java" />
-        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Ownable.java" />
         <option value="$PROJECT_DIR$/src/testing/NotFunc.java" />
         <option value="$PROJECT_DIR$/src/testing/Func.java" />
         <option value="$PROJECT_DIR$/src/testing/Tests.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Place.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java" />
         <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java" />
         <option value="$PROJECT_DIR$/src/testing/Main.java" />
+        <option value="$PROJECT_DIR$/src/xyz/sky731/programming/lab3/DepartmentEx.java" />
       </list>
     </option>
   </component>
@@ -232,6 +352,12 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="10" />
@@ -274,6 +400,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -305,19 +433,12 @@
               <item name="programming" type="462c0819:PsiDirectoryNode" />
               <item name="lab3" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="lab2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab2" type="462c0819:PsiDirectoryNode" />
-              <item name="Pokemon.jar" type="ab9368bb:PsiFileNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scratches" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,11 +589,13 @@
       <workItem from="1512386157427" duration="54000" />
       <workItem from="1512386300815" duration="1498000" />
       <workItem from="1513366685043" duration="228000" />
+      <workItem from="1513505763151" duration="2913000" />
+      <workItem from="1513525504381" duration="13518000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="187563000" />
+    <option name="totallyTimeSpent" value="203994000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -494,20 +617,20 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2580645" sideWeight="0.50757575" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31774193" sideWeight="0.49242425" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31774193" sideWeight="0.49242425" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32419354" sideWeight="0.4969697" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21515152" sideWeight="0.4857768" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21818182" sideWeight="0.4857768" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39813375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20530303" sideWeight="0.5142232" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39813375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -583,9 +706,11 @@
     </breakpoint-manager>
     <watches-manager />
   </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/sky/lab2/pokemons/Pokemon.java" />
-    <entry file="file://$PROJECT_DIR$/src/sky/lab2/pokemons/Seel.java" />
     <entry file="jar://$PROJECT_DIR$/Pokemon.jar!/ru/ifmo/se/pokemon/SpecialMove.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -736,57 +861,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/testing/Moonlighter.java" />
     <entry file="file://$PROJECT_DIR$/src/testing/Personage.java" />
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/CookedSalt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="35" column="27" lean-forward="false" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
-          <folding>
-            <element signature="e#797#798#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="31" column="27" lean-forward="false" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
-          <folding>
-            <element signature="e#659#660#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1281">
-          <caret line="66" column="27" lean-forward="false" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Home.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="10" column="21" lean-forward="false" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-          <folding>
-            <element signature="e#207#208#0" expanded="false" />
-            <element signature="e#235#236#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1995">
-          <caret line="105" column="61" lean-forward="false" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testing/Tests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
@@ -824,11 +898,142 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab2/Dewgong.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Home.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="6" column="5" lean-forward="true" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+          <folding>
+            <element signature="e#207#208#0" expanded="false" />
+            <element signature="e#235#236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Ownable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" column="48" lean-forward="false" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Market.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="54" lean-forward="true" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/CookedSalt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="35" column="27" lean-forward="false" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
+          <folding>
+            <element signature="e#797#798#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Workable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="36" lean-forward="true" selection-start-line="0" selection-start-column="36" selection-end-line="0" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Human.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="44" column="69" lean-forward="true" selection-start-line="44" selection-start-column="69" selection-end-line="44" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding>
+            <element signature="e#559#560#0" expanded="true" />
+            <element signature="e#629#630#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Crystals.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding>
+            <element signature="e#259#260#0" expanded="true" />
+            <element signature="e#287#288#0" expanded="true" />
+            <element signature="e#695#696#0" expanded="true" />
+            <element signature="e#723#724#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Place.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="40" lean-forward="true" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="e#113#114#0" expanded="true" />
+            <element signature="e#140#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="36" lean-forward="true" selection-start-line="0" selection-start-column="36" selection-end-line="0" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3625#3626#0" expanded="true" />
+            <element signature="e#3655#3656#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Department.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-126">
+          <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+            <element signature="e#387#388#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/DepartmentEx.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="39" lean-forward="false" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -838,155 +1043,69 @@
           <ID>JAVA</ID>
           <OriginalElement>xyz.sky731.programming.lab3</OriginalElement>
           <nodes>
-            <node x="408.4375" y="404.0">xyz.sky731.programming.lab3.Human</node>
-            <node x="0.0" y="0.0">xyz.sky731.programming.lab3.StatusOfDepartment</node>
-            <node x="403.9375" y="485.0">xyz.sky731.programming.lab3.Bredlam</node>
-            <node x="478.9199735449735" y="202.0">xyz.sky731.programming.lab3.Ownable</node>
-            <node x="295.0362929894179" y="0.0">xyz.sky731.programming.lab3.Market</node>
-            <node x="41.00000000000006" y="81.0">xyz.sky731.programming.lab3.Workable</node>
-            <node x="176.0" y="81.0">xyz.sky731.programming.lab3.CookedSalt</node>
-            <node x="324.0" y="81.0">xyz.sky731.programming.lab3.Crystals</node>
-            <node x="243.875" y="202.0">xyz.sky731.programming.lab3.Department</node>
-            <node x="244.125" y="293.0">xyz.sky731.programming.lab3.Factory</node>
-            <node x="477.58688822751316" y="81.0">xyz.sky731.programming.lab3.Building</node>
-            <node x="556.4199735449736" y="293.0">xyz.sky731.programming.lab3.Home</node>
+            <node x="157.0" y="248.0">xyz.sky731.programming.lab3.StatusOfDepartment</node>
+            <node x="392.5" y="91.0">xyz.sky731.programming.lab3.Place</node>
+            <node x="173.0" y="405.0">xyz.sky731.programming.lab3.Bredlam</node>
+            <node x="0.0" y="248.0">xyz.sky731.programming.lab3.Ownable</node>
+            <node x="148.0" y="481.0">xyz.sky731.programming.lab3.Market</node>
+            <node x="230.5" y="0.0">xyz.sky731.programming.lab3.Building</node>
+            <node x="282.5" y="91.0">xyz.sky731.programming.lab3.Home</node>
+            <node x="7.0" y="329.0">xyz.sky731.programming.lab3.Human</node>
+            <node x="0.0" y="172.0">xyz.sky731.programming.lab3.DepartmentEx</node>
+            <node x="0.0" y="405.0">xyz.sky731.programming.lab3.CookedSalt</node>
+            <node x="51.89285714285717" y="0.0">xyz.sky731.programming.lab3.Workable</node>
+            <node x="0.0" y="481.0">xyz.sky731.programming.lab3.Crystals</node>
+            <node x="8.5" y="91.0">xyz.sky731.programming.lab3.Department</node>
+            <node x="162.5" y="91.0">xyz.sky731.programming.lab3.Factory</node>
           </nodes>
           <notes />
           <edges>
             <edge source="xyz.sky731.programming.lab3.Human" target="xyz.sky731.programming.lab3.Ownable">
-              <point x="10.888888888888886" y="-15.5" />
-              <point x="468.3263888888889" y="354.0" />
-              <point x="534.9199735449736" y="354.0" />
+              <point x="0.0" y="-15.5" />
               <point x="0.0" y="15.5" />
             </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.CookedSalt">
-              <point x="-25.125" y="-15.5" />
-              <point x="285.75" y="162.0" />
-              <point x="208.0" y="162.0" />
-              <point x="-32.0" y="15.5" />
+            <edge source="xyz.sky731.programming.lab3.Place" target="xyz.sky731.programming.lab3.Building">
+              <point x="0.0" y="-15.5" />
+              <point x="435.5" y="61.0" />
+              <point x="321.5" y="61.0" />
+              <point x="39.0" y="15.5" />
             </edge>
-            <edge source="xyz.sky731.programming.lab3.Human" target="xyz.sky731.programming.lab3.Factory">
-              <point x="-43.55555555555554" y="-15.5" />
-              <point x="413.88194444444446" y="384.0" />
-              <point x="256.625" y="384.0" />
-              <point x="-37.5" y="15.5" />
+            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Building">
+              <point x="33.5" y="-15.5" />
+              <point x="109.0" y="61.0" />
+              <point x="243.5" y="61.0" />
+              <point x="-39.0" y="15.5" />
+            </edge>
+            <edge source="xyz.sky731.programming.lab3.DepartmentEx" target="xyz.sky731.programming.lab3.Department">
+              <point x="0.0" y="-15.5" />
+              <point x="0.0" y="15.5" />
             </edge>
             <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Workable">
-              <point x="-28.571428571428555" y="-15.5" />
-              <point x="265.55357142857144" y="263.0" />
-              <point x="69.50000000000006" y="263.0" />
-              <point x="-28.5" y="15.5" />
+              <point x="-25.0" y="-15.5" />
+              <point x="187.5" y="51.0" />
+              <point x="137.39285714285717" y="51.0" />
+              <point x="28.5" y="15.5" />
             </edge>
-            <edge source="xyz.sky731.programming.lab3.Human" target="xyz.sky731.programming.lab3.Building">
-              <point x="0.0" y="-15.5" />
-              <point x="457.4375" y="344.0" />
-              <point x="468.4199735449735" y="344.0" />
-              <point x="468.4199735449735" y="182.0" />
-              <point x="520.9202215608465" y="182.0" />
-              <point x="-8.666666666666657" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Bredlam" target="xyz.sky731.programming.lab3.Human">
-              <point x="0.0" y="-15.5" />
-              <point x="-7.105427357601002E-15" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Department">
-              <point x="-14.285714285714278" y="-15.5" />
-              <point x="279.8392857142857" y="253.0" />
-              <point x="260.625" y="253.0" />
-              <point x="-50.25" y="15.5" />
+            <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Building">
+              <point x="25.0" y="-15.5" />
+              <point x="237.5" y="71.0" />
+              <point x="269.5" y="71.0" />
+              <point x="-13.0" y="15.5" />
             </edge>
             <edge source="xyz.sky731.programming.lab3.Home" target="xyz.sky731.programming.lab3.Building">
               <point x="0.0" y="-15.5" />
-              <point x="601.4199735449736" y="182.0" />
-              <point x="555.5868882275131" y="182.0" />
-              <point x="26.0" y="15.5" />
+              <point x="327.5" y="71.0" />
+              <point x="295.5" y="71.0" />
+              <point x="13.0" y="15.5" />
             </edge>
             <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Workable">
-              <point x="-58.625" y="-15.5" />
-              <point x="252.25" y="182.0" />
-              <point x="126.50000000000006" y="182.0" />
-              <point x="28.5" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Human" target="xyz.sky731.programming.lab3.Home">
-              <point x="32.66666666666667" y="-15.5" />
-              <point x="490.1041666666667" y="374.0" />
-              <point x="623.9199735449736" y="374.0" />
-              <point x="22.5" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Market">
-              <point x="41.875" y="-15.5" />
-              <point x="352.75" y="152.0" />
-              <point x="460.0332341269841" y="152.0" />
-              <point x="460.0332341269841" y="56.0" />
-              <point x="368.5362929894179" y="56.0" />
-              <point x="24.5" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Ownable" target="xyz.sky731.programming.lab3.Building">
-              <point x="0.0" y="-15.5" />
-              <point x="534.9199735449736" y="182.0" />
-              <point x="538.2535548941798" y="182.0" />
-              <point x="8.666666666666686" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.StatusOfDepartment">
-              <point x="-42.85714285714289" y="-15.5" />
-              <point x="251.2678571428571" y="273.0" />
-              <point x="30.499999999999943" y="273.0" />
-              <point x="30.499999999999943" y="56.0" />
-              <point x="32.666666666666686" y="56.0" />
-              <point x="-65.33333333333331" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.CookedSalt" target="xyz.sky731.programming.lab3.Market">
-              <point x="0.0" y="-15.5" />
-              <point x="240.0" y="56.0" />
-              <point x="319.5362929894179" y="56.0" />
-              <point x="-24.5" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Building">
-              <point x="58.625" y="-15.5" />
-              <point x="369.5" y="162.0" />
-              <point x="486.25355489417984" y="162.0" />
-              <point x="-43.33333333333333" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Crystals">
-              <point x="8.375" y="-15.5" />
-              <point x="319.25" y="132.0" />
-              <point x="349.75" y="132.0" />
-              <point x="-25.75" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.Factory">
-              <point x="50.25" y="15.5" />
-              <point x="361.125" y="263.0" />
-              <point x="322.69642857142856" y="263.0" />
-              <point x="28.571428571428555" y="-15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Workable" target="xyz.sky731.programming.lab3.StatusOfDepartment">
-              <point x="0.0" y="-15.5" />
-              <point x="0.0" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Building">
-              <point x="42.85714285714289" y="-15.5" />
-              <point x="336.9821428571429" y="273.0" />
-              <point x="428.7530588624339" y="273.0" />
-              <point x="428.7530588624339" y="172.0" />
-              <point x="503.58688822751316" y="172.0" />
-              <point x="-26.0" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Department" target="xyz.sky731.programming.lab3.StatusOfDepartment">
-              <point x="-41.875" y="-15.5" />
-              <point x="269.0" y="172.0" />
-              <point x="165.5" y="172.0" />
-              <point x="165.5" y="56.0" />
-              <point x="163.33333333333331" y="56.0" />
-              <point x="65.33333333333331" y="15.5" />
-            </edge>
-            <edge source="xyz.sky731.programming.lab3.Factory" target="xyz.sky731.programming.lab3.Human">
-              <point x="12.5" y="15.5" />
-              <point x="306.625" y="364.0" />
-              <point x="435.65972222222223" y="364.0" />
-              <point x="-21.77777777777777" y="-15.5" />
+              <point x="-33.5" y="-15.5" />
+              <point x="42.0" y="71.0" />
+              <point x="80.39285714285717" y="71.0" />
+              <point x="-28.5" y="15.5" />
             </edge>
           </edges>
-          <settings layout="Hierarchic Group" zoom="1.0" x="214.0" y="291.0" />
+          <settings layout="Hierarchic Group" zoom="0.693609022556391" x="-158.41869918699183" y="336.0162601626016" />
           <SelectedNodes />
           <Categories />
           <SCOPE>All</SCOPE>
@@ -994,62 +1113,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Workable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="29" lean-forward="false" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Bredlam.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="29" column="34" lean-forward="false" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab2/Dewgong.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Building.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="16" column="21" lean-forward="false" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Factory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1866">
-          <caret line="113" column="44" lean-forward="false" selection-start-line="113" selection-start-column="44" selection-end-line="113" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/xyz/sky731/programming/lab3/Market.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testing/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1344">
-          <caret line="64" column="76" lean-forward="false" selection-start-line="64" selection-start-column="76" selection-end-line="64" selection-end-column="76" />
+        <state relative-caret-position="126">
+          <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
           <folding />
         </state>
       </provider>

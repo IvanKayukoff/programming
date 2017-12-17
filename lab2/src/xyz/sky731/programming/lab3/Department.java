@@ -5,10 +5,15 @@ import java.util.Random;
 
 public class Department extends Building implements Workable {
     private Factory factory = null;
-    private int money = 0;
-    private Crystals crystals = new Crystals();
-    private CookedSalt cookedSalt = new CookedSalt();
-    private int cookedSaltCost = 0;
+    protected int money = 0;
+    protected Crystals crystals = new Crystals();
+    protected CookedSalt cookedSalt = new CookedSalt();
+
+    public Factory getFactory() {
+        return factory;
+    }
+
+    protected int cookedSaltCost = 0;
 
     public Department(int cost, Factory factory) {
         super(cost);
@@ -54,6 +59,7 @@ public class Department extends Building implements Workable {
             return true;
         } else return false;
     }
+
 
     @Override
     public boolean equals(Object o) {

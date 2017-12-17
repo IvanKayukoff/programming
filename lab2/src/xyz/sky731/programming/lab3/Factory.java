@@ -119,6 +119,10 @@ public class Factory extends Building implements Workable {
         return true;
     }
 
+    public Human getHostess() {
+        return hostess;
+    }
+
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -137,5 +141,6 @@ public class Factory extends Building implements Workable {
             }
         }
         return result;
+
     }
 }

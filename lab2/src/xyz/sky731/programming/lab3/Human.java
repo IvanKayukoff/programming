@@ -34,6 +34,20 @@ public class Human implements Ownable {
         return false;
     }
 
+    protected void think() {
+        System.out.print(name + " думает: ");
+        if (Market.getAvgSaltCost() > 10) {
+            System.out.println("\"Все хорошо, я богатею..\"");
+        } else {
+            if (isBig()) {
+                System.out.println("\"Слишком много мелких заводов..\"");
+            } else {
+                System.out.println("\"Зачем им так много соли?..\"");
+            }
+
+        }
+    }
+
     public String getName() {
         return name;
     }

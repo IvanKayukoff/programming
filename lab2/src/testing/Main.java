@@ -4,6 +4,16 @@ import xyz.sky731.programming.lab3.*;
 
 public class Main {
     public static void main(String[] args) {
+        /*Human coastOwner = new Human();
+        Human[] emplsCoast = new Human[5];
+        for (int i = 0; i < 5; i++) {
+            emplsCoast[i] = new Human();
+        }
+        Factory factory = new Factory(emplsCoast, coastOwner);
+        Place.Coast coast = new Place.Coast(200, new Crystals());
+        factory.addDepartment(new DepartmentEx(100, factory, coast));
+        coastOwner.addBuildings(factory);
+        */
         Human[] empls = new Human[12];
         for (int i = 0; i < empls.length; i++) {
             empls[i] = new Human();
@@ -18,8 +28,12 @@ public class Main {
                 hs[j] = empls[i*4 + j];
             }
             factories[i] = new Factory(hs, hostesses[i]);
-            Department dep1 = new Department(100, factories[i]);
-            Department dep2 = new Department(101, factories[i]);
+            Place.Coast coast1 = new Place.Coast(200, new Crystals());
+            DepartmentEx dep1 = new DepartmentEx(100, factories[i], coast1);
+            dep1.upgrade();
+            Place.Coast coast2 = new Place.Coast(202, new Crystals());
+            DepartmentEx dep2 = new DepartmentEx(101, factories[i], coast2);
+            dep2.upgrade();
             factories[i].addDepartment(dep1);
             factories[i].addDepartment(dep2);
             hostesses[i].giveMoney(factories[i], 10000);
