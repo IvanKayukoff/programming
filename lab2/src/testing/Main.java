@@ -25,8 +25,9 @@ public class Main {
             hostesses[i].giveMoney(factories[i], 10000);
         }
 
-        Bredlam bredlam = new Bredlam(hostesses);
-        bredlam.setPredsedatel(new Human("Господин дракула", 10000));
+        Bredlam bredlam = new Bredlam("Соляной", hostesses);
+        bredlam.choosePredsedatel();
+        bredlam.zasedanie();
 
         Human ponchik = new Human("Пончик", 200);
         Human empl1 = new Human();
@@ -46,7 +47,7 @@ public class Main {
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < factories.length; j++) {
                 factories[j].work();
-                factories[j].decCookedSaltCost();
+                if (bredlam.getEndOfLight()) factories[j].decCookedSaltCost();
             }
             if (ponchikFac.work() == StatusOfDepartment.WORKING) {
                 System.out.println(ponchikFac);

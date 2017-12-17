@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bredlam {
+    String name = null;
     private List<Human> humans = null;
     private Human predsedatel = null;
+    private boolean endOfLight = false;
 
-    public Bredlam(Human... humans) {
+    public Bredlam(String name, Human... humans) {
         this.humans = new ArrayList<>();
+        this.name = name;
         for (Human human: humans) {
             if (human.isBig()) {
                 this.humans.add(human);
@@ -23,11 +26,33 @@ public class Bredlam {
         }
     }
 
-    public void setPredsedatel(Human human) {
-        if (human == null) return;
-        humans.add(human);
-        predsedatel = human;
-        System.out.println("Председателем выбрали: " + human.getName());
+    public void zasedanie() {
+        if (Math.random() > 0.5) {
+            endOfLight = true;
+            System.out.println("На заседании решили разделаться" +
+                    " с владельцами мелких заводов");
+        } else {
+            endOfLight = false;
+            System.out.println("На заседании решили, что все и так хорошо");
+        }
+    }
+
+    public void choosePredsedatel() {
+        Human res = null;
+        for (Human h : humans) {
+            if (h == null) continue;
+            if (res == null) res = h;
+            if (h.getMoney() > res.getMoney()) {
+                res = h;
+            }
+        }
+        predsedatel = res;
+        System.out.println("Председателем " + name + " бредлама выбрали: " +
+                predsedatel.getName());
+    }
+
+    public boolean getEndOfLight() {
+        return endOfLight;
     }
 
     @Override
@@ -43,7 +68,7 @@ public class Bredlam {
 
     @Override
     public String toString() {
-        return "Бредлам из " + humans.size() + " людей";
+        return name + " бредлам из " + humans.size() + " людей";
     }
 
     @Override
