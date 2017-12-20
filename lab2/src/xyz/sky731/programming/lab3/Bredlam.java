@@ -27,6 +27,14 @@ public class Bredlam {
     }
 
     public void zasedanie() {
+        class ZacedException extends RuntimeException {
+            ZacedException(String message) {
+                super(message);
+            }
+        }
+        if (humans.size() == 0) {
+            throw new ZacedException("Бредлам слишком пуст, чтобы заседать что-либо");
+        }
         if (Math.random() > 0.5) {
             endOfLight = true;
             System.out.println("На заседании решили разделаться" +
@@ -45,6 +53,9 @@ public class Bredlam {
             if (h.getMoney() > res.getMoney()) {
                 res = h;
             }
+        }
+        if (res == null) {
+            throw new NoPredsFoundException("Бредлам слишком пуст..");
         }
         predsedatel = res;
         System.out.println("Председателем " + name + " бредлама выбрали: " +
@@ -81,5 +92,11 @@ public class Bredlam {
             }
         }
         return result;
+    }
+}
+
+class NoPredsFoundException extends RuntimeException {
+    public NoPredsFoundException(String message) {
+        super(message);
     }
 }

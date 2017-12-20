@@ -3,6 +3,7 @@ package testing;
 import xyz.sky731.programming.lab3.*;
 
 public class Main {
+
     public static void main(String[] args) {
         /*Human coastOwner = new Human();
         Human[] emplsCoast = new Human[5];
@@ -46,6 +47,13 @@ public class Main {
         Human ponchik = new Human("Пончик", 200);
         Human empl1 = new Human();
         Human empl2 = new Human();
+
+        abstract class EndOfMoney {
+            public void broke(Human ponkik) {
+                System.out.println(ponkik.getName() + " разорился;(");
+            }
+        }
+
         Factory ponchikFac = new Factory(new Human[]{empl1, empl2}, ponchik);
         ponchikFac.addDepartment(new Department(100, ponchikFac));
         ponchik.giveMoney(ponchikFac, 200);
@@ -63,20 +71,31 @@ public class Main {
                 factories[j].work();
                 if (bredlam.getEndOfLight()) factories[j].decCookedSaltCost();
             }
+            EndOfMoney endOfMoney = new EndOfMoney() {
+                @Override
+                public void broke(Human ponkik) {
+                    super.broke(ponkik);
+                }
+            };
             if (ponchikFac.work() == StatusOfDepartment.WORKING) {
                 System.out.println(ponchikFac);
                 if (ponchikFac.getMoney() < Market.getCrystalCost()) {
-                    ponchik.sellBuilding(ponchik.getHome());
+                    try {
+                        ponchik.sellBuilding(ponchik.getHome());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println(ponchik.getName() + " не может продать то, чего у него нету");
+                    }
                     ponchik.giveMoney(ponchikFac, ponchik.getMoney());
                 }
             } else {
-                System.out.println(ponchik.getName() + " разорился;(");
+                endOfMoney.broke(ponchik);
                 break;
             }
             if (otherFac.work() == StatusOfDepartment.WORKING) {
                 System.out.println(otherFac);
             } else if (isOutOfMoney) {
-                System.out.println(otherHostess.getName() + " разорился;(");
+                endOfMoney.broke(otherHostess);
                 isOutOfMoney = !isOutOfMoney;
             }
         }

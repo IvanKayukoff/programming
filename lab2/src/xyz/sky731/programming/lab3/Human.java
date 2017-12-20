@@ -2,7 +2,6 @@ package xyz.sky731.programming.lab3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Human implements Ownable {
     private int money = 1000;
@@ -87,10 +86,12 @@ public class Human implements Ownable {
     }
 
     @Override
-    public void sellBuilding(Building building) {
+    public void sellBuilding(Building building) throws NoExistException {
         if (building == null) return;
         money += building.getCost();
-        buildings.remove(building);
+        if (!buildings.remove(building)) {
+            throw new NoExistException(getName() + " не владеет этим! ", building);
+        }
         if (building instanceof Home) System.out.println(name + " продал свой дом");
     }
 
@@ -132,5 +133,11 @@ public class Human implements Ownable {
             }
         }
         return result;
+    }
+}
+
+class NoExistException extends Exception {
+    public NoExistException(String message, Building building) {
+        super(building.toString() + " " + message);
     }
 }

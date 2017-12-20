@@ -3,14 +3,26 @@ package xyz.sky731.programming.lab3;
 import java.util.Objects;
 
 public class Crystals {
+
+    class ChangerCrystal {
+        int a = 0;
+        int b = 0;
+        public ChangerCrystal(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+        int add() {
+            return a + b;
+        }
+    }
+
     private int count = 0;
 
     protected void addCrystal() {
-        count++;
+        count = new ChangerCrystal(count, 1).add();
     }
 
     protected void useCrystal() {
-        count--;
     }
 
     public int getCount() {
