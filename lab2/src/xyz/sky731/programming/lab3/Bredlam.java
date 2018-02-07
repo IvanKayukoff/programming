@@ -1,5 +1,7 @@
 package xyz.sky731.programming.lab3;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,7 @@ public class Bredlam {
         this.humans = new ArrayList<>();
         this.name = name;
         for (Human human: humans) {
-            if (human.isBig()) {
-                this.humans.add(human);
-            }
+            this.humans.add(human);
         }
         if (this.humans.size() == 0) {
             System.out.println("Боженька создал пустой бредлам");
@@ -92,6 +92,10 @@ public class Bredlam {
             }
         }
         return result;
+    }
+
+    public int size() {
+        return humans.size() + (predsedatel != null ? 1 : 0);
     }
 }
 
