@@ -2,22 +2,39 @@ package testing;
 
 import xyz.sky731.programming.lab3.Bredlam;
 import xyz.sky731.programming.lab3.Human;
+import xyz.sky731.programming.lab5.FileReadWriter;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Tests {
+
+    private static Comparator<Bredlam> bredlamComparator = (Bredlam o1, Bredlam o2) -> o2.size() - o1.size();
+
     public static void main(String[] args) {
-//        String envFileName = System.getenv("BREDLAM_FILE");
-//        System.out.println(envFileName);
-        String fileName = "queueFile"; //FIXME
+        String fileName = System.getenv("BREDLAM_FILE");
         Queue<Bredlam> queue = new PriorityQueue<>(bredlamComparator);
         addDataToQueue(queue);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
+
+        FileReadWriter readWriter = new FileReadWriter(fileName);
+        try {
+            System.out.println(readWriter.readFromFile());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        String writeString = "Heloo world! :D\nI'm writed string!";
+
+        try {
+            readWriter.writeToFile(writeString);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
+        /*while (true) {
             String command;
             try {
                 command = reader.readLine();
@@ -48,16 +65,9 @@ public class Tests {
             } else {
                 System.out.println("Command not found");
             }
-        }
+        }*/
 
     }
-
-    public static Comparator<Bredlam> bredlamComparator = new Comparator<Bredlam>() {
-        @Override
-        public int compare(Bredlam o1, Bredlam o2) {
-            return o2.size() - o1.size();
-        }
-    };
 
     private static void addDataToQueue(Queue<Bredlam> queue) {
         for (int i = 0; i < 10; i++) {
@@ -80,4 +90,5 @@ public class Tests {
             System.out.println("Обработка бредлама: " + element);
         }
     }
+
 }
