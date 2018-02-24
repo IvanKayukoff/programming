@@ -1,14 +1,26 @@
 package xyz.sky731.programming.lab3;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@XmlRootElement
 public class Factory extends Building implements Workable {
+
+    @XmlElement(name = "salary")
     private static int SALARY = 3;
 
+    @XmlElement(name = "money")
     private int money = 0;
+
+    @XmlElement(name = "employer", type = Human.class)
     private List<Human> employers = null;
+
+    @XmlElement(name = "department", type = Department.class)
     private List<Department> departments;
+
+    @XmlElement(name = "hostess", type = Human.class)
     private Human hostess = null;
 
     public Factory(Human[] employers, Human hostess) {

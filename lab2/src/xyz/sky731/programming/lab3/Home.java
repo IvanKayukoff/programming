@@ -1,9 +1,20 @@
 package xyz.sky731.programming.lab3;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Home extends Building {
+
+    @XmlElement(name = "staticcost")
     private static final int COST = 100;
+
+    @XmlElement
     private static int homeCounts = 0;
+
+    @XmlElement
     private int id = 0;
+
     public Home() {
         super(COST);
         id = homeCounts++;

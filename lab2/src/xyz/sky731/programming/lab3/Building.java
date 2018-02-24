@@ -1,6 +1,11 @@
 package xyz.sky731.programming.lab3;
 
+import javax.xml.bind.annotation.*;
+
+@XmlTransient
 public abstract class Building {
+
+    @XmlElement(name = "cost")
     private int cost = 0;
 
     public Building(int cost) {

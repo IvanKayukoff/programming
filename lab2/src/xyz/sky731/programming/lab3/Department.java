@@ -1,11 +1,20 @@
 package xyz.sky731.programming.lab3;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 import java.util.Random;
 
+@XmlRootElement
 public class Department extends Building implements Workable {
+
+    @XmlElement(name = "factory", type = Factory.class)
     private Factory factory = null;
+
+    @XmlElement(name = "money")
     protected int money = 0;
+
+    @XmlElement()
     protected Crystals crystals = new Crystals();
     protected CookedSalt cookedSalt = new CookedSalt();
 

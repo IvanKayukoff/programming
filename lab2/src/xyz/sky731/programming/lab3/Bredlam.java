@@ -2,14 +2,29 @@ package xyz.sky731.programming.lab3;
 
 import com.sun.istack.internal.NotNull;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement(name = "Bredlam")
 public class Bredlam {
+
+    @XmlElement(name = "name")
     String name = null;
+
+    @XmlElement(name = "human", type = Human.class)
     private List<Human> humans = null;
+
+    @XmlElement(name = "predsedatel", type = Human.class)
     private Human predsedatel = null;
+
+    @XmlElement(name = "endOfLight")
     private boolean endOfLight = false;
+
+    public Bredlam() {}
 
     public Bredlam(String name, Human... humans) {
         this.humans = new ArrayList<>();

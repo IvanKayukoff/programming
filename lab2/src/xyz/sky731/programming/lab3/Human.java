@@ -1,17 +1,30 @@
 package xyz.sky731.programming.lab3;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement(name = "Human")
 public class Human implements Ownable {
+
+    @XmlElement(name = "money")
     private int money = 1000;
+
+    @XmlElement(name = "building", type = Home.class)
     private List<Building> buildings = null;
+
+    @XmlElement(name = "name")
     private String name = null;
+
+    @XmlElement(name = "number")
     private static int number = 0;
 
     public Human(String name, int money) {
         this.money = money;
-        buildings = new ArrayList<Building>();
+        buildings = new ArrayList<>();
         buildings.add(new Home());
         this.name = name;
         number++;

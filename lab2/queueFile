@@ -1,2 +1,27 @@
-Heloo world! :D
-I'm writed string!
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Bredlam>
+    <name>Imya</name>
+    <human>
+        <money>1000</money>
+        <building>
+            <cost>100</cost>
+            <staticcost>100</staticcost>
+            <homeCounts>10</homeCounts>
+            <id>8</id>
+        </building>
+        <name>Human8</name>
+        <number>10</number>
+    </human>
+    <human>
+        <money>1000</money>
+        <building>
+            <cost>100</cost>
+            <staticcost>100</staticcost>
+            <homeCounts>10</homeCounts>
+            <id>9</id>
+        </building>
+        <name>Human9</name>
+        <number>10</number>
+    </human>
+    <endOfLight>false</endOfLight>
+</Bredlam>

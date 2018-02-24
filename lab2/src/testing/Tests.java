@@ -3,14 +3,20 @@ package testing;
 import xyz.sky731.programming.lab3.Bredlam;
 import xyz.sky731.programming.lab3.Human;
 import xyz.sky731.programming.lab5.FileReadWriter;
+import xyz.sky731.programming.lab5.JAXBUser;
 
+import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 
 public class Tests {
 
-    private static Comparator<Bredlam> bredlamComparator = (Bredlam o1, Bredlam o2) -> o2.size() - o1.size();
+    private static Comparator<Bredlam> bredlamComparator =
+            (Bredlam o1, Bredlam o2) -> o2.size() - o1.size();
 
     public static void main(String[] args) {
         String fileName = System.getenv("BREDLAM_FILE");
@@ -19,20 +25,20 @@ public class Tests {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         FileReadWriter readWriter = new FileReadWriter(fileName);
-        try {
-            System.out.println(readWriter.readFromFile());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
-        String writeString = "Heloo world! :D\nI'm writed string!";
+        Bredlam bredlam = new Bredlam("Imya", new Human(), new Human());
+        System.out.println(bredlam);
 
-        try {
-            readWriter.writeToFile(writeString);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        /*XmlToCory cory = new XmlToCory();
+        JAXBUser<XmlToCory> jaxbUser = new JAXBUser<>(fileName);
+        jaxbUser.marshal(cory);
+        XmlToCory unm = jaxbUser.unmarshal(new XmlToCory());
+        System.out.println(unm);*/ //it's working example
 
+        JAXBUser<Bredlam> jaxbUser = new JAXBUser<>(fileName);
+        jaxbUser.marshal(bredlam);
+        Bredlam unm = jaxbUser.unmarshal(new Bredlam());
+        System.out.println(unm);
 
         /*while (true) {
             String command;
@@ -89,6 +95,25 @@ public class Tests {
             if (element == null) break;
             System.out.println("Обработка бредлама: " + element);
         }
+    }
+
+    private static String jaxbObjectToXML(Bredlam customer) {
+        String xmlString = "";
+        try {
+            JAXBContext context = JAXBContext.newInstance(Bredlam.class);
+            Marshaller m = context.createMarshaller();
+
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // To format XML
+
+            StringWriter sw = new StringWriter();
+            m.marshal(customer, sw);
+            xmlString = sw.toString();
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return xmlString;
     }
 
 }
