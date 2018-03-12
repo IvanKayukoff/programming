@@ -1,9 +1,8 @@
 package xyz.sky731.programming.lab5;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jdk.internal.org.xml.sax.SAXParseException;
+
+import javax.xml.bind.*;
 import java.io.File;
 
 public class JAXBUser<T> {
@@ -23,10 +22,10 @@ public class JAXBUser<T> {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             jaxbMarshaller.marshal(data, file);
-            jaxbMarshaller.marshal(data, System.out);
+            //jaxbMarshaller.marshal(data, System.out);
 
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        } catch (JAXBException ex) {
+            System.out.println(ex.getCause().toString());
         }
     }
 
@@ -39,7 +38,12 @@ public class JAXBUser<T> {
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             //noinspection unchecked
-            result = (T) jaxbUnmarshaller.unmarshal(file);
+            try {
+                result = (T) jaxbUnmarshaller.unmarshal(file);
+            } catch (UnmarshalException ex) {
+                System.out.println("Unmarshalling error");
+                return null;
+            }
             System.out.println(result);
 
         } catch (JAXBException e) {

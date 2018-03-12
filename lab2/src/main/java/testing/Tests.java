@@ -2,78 +2,39 @@ package testing;
 
 import xyz.sky731.programming.lab3.Bredlam;
 import xyz.sky731.programming.lab3.Human;
-import xyz.sky731.programming.lab5.FileReadWriter;
-import xyz.sky731.programming.lab5.JAXBUser;
+import xyz.sky731.programming.lab5.*;
 
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 
 public class Tests {
 
-    private static Comparator<Bredlam> bredlamComparator =
-            (Bredlam o1, Bredlam o2) -> o2.size() - o1.size();
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String fileName = System.getenv("BREDLAM_FILE");
-        Queue<Bredlam> queue = new PriorityQueue<>(bredlamComparator);
-        addDataToQueue(queue);
+        if (fileName == null) {
+            System.out.println("Environment variable BREDLAM_FILE not found");
+            fileName = "queueFile";
+        }
+        Queue<Bredlam> queue = new PriorityQueue<>();
+        //addDataToQueue(queue); //DELME
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        FileReadWriter readWriter = new FileReadWriter(fileName);
+        QueueHandler handler = new QueueHandler(queue);
+        queue = handler.loadFromFile(fileName);
 
-        Bredlam bredlam = new Bredlam("Imya", new Human(), new Human());
-        System.out.println(bredlam);
+        CmdExecutor executor = new CmdExecutor(queue, fileName);
 
-        /*XmlToCory cory = new XmlToCory();
-        JAXBUser<XmlToCory> jaxbUser = new JAXBUser<>(fileName);
-        jaxbUser.marshal(cory);
-        XmlToCory unm = jaxbUser.unmarshal(new XmlToCory());
-        System.out.println(unm);*/ //it's working example
+        if (queue != null && queue.size() > 0) {
+            System.out.println(executor.toJson(queue.peek()));
+        }
 
-        JAXBUser<Bredlam> jaxbUser = new JAXBUser<>(fileName);
-        jaxbUser.marshal(bredlam);
-        Bredlam unm = jaxbUser.unmarshal(Bredlam.class);
-        System.out.println(unm);
-
-
-
-        /*while (true) {
-            String command;
-            try {
-                command = reader.readLine();
-            }
-            catch (IOException ex) {
-                ex.printStackTrace();
-                return;
-            }
-            if (command == null) break;
-            if (command.equals("stop")) {
-                pollDataFromQueue(queue);
-                System.out.println("Stop triggered");
-                return;
-            } else if (command.equals("info")) {
-                //Информация о коллекции(тип дата количество)
-            } else if (command.equals("load")) {
-                //Прочитать коллекцию из файла
-            } else if (command.equals("remove_last")) {
-
-            } else if (command.equals("remove_first")) {
-
-            } else if (command.equals("save")) {
-
-            } else if (command.equals("remove {element}")) {
-
-            } else if (command.equals("remove_lower {element}")) {
-
-            } else {
-                System.out.println("Command not found");
-            }
-        }*/
+        while (true) {
+            String cmd = reader.readLine();
+            if (!executor.execute(cmd)) break;
+        }
 
     }
 

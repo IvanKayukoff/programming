@@ -10,13 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "Bredlam")
-public class Bredlam {
+public class Bredlam implements Comparable<Bredlam> {
+
+    @Override
+    public int compareTo(Bredlam o) {
+        return this.size() - o.size();
+    }
 
     @XmlElement(name = "name")
     String name = null;
 
     @XmlElement(name = "human", type = Human.class)
-    private List<Human> humans = null;
+    private List<Human> humans = new ArrayList<>();
 
     @XmlElement(name = "predsedatel", type = Human.class)
     private Human predsedatel = null;
@@ -110,7 +115,11 @@ public class Bredlam {
     }
 
     public int size() {
-        return humans.size() + (predsedatel != null ? 1 : 0);
+        try {
+            return humans.size() + (predsedatel != null ? 1 : 0);
+        } catch (NullPointerException ex) {
+            return 0;
+        }
     }
 }
 
