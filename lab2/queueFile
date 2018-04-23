@@ -1,93 +1,152 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bredlams>
-    <bredlams>
-        <name>Bredlam#3</name>
+    <bredlam>
+        <name>Bredlam#1</name>
         <human>
-            <money>65</money>
+            <money>952</money>
             <building>
                 <cost>100</cost>
                 <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
-                <id>4</id>
+                <homeCounts>24</homeCounts>
+                <id>1</id>
             </building>
             <name>Human#0</name>
-            <number>6</number>
+            <number>12</number>
         </human>
         <endOfLight>false</endOfLight>
-    </bredlams>
-    <bredlams>
-        <name>Bredlam#0</name>
+    </bredlam>
+    <bredlam>
+        <name>Bredlam#7</name>
         <human>
-            <money>689</money>
+            <money>658</money>
             <building>
                 <cost>100</cost>
                 <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
+                <homeCounts>24</homeCounts>
+                <id>6</id>
+            </building>
+            <name>Human#0</name>
+            <number>12</number>
+        </human>
+        <human>
+            <money>422</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
+                <id>7</id>
+            </building>
+            <name>Human#1</name>
+            <number>12</number>
+        </human>
+        <endOfLight>false</endOfLight>
+    </bredlam>
+    <bredlam>
+        <name>Bredlam#0</name>
+        <human>
+            <money>44</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
                 <id>0</id>
             </building>
             <name>Human#0</name>
-            <number>6</number>
+            <number>12</number>
         </human>
         <endOfLight>false</endOfLight>
-    </bredlams>
-    <bredlams>
+    </bredlam>
+    <bredlam>
         <name>Bredlam#4</name>
         <human>
-            <money>265</money>
+            <money>750</money>
             <building>
                 <cost>100</cost>
                 <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
-                <id>5</id>
+                <homeCounts>24</homeCounts>
+                <id>2</id>
             </building>
             <name>Human#0</name>
-            <number>6</number>
+            <number>12</number>
         </human>
-        <endOfLight>false</endOfLight>
-    </bredlams>
-    <list>
-        <name>Bredlam#3</name>
         <human>
-            <money>65</money>
+            <money>307</money>
             <building>
                 <cost>100</cost>
                 <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
+                <homeCounts>24</homeCounts>
+                <id>3</id>
+            </building>
+            <name>Human#1</name>
+            <number>12</number>
+        </human>
+        <endOfLight>false</endOfLight>
+    </bredlam>
+    <bredlam>
+        <name>Bredlam#6</name>
+        <human>
+            <money>490</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
                 <id>4</id>
             </building>
             <name>Human#0</name>
-            <number>6</number>
+            <number>12</number>
         </human>
-        <endOfLight>false</endOfLight>
-    </list>
-    <list>
-        <name>Bredlam#0</name>
         <human>
-            <money>689</money>
+            <money>962</money>
             <building>
                 <cost>100</cost>
                 <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
-                <id>0</id>
-            </building>
-            <name>Human#0</name>
-            <number>6</number>
-        </human>
-        <endOfLight>false</endOfLight>
-    </list>
-    <list>
-        <name>Bredlam#4</name>
-        <human>
-            <money>265</money>
-            <building>
-                <cost>100</cost>
-                <staticcost>100</staticcost>
-                <homeCounts>12</homeCounts>
+                <homeCounts>24</homeCounts>
                 <id>5</id>
             </building>
-            <name>Human#0</name>
-            <number>6</number>
+            <name>Human#1</name>
+            <number>12</number>
         </human>
         <endOfLight>false</endOfLight>
-    </list>
+    </bredlam>
+    <bredlam>
+        <name>Bredlam#9</name>
+        <human>
+            <money>61</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
+                <id>8</id>
+            </building>
+            <name>Human#0</name>
+            <number>12</number>
+        </human>
+        <human>
+            <money>733</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
+                <id>9</id>
+            </building>
+            <name>Human#1</name>
+            <number>12</number>
+        </human>
+        <endOfLight>false</endOfLight>
+    </bredlam>
+    <bredlam>
+        <name>Bredlam#1</name>
+        <human>
+            <money>952</money>
+            <building>
+                <cost>1021210</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>24</homeCounts>
+                <id>1</id>
+            </building>
+            <name>Human#0</name>
+            <number>12</number>
+        </human>
+        <endOfLight>false</endOfLight>
+    </bredlam>
 </bredlams>
