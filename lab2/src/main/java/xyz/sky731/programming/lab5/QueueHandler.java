@@ -1,6 +1,5 @@
 package xyz.sky731.programming.lab5;
 
-import org.xml.sax.SAXParseException;
 import xyz.sky731.programming.lab3.Bredlam;
 
 import java.util.*;
@@ -14,9 +13,8 @@ public class QueueHandler {
 
     public void writeToFile(String filename) {
         Bredlams arr = new Bredlams();
-        arr.setList(new ArrayList<>());
-        List<Bredlam> list = arr.getList();
-        list.addAll(queue);
+        arr.setBredlam(new ArrayList<>());
+        arr.getBredlam().addAll(queue);
         JAXBUser<Bredlams> jaxbUser = new JAXBUser<>(filename);
         jaxbUser.marshal(arr);
     }
@@ -28,8 +26,8 @@ public class QueueHandler {
         queue.clear();
         if (bredlams == null) {
             System.out.println("Wrong xml code");
-        } else if (bredlams.getList() != null) {
-            queue.addAll(bredlams.getList());
+        } else if (bredlams.getBredlam() != null) {
+            queue.addAll(bredlams.getBredlam());
         }
 
         return queue;

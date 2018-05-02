@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement(name = "Bredlam")
 public class Bredlam implements Comparable<Bredlam> {
@@ -89,12 +90,12 @@ public class Bredlam implements Comparable<Bredlam> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Bredlam)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Bredlam bredlam = (Bredlam) o;
-        if (humans != null ? !humans.equals(bredlam.humans) :
-                bredlam.humans != null) return false;
-
-        return true;
+        return endOfLight == bredlam.endOfLight &&
+                Objects.equals(name, bredlam.name) &&
+                Objects.equals(humans, bredlam.humans) &&
+                Objects.equals(predsedatel, bredlam.predsedatel);
     }
 
     @Override

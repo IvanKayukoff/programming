@@ -73,12 +73,29 @@ public class CmdExecutor {
             case "remove_lower":
                 removeLower(arg);
                 break;
+            case "add":
+                add(arg);
+                break;
             case "stop":
                 return false;
             default:
                 System.out.println("Unknown command");
         }
         return true;
+    }
+
+    /**
+     * Adding bredlam to queue by value
+     * @param arg json-formatted bredlam
+     */
+    private void add(String arg) {
+        Bredlam bredlam = fromJson(arg);
+        if (bredlam == null) {
+            System.out.println("Wrong json code");
+        } else {
+            queue.add(bredlam);
+            System.out.println("Added bredlam to queue: " + bredlam);
+        }
     }
 
     /**
@@ -141,29 +158,31 @@ public class CmdExecutor {
 
     /**
      * Remove element by value
-     * @param arg - json-formatted bredlam
+     * @param arg json-formatted bredlam
      */
     private void remove(String arg) {
         Bredlam bredlam = fromJson(arg);
         if (bredlam == null) {
             System.out.println("Wrong json code");
         } else {
-            System.out.println("Deleted " + bredlam);
-            queue.remove(bredlam);
+            boolean deleted = queue.remove(bredlam);
+            System.out.println(deleted ? "Deleted " + bredlam :
+            bredlam + " doesn't exist in the collection");
         }
     }
 
     /**
      * Remove elements less then value
-     * @param arg - json-formatted bredlam
+     * @param arg json-formatted bredlam
      */
     private void removeLower(String arg) {
         Bredlam bredlam = fromJson(arg);
         if (bredlam == null) {
             System.out.println("Wrong json code");
         } else {
-            System.out.println("Deleted bredlams less than " + bredlam);
-            queue.removeIf(p -> p.compareTo(bredlam) < 0);
+            boolean deleted = queue.removeIf(p -> p.compareTo(bredlam) < 0);
+            System.out.println(deleted ? "Deleted bredlams less than " + bredlam :
+                    "Nothing deleted");
         }
     }
 

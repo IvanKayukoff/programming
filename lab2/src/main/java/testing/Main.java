@@ -5,16 +5,6 @@ import xyz.sky731.programming.lab3.*;
 public class Main {
 
     public static void main(String[] args) {
-        /*Human coastOwner = new Human();
-        Human[] emplsCoast = new Human[5];
-        for (int i = 0; i < 5; i++) {
-            emplsCoast[i] = new Human();
-        }
-        Factory factory = new Factory(emplsCoast, coastOwner);
-        Place.Coast coast = new Place.Coast(200, new Crystals());
-        factory.addDepartment(new DepartmentEx(100, factory, coast));
-        coastOwner.addBuildings(factory);
-        */
         Human[] empls = new Human[12];
         for (int i = 0; i < empls.length; i++) {
             empls[i] = new Human();

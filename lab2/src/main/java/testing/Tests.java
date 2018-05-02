@@ -8,22 +8,37 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Tests {
-
     public static void main(String[] args) throws IOException {
+        boolean fileNotFound = false;
         String fileName = System.getenv("BREDLAM_FILE");
         if (fileName == null) {
             System.out.println("Environment variable BREDLAM_FILE not found");
             fileName = "queueFile";
         }
+        if (!Files.exists(Paths.get(fileName))) {
+            System.out.println("File " + fileName + " not found");
+            Files.createFile(Paths.get(fileName));
+            System.out.println("Created file with filename: " + fileName);
+            fileNotFound = true;
+        }
+        if (!(Files.isWritable(Paths.get(fileName)) && Files.isReadable(Paths.get(fileName)))) {
+            System.out.println("Permission denied");
+            return;
+        }
+
         Queue<Bredlam> queue = new PriorityQueue<>();
-        //addDataToQueue(queue); //DELME
+        //addDataToQueue(queue);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         QueueHandler handler = new QueueHandler(queue);
-        queue = handler.loadFromFile(fileName);
+        if (!fileNotFound) {
+            queue = handler.loadFromFile(fileName);
+        }
 
         CmdExecutor executor = new CmdExecutor(queue, fileName);
 

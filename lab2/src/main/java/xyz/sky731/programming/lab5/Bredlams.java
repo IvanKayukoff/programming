@@ -8,14 +8,13 @@ import java.util.List;
 
 @XmlRootElement
 public class Bredlams {
-    @XmlElement(name = "bredlams")
-    private List<Bredlam> bredlams;
+    private List<Bredlam> bredlam;
 
-    public List<Bredlam> getList() {
-        return bredlams;
+    public List<Bredlam> getBredlam() {
+        return bredlam;
     }
 
-    public void setList(List<Bredlam> list) {
-        this.bredlams = list;
+    public void setBredlam(List<Bredlam> list) {
+        this.bredlam = list;
     }
 }
