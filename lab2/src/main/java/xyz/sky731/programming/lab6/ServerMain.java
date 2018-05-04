@@ -5,12 +5,12 @@ import java.net.DatagramSocket;
 
 public class ServerMain {
     public static void main(String[] args) {
-        try (DatagramSocket ds = new DatagramSocket(26425)) {
+        try (DatagramSocket socket = new DatagramSocket(26425)) {
             while (true) {
-                DatagramPacket pack = new DatagramPacket(new byte[1024], 1024);
-                ds.receive(pack);
+                DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
+                socket.receive(packet);
 
-                new Thread(new Responder(ds, pack)).start();
+                new Thread(new Responder(socket, packet)).start();
             }
         } catch (Exception e) {
             e.printStackTrace();

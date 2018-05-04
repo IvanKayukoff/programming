@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class ClientMain {
     private String host;
@@ -16,10 +18,10 @@ public class ClientMain {
         this.port = port;
     }
 
-    private void sendMessage(@NotNull String mes) {
+    private void sendMessage(@NotNull String message) {
         // Using DatagramSocket
         /*try {
-            byte[] data = mes.getBytes();
+            byte[] data = message.getBytes();
             InetAddress address = InetAddress.getByName(host);
             DatagramPacket pack = new DatagramPacket(data, data.length, address, port);
             DatagramSocket ds = new DatagramSocket();
@@ -32,16 +34,22 @@ public class ClientMain {
         // Using DatagramChannel
         try {
             ByteBuffer buffer = ByteBuffer.allocate(1024);
-            buffer.put(mes.getBytes());
+            buffer.put(message.getBytes());
+
+            String hash = HashSum.MD5(message);
+            System.out.println(hash);
+
+            //buffer.position(buffer.limit());
+            buffer.put(hash.getBytes());
             buffer.flip();
+
             DatagramChannel channel = DatagramChannel.open();
             SocketAddress address = new InetSocketAddress(host, port);
             channel.connect(address);
             channel.send(buffer, address);
             buffer.clear();
-
+            System.out.println("Message sent successful");
             // getting response from server
-            System.out.println(channel.getLocalAddress());
             channel.receive(buffer);
             buffer.flip();
             while (buffer.hasRemaining()) {
