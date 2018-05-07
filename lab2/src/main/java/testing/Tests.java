@@ -32,6 +32,7 @@ public class Tests {
         }
 
         Queue<Bredlam> queue = new PriorityQueue<>();
+        //here u can generate random bredlams, just uncomment line below
         //addDataToQueue(queue);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

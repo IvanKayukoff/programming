@@ -14,7 +14,7 @@ import java.util.*;
 public class CmdExecutor {
     private final Queue<Bredlam> queue;
     private final String filename;
-    private boolean isGoing = false;
+    private static boolean isGoing = false;
     private Date createDate;
 
     public CmdExecutor(Queue<Bredlam> queue, String filename) {

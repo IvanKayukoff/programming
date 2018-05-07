@@ -7,11 +7,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement(name = "Bredlam")
 public class Bredlam implements Comparable<Bredlam> {
+
+    public static class BredlamNameComp implements Comparator<Bredlam> {
+        public int compare(Bredlam a, Bredlam b) {
+            return a.name.compareTo(b.name);
+        }
+    }
 
     @Override
     public int compareTo(Bredlam o) {

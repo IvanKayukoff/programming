@@ -4,10 +4,11 @@ import xyz.sky731.programming.lab3.Bredlam;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.List;
 
 @XmlRootElement
-public class Bredlams {
+public class Bredlams implements Serializable {
     private List<Bredlam> bredlam;
 
     public List<Bredlam> getBredlam() {
