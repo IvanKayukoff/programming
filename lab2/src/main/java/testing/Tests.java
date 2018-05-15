@@ -47,10 +47,10 @@ public class Tests {
             System.out.println(executor.toJson(queue.peek()));
         }
 
-        while (true) {
+       /* while (true) {
             String cmd = reader.readLine();
             if (!executor.execute(cmd)) break;
-        }
+        }*/
 
     }
 

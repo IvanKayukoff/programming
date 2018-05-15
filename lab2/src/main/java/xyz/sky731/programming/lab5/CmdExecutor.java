@@ -10,47 +10,32 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 public class CmdExecutor {
     private final Queue<Bredlam> queue;
     private final String filename;
     private static boolean isGoing = false;
     private Date createDate;
+    private StringBuffer response;
 
     public CmdExecutor(Queue<Bredlam> queue, String filename) {
         this.queue = queue;
         this.filename = filename;
+        this.response = new StringBuffer();
         if (!isGoing) {
             isGoing = true;
-            Runtime.getRuntime().addShutdownHook(new Thread(()->save()));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> save()));
         }
         createDate = new Date();
     }
-    public boolean execute(String string) {
-        String cmd, arg;
-        try {
-            String[] arr = string.split(" ");
-            cmd = arr[0];
-            StringBuilder builder = new StringBuilder("");
-            for (int i = 1; i < arr.length; i++) {
-                builder.append(arr[i]);
-            }
-            arg = builder.toString();
-            while (countMatches(arg, '{') > countMatches(arg, '}')) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                try {
-                    arg += reader.readLine();
-                } catch (IOException ex) {
-                    System.out.println("Console was closed. IOException");
-                    return false;
-                }
-            }
 
-        } catch (NullPointerException ex) {
-            System.out.println("Console was closed");
-            return false;
-        }
+    public String getResponse() {
+        return response.toString();
+    }
 
+    public boolean execute(String cmd, Bredlam arg) {
         switch (cmd) {
             case "info":
                 info();
@@ -77,24 +62,27 @@ public class CmdExecutor {
                 add(arg);
                 break;
             case "stop":
+                response.append("Stopping server..");
                 return false;
             default:
-                System.out.println("Unknown command");
+                response.append("Unknown command");
         }
         return true;
     }
 
     /**
      * Adding bredlam to queue by value
-     * @param arg json-formatted bredlam
+     *
+     * @param bredlam bredlam
      */
-    private void add(String arg) {
-        Bredlam bredlam = fromJson(arg);
+    private void add(Bredlam bredlam) {
         if (bredlam == null) {
-            System.out.println("Wrong json code");
+            response.append("Wrong json code");
         } else {
             queue.add(bredlam);
-            System.out.println("Added bredlam to queue: " + bredlam);
+            response.append("Added bredlam to queue: ");
+            response.append(bredlam);
+            response.append("\n");
         }
     }
 
@@ -102,14 +90,19 @@ public class CmdExecutor {
      * Printing info about collection
      */
     private void info() {
-        System.out.println("Type collection: " + queue.getClass());
+        response.append("Type collection: " + queue.getClass());
+        response.append("\n");
         if (queue.size() > 0) {
-            System.out.println("Type elements in collection: " + queue.peek().getClass());
+            response.append("Type elements in collection: " + queue.peek().getClass());
+            response.append("\n");
         } else {
-            System.out.println("Unknown elements type");
+            response.append("Unknown elements type");
+            response.append("\n");
         }
-        System.out.println("Size collection: " + queue.size());
-        System.out.println("Create time: " + createDate);
+        response.append("Size collection: " + queue.size());
+        response.append("\n");
+        response.append("Create time: " + createDate);
+        response.append("\n");
     }
 
     /**
@@ -128,14 +121,18 @@ public class CmdExecutor {
      * Removing last element from queue
      */
     private void removeLast() {
-        Queue<Bredlam> newQueue = new PriorityQueue<>();
-        while (queue.size() > 1) {
-            newQueue.add(queue.poll());
+        if (queue.size() > 0) {
+            response.append("Deleted last element " + queue.poll());
+        } else {
+            response.append("Collection is already empty");
+            return;
         }
+        PriorityBlockingQueue<Bredlam> bredlams = queue.stream()
+                .limit(queue.size() - 1)
+                .collect(Collectors.toCollection(PriorityBlockingQueue::new));
         queue.clear();
-        queue.addAll(newQueue);
-        System.out.println(queue.size() > 0 ? "Deleted last element " + queue.poll() :
-                "Collection is already empty");
+        queue.addAll(bredlams);
+        response.append("\n");
     }
 
     /**
@@ -144,7 +141,7 @@ public class CmdExecutor {
     private void save() {
         QueueHandler handler = new QueueHandler(queue);
         handler.writeToFile(filename);
-        System.out.println("Saved collection to file");
+        response.append("Saved collection to file\n");
     }
 
     /**
@@ -152,41 +149,51 @@ public class CmdExecutor {
      */
     private void removeFirst() {
         Bredlam bredlam = queue.poll();
-        System.out.println(bredlam != null ? "Deleted first element "
+        response.append(bredlam != null ? "Deleted first element "
                 + bredlam : "Collection is already empty");
+        response.append("\n");
     }
 
     /**
      * Remove element by value
+     *
      * @param arg json-formatted bredlam
      */
-    private void remove(String arg) {
-        Bredlam bredlam = fromJson(arg);
+    private void remove(Bredlam bredlam) {
         if (bredlam == null) {
-            System.out.println("Wrong json code");
+            response.append("Wrong json code");
         } else {
             boolean deleted = queue.remove(bredlam);
-            System.out.println(deleted ? "Deleted " + bredlam :
-            bredlam + " doesn't exist in the collection");
+
+            response.append(deleted ? "Deleted " + bredlam :
+                    bredlam + " doesn't exist in the collection");
         }
+        response.append("\n");
     }
 
     /**
      * Remove elements less then value
+     *
      * @param arg json-formatted bredlam
      */
-    private void removeLower(String arg) {
-        Bredlam bredlam = fromJson(arg);
+    private void removeLower(Bredlam bredlam) {
         if (bredlam == null) {
-            System.out.println("Wrong json code");
+            response.append("Wrong json code");
         } else {
-            boolean deleted = queue.removeIf(p -> p.compareTo(bredlam) < 0);
-            System.out.println(deleted ? "Deleted bredlams less than " + bredlam :
+            //boolean deleted = queue.removeIf(p -> p.compareTo(bredlam) < 0);
+            PriorityBlockingQueue<Bredlam> bredlams = queue.stream()
+                    .filter(p -> p.compareTo(bredlam) < 0)
+                    .collect(Collectors.toCollection(PriorityBlockingQueue::new));
+            boolean deleted = bredlams.size() < queue.size();
+            queue.clear();
+            queue.addAll(bredlams);
+            response.append(deleted ? "Deleted bredlams less than " + bredlam :
                     "Nothing deleted");
         }
+        response.append("\n");
     }
 
-    public Bredlam fromJson(String json) {
+    public static Bredlam fromJson(String json) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Building.class, new BuildingAdapter());
         Gson gson = gsonBuilder.create();
@@ -200,14 +207,14 @@ public class CmdExecutor {
         return bredlam;
     }
 
-    public String toJson(Bredlam bredlam) {
+    public static String toJson(Bredlam bredlam) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Building.class, new BuildingAdapter());
         Gson gson = gsonBuilder.create();
         return gson.toJson(bredlam);
     }
 
-    private int countMatches(String string, char c) {
+    public static int countMatches(String string, char c) {
         int matches = 0;
         for (char elem : string.toCharArray()) {
             matches += (elem == c) ? 1 : 0;

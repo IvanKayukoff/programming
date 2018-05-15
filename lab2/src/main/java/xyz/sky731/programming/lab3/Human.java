@@ -4,11 +4,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "Human")
-public class Human implements Ownable {
+public class Human implements Ownable, Serializable {
 
     @XmlElement(name = "money")
     private int money = 1000;
@@ -31,7 +32,7 @@ public class Human implements Ownable {
     }
 
     public Human() {
-        buildings = new ArrayList<Building>();
+        buildings = new ArrayList<>();
         buildings.add(new Home());
         this.name = "Human" + number++;
     }

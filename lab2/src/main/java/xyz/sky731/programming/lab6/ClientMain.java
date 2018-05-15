@@ -1,15 +1,13 @@
 package xyz.sky731.programming.lab6;
 
 import com.sun.istack.internal.NotNull;
+import xyz.sky731.programming.lab3.Bredlam;
+import xyz.sky731.programming.lab5.CmdExecutor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class ClientMain {
     private String host;
@@ -22,11 +20,26 @@ public class ClientMain {
 
     private void sendMessage(@NotNull byte[] message) {
         try {
-            ByteBuffer buffer = ByteBuffer.allocate(16000);
-            buffer.put(message);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
 
-            String hash = HashSum.MD5(new String(message));
-            System.out.println(hash);
+            String[] arr = new String(message).split(" ");
+            String cmd = arr[0];
+            StringBuilder builder = new StringBuilder();
+            for (int i = 1; i < arr.length; i++) {
+                builder.append(arr[i]);
+            }
+            String arg = builder.toString();
+            Bredlam bredlam = CmdExecutor.fromJson(arg);
+
+            oos.writeObject(new Request(cmd, bredlam));
+            oos.flush();
+            byte[] array = baos.toByteArray();
+
+            ByteBuffer buffer = ByteBuffer.allocate(16000);
+            buffer.put(array);
+
+            String hash = HashSum.MD5(new String(array));
 
             buffer.put(hash.getBytes());
             buffer.flip();
@@ -39,11 +52,16 @@ public class ClientMain {
             System.out.println("Message sent successful");
 
             // getting response from server
-            channel.receive(buffer);
+            try {
+                channel.receive(buffer);
+            } catch (PortUnreachableException e) {
+                System.out.println("Server unavailable :( Try later..");
+            }
             buffer.flip();
             while (buffer.hasRemaining()) {
                 System.out.print((char) buffer.get());
             }
+            System.out.println();
             buffer.clear();
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,19 +71,40 @@ public class ClientMain {
     public static void main(String[] args) {
         
         ClientMain sender = new ClientMain("localhost", 26425);
-        /*StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 32; i++) {
-            builder.append(i);
-        }*/
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String message = null;
-        try {
-            message = reader.readLine();
-        } catch (IOException e) {
-            System.out.println("Oops, console has been closed :(");
-            System.exit(0);
+        while (true) {
+            try {
+                message = reader.readLine();
+            } catch (IOException e) {
+                System.out.println("Oops, console has been closed :(");
+                System.exit(0);
+            }
+            StringBuffer messageBuf = new StringBuffer(message);
+            checkBrackets(messageBuf);
+            sender.sendMessage(messageBuf.toString().getBytes());
         }
-        sender.sendMessage(message.getBytes());
+    }
+
+    private static void checkBrackets(StringBuffer buffer) {
+        String[] arr = buffer.toString().split(" ");
+        String cmd = arr[0];
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < arr.length; i++) {
+            builder.append(arr[i]);
+        }
+        String arg = builder.toString();
+        while (CmdExecutor.countMatches(arg, '{') > CmdExecutor.countMatches(arg, '}')) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                arg += reader.readLine();
+            } catch (IOException ex) {
+                System.out.println("Oops, console is dead :(");
+                System.exit(1);
+            }
+        }
+        buffer.delete(0, buffer.length());
+        buffer.append(cmd + " " + arg);
     }
 }

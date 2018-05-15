@@ -1,7 +1,6 @@
 package xyz.sky731.programming.lab6;
 
 import xyz.sky731.programming.lab3.Bredlam;
-import xyz.sky731.programming.lab5.CmdExecutor;
 import xyz.sky731.programming.lab5.QueueHandler;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class ServerMain {
                 DatagramPacket packet = new DatagramPacket(new byte[16000], 16000);
                 socket.receive(packet);
 
-                new Thread(new Responder(socket, packet, new CmdExecutor(queue, fileName))).start();
+                new Thread(new Responder(socket, packet, fileName, queue)).start();
             }
         } catch (Exception e) {
             e.printStackTrace();

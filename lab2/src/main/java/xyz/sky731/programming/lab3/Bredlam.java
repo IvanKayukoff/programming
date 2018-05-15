@@ -6,16 +6,19 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement(name = "Bredlam")
-public class Bredlam implements Comparable<Bredlam> {
+public class Bredlam implements Comparable<Bredlam>, Serializable {
 
     public static class BredlamNameComp implements Comparator<Bredlam> {
         public int compare(Bredlam a, Bredlam b) {
+            if (b == null || a == null) return 0;
+            if (a.name == null || b.name == null) return 0;
             return a.name.compareTo(b.name);
         }
     }
@@ -107,7 +110,7 @@ public class Bredlam implements Comparable<Bredlam> {
 
     @Override
     public String toString() {
-        return name + " бредлам из " + humans.size() + " людей";
+        return name + " bredlam with " + humans.size() + " humans";
     }
 
     @Override
