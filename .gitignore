@@ -10,3 +10,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# local ignores
+backup_for_client
+*.iml
+*.xml
+server/.idea
+server/.gradle
+server/gradlew
+server/build
+server/gradle
+server/out
+server/gradlew.bat

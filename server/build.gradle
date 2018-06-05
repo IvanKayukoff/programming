@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'xyz.sky731.programming.lab6.ServerMain'
+
+jar {
+  baseName = 'ServerMain'
+  version = '0.0.1'
+  manifest {
+    attributes "Main-Class": "$mainClassName"
+  }
+  from {
+    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'sax', name: 'sax', version: '2.0.1'
+    compile "com.fasterxml.jackson.core:jackson-databind:2.8.7"
+    compile ('com.maxmind.geoip2:geoip2:2.8.0'){
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+    }
+    
+
+}
+
+compileJava {
+   options.compilerArgs += ["-XDignore.symbol.file", "-Xdoclint:none", "-Xlint:none", "-nowarn"]
+   options.fork = true
+   options.forkOptions.executable = 'javac'
+}
