@@ -37,8 +37,8 @@ public class JAXBUser<T> {
             JAXBContext jaxbContext = JAXBContext.newInstance(cl);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            //noinspection unchecked
             try {
+                //noinspection unchecked
                 result = (T) jaxbUnmarshaller.unmarshal(file);
             } catch (UnmarshalException ex) {
                 System.out.println("Unmarshalling error");

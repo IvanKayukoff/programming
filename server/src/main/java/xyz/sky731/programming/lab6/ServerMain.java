@@ -2,6 +2,7 @@ package xyz.sky731.programming.lab6;
 
 import xyz.sky731.programming.lab3.Bredlam;
 import xyz.sky731.programming.lab5.QueueHandler;
+import xyz.sky731.programming.lab7.ServerGUI;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -19,7 +20,6 @@ public class ServerMain {
 
     public static void main(String[] args) {
         loadCollectionFromDisk();
-
         try (DatagramSocket socket = new DatagramSocket(26425)) {
             while (true) {
                 DatagramPacket packet = new DatagramPacket(new byte[16000], 16000);
@@ -63,6 +63,7 @@ public class ServerMain {
         if (!fileNotFound) {
             queue = handler.loadFromFile(fileName);
         }
+
 
     }
 }
