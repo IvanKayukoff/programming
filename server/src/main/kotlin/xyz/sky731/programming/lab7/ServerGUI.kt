@@ -2,16 +2,13 @@ package xyz.sky731.programming.lab7
 
 import xyz.sky731.programming.lab3.Bredlam
 import java.awt.Dimension
-import java.awt.EventQueue
-import java.awt.FlowLayout
 import java.awt.GridLayout
 import java.util.*
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JLabel
-import javax.swing.JTree
 
-class ServerGUI(name: String = "Hello", queue: Queue<Bredlam>) : JFrame(name) {
+class ServerGUI(queue: Queue<Bredlam>, name: String = "Hello") : JFrame(name) {
 
 
   init {
