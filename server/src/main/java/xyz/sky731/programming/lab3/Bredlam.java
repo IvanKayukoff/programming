@@ -78,6 +78,10 @@ public class Bredlam implements Comparable<Bredlam>, Serializable {
         }
     }
 
+    public List<Human> getHumans() {
+        return humans;
+    }
+
     public void choosePredsedatel() {
         Human res = null;
         for (Human h : humans) {

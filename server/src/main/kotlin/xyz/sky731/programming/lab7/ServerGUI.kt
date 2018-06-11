@@ -1,17 +1,15 @@
 package xyz.sky731.programming.lab7
 
-import xyz.sky731.programming.lab3.Bredlam
 import java.awt.Dimension
 import java.awt.GridLayout
-import java.util.*
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JLabel
 
-class ServerGUI(queue: Queue<Bredlam>, name: String = "Hello") : JFrame(name) {
-
-
+class ServerGUI(name: String = "Server GUI") : JFrame(name) {
+  val mainTree = BredlamTree()
   init {
+    isResizable = true
     minimumSize = Dimension(800, 400)
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
     isVisible = true
@@ -20,10 +18,10 @@ class ServerGUI(queue: Queue<Bredlam>, name: String = "Hello") : JFrame(name) {
       add(JButton("ClickMe").apply {
         addActionListener {
           this@ServerGUI.dispose()
-
+          //System.exit(0)
         }
       })
-      add(BredlamTree(queue))
+      add(mainTree)
       add(JLabel("ClickLeft"))
     }
 
@@ -31,4 +29,5 @@ class ServerGUI(queue: Queue<Bredlam>, name: String = "Hello") : JFrame(name) {
 
   }
 
+  val updateTree = mainTree::applyChanges
 }
