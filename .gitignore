@@ -22,3 +22,5 @@ server/build
 server/gradle
 server/out
 server/gradlew.bat
+server/logins.csv
+client

@@ -1,28 +1,45 @@
 package xyz.sky731.programming.lab7
 
-import java.awt.Dimension
-import java.awt.GridLayout
-import javax.swing.JButton
-import javax.swing.JFrame
-import javax.swing.JLabel
+import java.awt.*
+import java.awt.event.ActionListener
+import javax.swing.*
 
 class ServerGUI(name: String = "Server GUI") : JFrame(name) {
   val mainTree = BredlamTree()
   init {
     isResizable = true
-    minimumSize = Dimension(800, 400)
+    minimumSize = Dimension(700, 400)
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-    isVisible = true
+    isVisible = false
 
     contentPane.layout = GridLayout().apply {
-      add(JButton("ClickMe").apply {
-        addActionListener {
-          this@ServerGUI.dispose()
-          //System.exit(0)
-        }
-      })
       add(mainTree)
-      add(JLabel("ClickLeft"))
+      add(object : JComponent() {
+        init {
+          layout = GridBagLayout()
+          val constraints = GridBagConstraints().apply {
+            fill = GridBagConstraints.SOUTH
+            gridx = 0
+            gridy = 0
+            ipadx = 10
+            ipady = 10
+          }
+
+          add(JLabel("Name: "), constraints)
+          constraints.gridy = 1
+          add(JLabel("Popularity: "), constraints)
+
+          constraints.gridy = 2
+          add(JPanel().apply {
+            contentPane.layout = FlowLayout().apply {
+              add(JButton("New"))
+              add(JButton("Edit"))
+              add(JButton("Delete"))
+            }
+          }, constraints)
+        }
+
+      })
     }
 
     pack()

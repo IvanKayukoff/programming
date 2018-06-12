@@ -123,7 +123,7 @@ public class Human implements Ownable, Serializable {
 
     @Override
     public String toString() {
-        return "Я - человек имеющий " + buildings.size() + " зданий";
+        return (name != null ? name : "Anonymous");
     }
 
     @Override

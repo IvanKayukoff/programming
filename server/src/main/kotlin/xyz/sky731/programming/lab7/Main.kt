@@ -14,9 +14,10 @@ fun main(args: Array<String>) = SwingUtilities.invokeLater {
     }
 
     override fun process(result: MutableList<TreeChange>?) {
-      println("k")
       result?.let { gui.updateTree(it) }
     }
   }
+  LoginWindow("Login to Bredlam server", gui)
+
   worker.execute()
 }

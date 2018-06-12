@@ -11,4 +11,41 @@
         <name>Thebestbredlamever</name>
         <endOfLight>false</endOfLight>
     </bredlam>
+    <bredlam>
+        <name>DAMN</name>
+        <human>
+            <money>1000</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>0</homeCounts>
+                <id>0</id>
+            </building>
+            <name>KokerEboker</name>
+            <number>0</number>
+        </human>
+        <human>
+            <money>1000</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>0</homeCounts>
+                <id>1</id>
+            </building>
+            <name>Roglab7</name>
+            <number>0</number>
+        </human>
+        <human>
+            <money>1000</money>
+            <building>
+                <cost>100</cost>
+                <staticcost>100</staticcost>
+                <homeCounts>0</homeCounts>
+                <id>2</id>
+            </building>
+            <name>nintendogirl</name>
+            <number>0</number>
+        </human>
+        <endOfLight>false</endOfLight>
+    </bredlam>
 </bredlams>
