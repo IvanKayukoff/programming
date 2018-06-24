@@ -12,12 +12,14 @@ import javax.swing.tree.TreePath
 
 
 
-class BredlamTree(): JTree(makeRoot()) {
+class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
   companion object {
     fun makeRoot() = DefaultMutableTreeNode("Bredlams").apply {
       add(DefaultMutableTreeNode(Bredlam("ConstBredlam")))
     }
   }
+
+
 
   var selection: Any? = null
 
@@ -28,8 +30,20 @@ class BredlamTree(): JTree(makeRoot()) {
     else null
 
     when (selected) {
-      is Bredlam -> println(selected)
-      is Human -> println(selected)
+      is Bredlam -> {
+        gui.tabbedPane.selectedIndex = 0
+        gui.nameBredlamTextField.text = selected.name
+        gui.isEndOfLightCheckbox.isSelected = selected.isEndOfLight
+        gui.populationTextField.text = selected.population.toString()
+        gui.colorComboBox.selectedItem = selected.flagColor // FIXME here can be a problem
+        gui.posXSpinner.value = selected.coordinates.x
+        gui.posYSpinner.value = selected.coordinates.y
+      }
+      is Human -> {
+        gui.tabbedPane.selectedIndex = 1
+        gui.nameHumanTextField.text = selected.name
+        gui.moneySpinner.value = selected.money
+      }
     }
 
     selection = selected

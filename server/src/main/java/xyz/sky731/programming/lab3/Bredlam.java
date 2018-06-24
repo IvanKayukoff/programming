@@ -2,11 +2,13 @@ package xyz.sky731.programming.lab3;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.sun.istack.internal.NotNull;
+import xyz.sky731.programming.lab7.ColorWithName;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,7 +32,6 @@ public class Bredlam implements Comparable<Bredlam>, Serializable {
         return this.size() - o.size();
     }
 
-    @XmlElement(name = "name")
     String name = null;
 
     @XmlElement(name = "human", type = Human.class)
@@ -39,10 +40,49 @@ public class Bredlam implements Comparable<Bredlam>, Serializable {
     @XmlElement(name = "predsedatel", type = Human.class)
     private Human predsedatel = null;
 
-    @XmlElement(name = "endOfLight")
     private boolean endOfLight = false;
 
+    private ColorWithName flagColor = null;
+
+    private Point coordinates = new Point(0,0);
+
+    public Point getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Point coordinates) {
+        this.coordinates = coordinates;
+    }
+
     private Bredlam() {}
+
+    public String getName() {
+        return name != null ? name : "NoNameBredlam";
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEndOfLight(boolean endOfLight) {
+        this.endOfLight = endOfLight;
+    }
+
+    public ColorWithName getFlagColor() {
+        return flagColor;
+    }
+
+    public void setFlagColor(ColorWithName flagColor) {
+        this.flagColor = flagColor;
+    }
+
+    public boolean isEndOfLight() {
+        return endOfLight;
+    }
+
+    public int getPopulation() {
+        return humans != null ? humans.size() : 0;
+    }
 
     public Bredlam(String name, Human... humans) {
         this.humans = new ArrayList<>();
