@@ -10,16 +10,12 @@ import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeSelectionModel
 import javax.swing.tree.TreePath
 
-
-
 class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
   companion object {
     fun makeRoot() = DefaultMutableTreeNode("Bredlams").apply {
       add(DefaultMutableTreeNode(Bredlam("ConstBredlam")))
     }
   }
-
-
 
   var selection: Any? = null
 
@@ -66,7 +62,7 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
         }
         false -> {
           rootNode.children().iterator().asSequence()
-              .find { (it as DefaultMutableTreeNode).userObject == it }
+              .find { (it as DefaultMutableTreeNode).userObject == bredlam}
               ?.let { model?.removeNodeFromParent(it as DefaultMutableTreeNode) }
         }
       }

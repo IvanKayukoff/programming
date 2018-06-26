@@ -1,14 +1,18 @@
 package xyz.sky731.programming.lab7
 
 import xyz.sky731.programming.lab3.Bredlam
+import xyz.sky731.programming.lab5.CmdExecutor
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
+import java.util.concurrent.PriorityBlockingQueue
 import javax.swing.*
 import javax.swing.border.EmptyBorder
-import javax.swing.tree.DefaultMutableTreeNode
+import kotlin.system.exitProcess
 
-class ServerGUI(name: String = "Server GUI") : JFrame(name) {
+class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
+                val fileName: String,
+                name: String = "Server GUI") : JFrame(name) {
   val mainTree = BredlamTree(this)
   val colorComboBox = JComboBox<ColorWithName>()
   val posXSpinner = JSpinner()
@@ -107,23 +111,56 @@ class ServerGUI(name: String = "Server GUI") : JFrame(name) {
           constraints.gridy = 3
           add(JPanel().apply {
             contentPane.layout = FlowLayout().apply {
-              add(JButton("New").apply { addActionListener {
-                // FIXME
-              } })
-              add(JButton("Edit").apply { addActionListener {
-                val selected = mainTree.selection
-                when (selected) {
-                  is Bredlam -> {
-                    selected.name = nameBredlamTextField.text
-                    selected.isEndOfLight = isEndOfLightCheckbox.isSelected
-                    when (colorComboBox.selectedItem) {
-                      is ColorWithName -> selected.flagColor = colorComboBox.selectedItem as ColorWithName
+
+              fun peekSelected() = Bredlam(nameBredlamTextField.text).apply {
+                coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
+                isEndOfLight = isEndOfLightCheckbox.isSelected
+                flagColor = if (colorComboBox.selectedItem is ColorWithName)
+                  colorComboBox.selectedItem as ColorWithName
+                else null
+              }
+
+              val executor = CmdExecutor(queue, fileName) // FIXME need to test with reloading from file
+
+              fun executeCmdWithPeeked(cmd: String) {
+                val bredlam = peekSelected()
+                val (response, changes) = executor.execute(cmd, bredlam)
+                updateTree(changes)
+                println(response)
+              }
+
+              add(JButton("New").apply {
+                addActionListener {
+                  executeCmdWithPeeked("add")
+                }
+              })
+              add(JButton("Edit").apply {
+                addActionListener { // FIXME JTree does not update instantly
+                  val selected = mainTree.selection
+                  when (selected) {
+                    is Bredlam -> {
+                      selected.name = nameBredlamTextField.text
+                      selected.isEndOfLight = isEndOfLightCheckbox.isSelected
+                      when (colorComboBox.selectedItem) {
+                        is ColorWithName -> selected.flagColor = colorComboBox.selectedItem as ColorWithName
+                      }
+                      selected.coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
                     }
-                    selected.coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
                   }
                 }
-              } })
-              add(JButton("Delete"))
+              })
+              add(JButton("Delete").apply {
+                addActionListener {
+                  val selected = mainTree.selection
+                  when (selected) {
+                    is Bredlam -> {
+                      val (response, changes) = executor.execute("remove", selected)
+                      updateTree(changes)
+                      println(response)
+                    }
+                  }
+                }
+              })
             }
           }, constraints)
 
@@ -150,11 +187,11 @@ class ServerGUI(name: String = "Server GUI") : JFrame(name) {
 
       val buttonsBox = Box.createHorizontalBox().apply {
         contentPane.layout = FlowLayout().apply {
-          add(JButton("New"))
+          add(JButton("New")) // TODO: add implementation of action listener
           add(Box.createHorizontalStrut(5))
-          add(JButton("Edit"))
+          add(JButton("Edit")) // TODO: add implementation of action listener
           add(Box.createHorizontalStrut(5))
-          add(JButton("Delete"))
+          add(JButton("Delete")) // TODO: add implementation of action listener
         }
       }
 
@@ -188,7 +225,7 @@ class ServerGUI(name: String = "Server GUI") : JFrame(name) {
       mnemonic = KeyEvent.VK_L
       toolTipText = "Load collection from file"
       addActionListener {
-        // FIXME
+        //TODO: add implementation of action listener
       }
     }
 
@@ -196,14 +233,14 @@ class ServerGUI(name: String = "Server GUI") : JFrame(name) {
       mnemonic = KeyEvent.VK_S
       toolTipText = "Save collection to file"
       addActionListener {
-        // FIXME
+        // TODO: add implementation of action listener
       }
     }
 
     val exitMenuItem = JMenuItem("Exit").apply {
       mnemonic = KeyEvent.VK_E
       toolTipText = "Exit application"
-      addActionListener { _: ActionEvent -> System.exit(0) }
+      addActionListener { _: ActionEvent -> exitProcess(0) }
     }
 
     file.apply {
