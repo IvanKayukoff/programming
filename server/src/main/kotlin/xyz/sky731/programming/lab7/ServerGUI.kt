@@ -1,6 +1,7 @@
 package xyz.sky731.programming.lab7
 
 import xyz.sky731.programming.lab3.Bredlam
+import xyz.sky731.programming.lab3.Human
 import xyz.sky731.programming.lab5.CmdExecutor
 import java.awt.*
 import java.awt.event.ActionEvent
@@ -8,6 +9,8 @@ import java.awt.event.KeyEvent
 import java.util.concurrent.PriorityBlockingQueue
 import javax.swing.*
 import javax.swing.border.EmptyBorder
+import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
 
 class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
@@ -110,6 +113,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
 
           constraints.gridy = 3
           add(JPanel().apply {
+            val executor = CmdExecutor(queue, fileName) // FIXME need to test with reloading from file
             contentPane.layout = FlowLayout().apply {
 
               fun peekSelected() = Bredlam(nameBredlamTextField.text).apply {
@@ -119,8 +123,6 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                   colorComboBox.selectedItem as ColorWithName
                 else null
               }
-
-              val executor = CmdExecutor(queue, fileName) // FIXME need to test with reloading from file
 
               fun executeCmdWithPeeked(cmd: String) {
                 val bredlam = peekSelected()
@@ -135,7 +137,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                 }
               })
               add(JButton("Edit").apply {
-                addActionListener { // FIXME JTree does not update instantly
+                addActionListener {
                   val selected = mainTree.selection
                   when (selected) {
                     is Bredlam -> {
@@ -147,6 +149,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                       selected.coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
                     }
                   }
+                  mainTree.model?.nodeChanged(mainTree.lastSelectedPathComponent as TreeNode)
                 }
               })
               add(JButton("Delete").apply {
@@ -187,11 +190,53 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
 
       val buttonsBox = Box.createHorizontalBox().apply {
         contentPane.layout = FlowLayout().apply {
-          add(JButton("New")) // TODO: add implementation of action listener
+
+          fun peekHumanFromUI() = Human().apply {
+            this.name = nameHumanTextField.text
+            this.money = moneySpinner.value as Int
+          }
+
+          add(JButton("New").apply { addActionListener {
+            val selected = mainTree.selection
+            val elem = peekHumanFromUI()
+            when (selected) {
+              is Bredlam -> {
+                selected.humans.add(elem)
+                val curNode = mainTree.lastSelectedPathComponent as DefaultMutableTreeNode
+                mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
+                    curNode, curNode.childCount)
+              }
+              is Human -> {
+                (mainTree.parentOfSelection as Bredlam).humans.add(peekHumanFromUI())
+                val curNode = (mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
+                    .parent as DefaultMutableTreeNode
+                mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
+                    curNode, curNode.childCount)
+              }
+            }
+          } })
           add(Box.createHorizontalStrut(5))
-          add(JButton("Edit")) // TODO: add implementation of action listener
+          add(JButton("Edit").apply { addActionListener {
+            val selected = mainTree.selection
+            when (selected) {
+              is Human -> {
+                selected.name = nameHumanTextField.text
+                selected.money = moneySpinner.value as Int
+              }
+            }
+            mainTree.model?.nodeChanged(mainTree.lastSelectedPathComponent as TreeNode)
+          } })
           add(Box.createHorizontalStrut(5))
-          add(JButton("Delete")) // TODO: add implementation of action listener
+          add(JButton("Delete").apply { addActionListener {
+            val selected = mainTree.selection
+            when (selected) {
+              is Human -> {
+                val selectionParent = mainTree.parentOfSelection as Bredlam
+                selectionParent.humans.remove(selected)
+              }
+            }
+            mainTree.model?.removeNodeFromParent(mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
+          } })
         }
       }
 

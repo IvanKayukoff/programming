@@ -29,7 +29,7 @@ public class Bredlam implements Comparable<Bredlam>, Serializable {
         return this.size() - o.size();
     }
 
-    String name = null;
+    private String name = null;
 
     @XmlElement(name = "human", type = Human.class)
     private List<Human> humans = new ArrayList<>();

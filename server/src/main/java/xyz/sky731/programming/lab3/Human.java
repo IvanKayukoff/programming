@@ -12,13 +12,11 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY)
 public class Human implements Ownable, Serializable {
 
-    @XmlElement(name = "money")
     private int money = 1000;
 
     @XmlElement(name = "building", type = Home.class)
     private List<Building> buildings;
 
-    @XmlElement(name = "name")
     private String name;
 
     @XmlElement(name = "number")
@@ -30,6 +28,14 @@ public class Human implements Ownable, Serializable {
         buildings.add(new Home());
         this.name = name;
         number++;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public Human() {

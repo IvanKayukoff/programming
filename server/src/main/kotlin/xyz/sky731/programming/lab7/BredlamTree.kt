@@ -18,11 +18,17 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
   }
 
   var selection: Any? = null
+  var parentOfSelection: Any? = null
 
   val rootNode = model?.root as DefaultMutableTreeNode
   val treeSelectionListener = addTreeSelectionListener {
     val selected = if (selectionPath != null && selectionPath.pathCount > 1)
       (lastSelectedPathComponent as DefaultMutableTreeNode?)?.userObject
+    else null
+
+    parentOfSelection = if (selectionPath != null && selectionPath.pathCount > 1)
+      ((lastSelectedPathComponent as DefaultMutableTreeNode?)
+          ?.parent as DefaultMutableTreeNode).userObject
     else null
 
     when (selected) {
