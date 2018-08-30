@@ -1,7 +1,7 @@
 <xyz.sky731.programming.lab5.Bredlams>
   <bredlam>
     <xyz.sky731.programming.lab3.Bredlam>
-      <name>Debbing</name>
+      <name>Debbing everywhere!</name>
       <humans>
         <xyz.sky731.programming.lab3.Human>
           <money>1000</money>
@@ -11,7 +11,7 @@
               <id>0</id>
             </xyz.sky731.programming.lab3.Home>
           </buildings>
-          <name>Manya</name>
+          <name>Vanya</name>
         </xyz.sky731.programming.lab3.Human>
       </humans>
       <endOfLight>false</endOfLight>
@@ -30,7 +30,7 @@
       </coordinates>
     </xyz.sky731.programming.lab3.Bredlam>
     <xyz.sky731.programming.lab3.Bredlam>
-      <name>Hello?</name>
+      <name>Hello mzfkers?</name>
       <humans>
         <xyz.sky731.programming.lab3.Human>
           <money>100000</money>

@@ -270,7 +270,10 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       mnemonic = KeyEvent.VK_L
       toolTipText = "Load collection from file"
       addActionListener {
-        // TODO: add implementation of action listener
+        val executor = CmdExecutor(queue, fileName)
+        val (response, changes) = executor.execute("load", null)
+        updateTree(changes)
+        println(response)
       }
     }
 
@@ -278,9 +281,9 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       mnemonic = KeyEvent.VK_S
       toolTipText = "Save collection to file"
       addActionListener {
-        // TODO: add implementation of action listener
         val executor = CmdExecutor(queue, fileName)
-        executor.execute("save", null)
+        val (response, changes) = executor.execute("save", null)
+        println(response)
       }
     }
 
