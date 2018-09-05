@@ -1,36 +1,36 @@
 <xyz.sky731.programming.lab5.Bredlams>
   <bredlam>
     <xyz.sky731.programming.lab3.Bredlam>
-      <name>Debbing everywhere!</name>
+      <name>BlueGuys</name>
       <humans>
         <xyz.sky731.programming.lab3.Human>
-          <money>1000</money>
+          <money>10</money>
           <buildings>
             <xyz.sky731.programming.lab3.Home>
               <cost>100</cost>
               <id>0</id>
             </xyz.sky731.programming.lab3.Home>
           </buildings>
-          <name>Vanya</name>
+          <name>RUGay?</name>
         </xyz.sky731.programming.lab3.Human>
       </humans>
-      <endOfLight>false</endOfLight>
+      <endOfLight>true</endOfLight>
       <flagColor>
         <color>
-          <red>255</red>
-          <green>175</green>
-          <blue>175</blue>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
           <alpha>255</alpha>
         </color>
-        <name>Pink</name>
+        <name>Blue</name>
       </flagColor>
       <coordinates>
-        <x>2</x>
-        <y>3</y>
+        <x>10</x>
+        <y>110</y>
       </coordinates>
     </xyz.sky731.programming.lab3.Bredlam>
     <xyz.sky731.programming.lab3.Bredlam>
-      <name>Hello mzfkers?</name>
+      <name>Hello?</name>
       <humans>
         <xyz.sky731.programming.lab3.Human>
           <money>100000</money>
@@ -56,16 +56,45 @@
       <endOfLight>false</endOfLight>
       <flagColor>
         <color>
-          <red>0</red>
-          <green>255</green>
+          <red>255</red>
+          <green>175</green>
+          <blue>175</blue>
+          <alpha>255</alpha>
+        </color>
+        <name>Pink</name>
+      </flagColor>
+      <coordinates>
+        <x>1</x>
+        <y>-1</y>
+      </coordinates>
+    </xyz.sky731.programming.lab3.Bredlam>
+    <xyz.sky731.programming.lab3.Bredlam>
+      <name>rofl</name>
+      <humans>
+        <xyz.sky731.programming.lab3.Human>
+          <money>1000</money>
+          <buildings>
+            <xyz.sky731.programming.lab3.Home>
+              <cost>100</cost>
+              <id>0</id>
+            </xyz.sky731.programming.lab3.Home>
+          </buildings>
+          <name>OrangeMan</name>
+        </xyz.sky731.programming.lab3.Human>
+      </humans>
+      <endOfLight>true</endOfLight>
+      <flagColor>
+        <color>
+          <red>255</red>
+          <green>200</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
-        <name>Green</name>
+        <name>Orange</name>
       </flagColor>
       <coordinates>
-        <x>0</x>
-        <y>0</y>
+        <x>1</x>
+        <y>1</y>
       </coordinates>
     </xyz.sky731.programming.lab3.Bredlam>
   </bredlam>

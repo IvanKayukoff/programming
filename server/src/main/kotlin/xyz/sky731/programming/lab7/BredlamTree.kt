@@ -13,7 +13,7 @@ import javax.swing.tree.TreePath
 class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
   companion object {
     fun makeRoot() = DefaultMutableTreeNode("Bredlams").apply {
-      add(DefaultMutableTreeNode(Bredlam("ConstBredlam")))
+      // add(DefaultMutableTreeNode(Bredlam("ConstBredlam")))
     }
   }
 
@@ -37,7 +37,11 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
         gui.nameBredlamTextField.text = selected.name
         gui.isEndOfLightCheckbox.isSelected = selected.isEndOfLight
         gui.populationTextField.text = selected.population.toString()
-        gui.colorComboBox.selectedItem = selected.flagColor // FIXME here can be a problem
+
+        gui.colorComboBox.selectedItem = gui.colors.find {
+          it.name == selected.flagColor.name
+        }
+
         gui.posXSpinner.value = selected.coordinates.x
         gui.posYSpinner.value = selected.coordinates.y
       }

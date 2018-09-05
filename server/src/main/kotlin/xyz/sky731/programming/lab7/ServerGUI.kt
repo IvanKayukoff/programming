@@ -28,6 +28,15 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
   val moneySpinner = JSpinner()
   val nameHumanTextField = JTextField(15)
 
+  public val colors = ArrayList<ColorWithName>().apply {
+    add(ColorWithName(Color.RED, "Red"))
+    add(ColorWithName(Color.GREEN, "Green"))
+    add(ColorWithName(Color.BLUE, "Blue"))
+    add(ColorWithName(Color.PINK, "Pink"))
+    add(ColorWithName(Color.YELLOW, "Yellow"))
+    add(ColorWithName(Color.ORANGE, "Orange"))
+  }
+
   init {
     isResizable = true
     minimumSize = Dimension(700, 400)
@@ -49,12 +58,9 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
           }
 
           colorComboBox.apply {
-            addItem(ColorWithName(Color.RED, "Red"))
-            addItem(ColorWithName(Color.GREEN, "Green"))
-            addItem(ColorWithName(Color.BLUE, "Blue"))
-            addItem(ColorWithName(Color.PINK, "Pink"))
-            addItem(ColorWithName(Color.YELLOW, "Yellow"))
-            addItem(ColorWithName(Color.ORANGE, "Orange"))
+            colors.forEach {
+              addItem(it)
+            }
           }
 
           val colorLabel = JLabel("Flag color:")
@@ -113,7 +119,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
 
           constraints.gridy = 3
           add(JPanel().apply {
-            val executor = CmdExecutor(queue, fileName) // FIXME need to test with reloading from file
+            val executor = CmdExecutor(queue, fileName)
             contentPane.layout = FlowLayout().apply {
 
               fun peekSelected() = Bredlam(nameBredlamTextField.text).apply {
