@@ -17,10 +17,10 @@ backup_for_client
 *.xml
 server/.idea
 server/.gradle
-server/gradlew
 server/build
-server/gradle
 server/out
-server/gradlew.bat
 server/logins.csv
-client
+client/build
+client/.idea
+client/.gradle
+client/out
