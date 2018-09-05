@@ -9,7 +9,7 @@ public class FileReadWriter {
         this.filename = filename;
     }
 
-    public String readFromFile() throws IOException {
+    public String read() throws IOException {
         StringBuilder result = new StringBuilder();
         InputStream inputStream = new FileInputStream(filename);
 
@@ -25,7 +25,7 @@ public class FileReadWriter {
         return result.toString();
     }
 
-    public void writeToFile(String data) throws IOException {
+    public void write(String data) throws IOException {
         OutputStream outputStream = new FileOutputStream(filename);
         try (Writer outputStreamWriter = new OutputStreamWriter(outputStream)) {
             outputStreamWriter.write(data);

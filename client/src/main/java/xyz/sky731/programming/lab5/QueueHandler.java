@@ -11,15 +11,16 @@ public class QueueHandler {
         Bredlams arr = new Bredlams();
         arr.setBredlam(new ArrayList<>());
         arr.getBredlam().addAll(queue);
-        JAXBUser<Bredlams> jaxbUser = new JAXBUser<>(filename);
-        jaxbUser.marshal(arr);
+
+        XmlUser xmlUser = new XmlUser(filename);
+        xmlUser.marshal(arr);
     }
 
     public static PriorityBlockingQueue<Bredlam> loadFromFile(String filename) {
         PriorityBlockingQueue<Bredlam> queue = new PriorityBlockingQueue<>();
 
-        JAXBUser<Bredlams> jaxbUser = new JAXBUser<>(filename);
-        Bredlams bredlams = jaxbUser.unmarshal(Bredlams.class);
+        XmlUser xmlUser = new XmlUser(filename);
+        Bredlams bredlams = xmlUser.unmarshal();
 
         if (bredlams == null) {
             System.out.println("Wrong xml code");

@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
+    ext.kotlin_version = '1.2.61'
 
     repositories {
         mavenCentral()
@@ -17,7 +17,7 @@ apply plugin: 'application'
 mainClassName = 'xyz.sky731.programming.lab7.MainKt'
 
 jar {
-  baseName = 'ServerMain'
+  baseName = 'ClientMain'
   version = '0.0.1'
   manifest {
     attributes "Main-Class": "$mainClassName"
@@ -34,12 +34,10 @@ repositories {
 
 dependencies {
     compile group: 'sax', name: 'sax', version: '2.0.1'
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.7"
-    compile ('com.maxmind.geoip2:geoip2:2.8.0'){
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
-    }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.9'
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testCompile("org.junit.vintage:junit-vintage-engine:5.2.0")
 
 }
 
