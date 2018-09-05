@@ -37,6 +37,7 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:2.8.7"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.9'
+    compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.4.0'
     testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
     testCompile("org.junit.vintage:junit-vintage-engine:5.2.0")
 

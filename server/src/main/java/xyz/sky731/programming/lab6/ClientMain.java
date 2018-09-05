@@ -33,11 +33,13 @@ public class ClientMain {
             if (arr.length <= 0) {
                 return;
             }
+
             String cmd = arr[0];
             StringBuilder builder = new StringBuilder();
             for (int i = 1; i < arr.length; i++) {
                 builder.append(arr[i]);
             }
+
             String arg = builder.toString();
             Bredlam bredlam = null;
             if (arg.length() > 0) {
@@ -47,6 +49,7 @@ public class ClientMain {
                     return;
                 }
             }
+
             oos.writeObject(new Request(cmd, bredlam));
             oos.flush();
             byte[] array = baos.toByteArray();
@@ -92,6 +95,7 @@ public class ClientMain {
                     cmdQueue.add(cmd + " " + arg);
                 }
             }
+
             buffer.flip();
             while (buffer.hasRemaining()) {
                 System.out.print((char) buffer.get());
@@ -104,6 +108,7 @@ public class ClientMain {
 
             System.out.println();
             buffer.clear();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,7 +116,6 @@ public class ClientMain {
 
 
     public static void main(String[] args) {
-        
         ClientMain sender = new ClientMain("localhost", 26425);
 
         sender.sendMessage("info".getBytes());

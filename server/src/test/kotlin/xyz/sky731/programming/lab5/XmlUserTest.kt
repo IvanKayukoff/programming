@@ -28,7 +28,7 @@ class XmlUserTest {
   }
 
   @Test
-fun unmarshallingBredlam() {
+  fun unmarshallingBredlam() {
     val bredlams = xmlUser.unmarshal()
     bredlams?.bredlam?.forEach {
       println(it)
