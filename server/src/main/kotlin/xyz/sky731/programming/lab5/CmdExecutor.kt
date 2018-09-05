@@ -4,10 +4,12 @@ import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab7.TreeChange
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: String) {
   private fun added(response: String, vararg elements: Bredlam) =
       Pair(response, elements.map { TreeChange(it, isAdded = true) })
+
   private fun unchanged(response: String) = Pair(response, emptyList<TreeChange>())
   private fun removed(response: String, vararg elements: Bredlam) =
       Pair(response, elements.map { TreeChange(it, isAdded = false) })
@@ -21,20 +23,29 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
     "remove" -> remove(arg)
     "remove_lower" -> removeLower(arg)
     "add" -> add(arg)
+    "get_collection" -> getCollection()
     else -> unchanged("Unknown command")
   }
 
-  private fun add(bredlam: Bredlam?) =
-    bredlam?.let {
-      queue.add(it)
-      added("Added bredlam to queue: $bredlam", it)
-    } ?: unchanged("Wrong json code")
+  /** Returns json-formatted bredlams */
+  private fun getCollection(): Pair<String, List<TreeChange>> = with(queue) {
+    val bredlams = Bredlams()
+    bredlams.bredlam = this.toCollection(ArrayList<Bredlam>())
+    val jsonUser = JsonUser()
+    unchanged(jsonUser.marshal(bredlams))
+  }
+
+  fun add(bredlam: Bredlam?) =
+      bredlam?.let {
+        queue.add(it)
+        added("Added bredlam to queue: $bredlam", it)
+      } ?: unchanged("Wrong json code")
 
   private fun info(): Pair<String, List<TreeChange>> =
-    unchanged("""
+      unchanged("""
       Type collection: ${queue.javaClass}
       ${if (queue.size > 0) "Type elements in collection: ${queue.peek().javaClass}"
-        else "Unknown elements type"}
+      else "Unknown elements type"}
       Size collection: ${queue.size}
     """.trimIndent())
 
@@ -69,10 +80,10 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
   }
 
   private fun remove(bredlam: Bredlam?) =
-    bredlam?.let {
-      if (queue.remove(bredlam)) removed("Deleted $bredlam", bredlam)
-      else unchanged("$bredlam doesn't exist in the collection")
-    } ?: unchanged("Wrong json code")
+      bredlam?.let {
+        if (queue.remove(bredlam)) removed("Deleted $bredlam", bredlam)
+        else unchanged("$bredlam doesn't exist in the collection")
+      } ?: unchanged("Wrong json code")
 
   private fun removeLower(bredlam: Bredlam?): Pair<String, List<TreeChange>> = bredlam?.let {
     val deleted = queue.filter { it < bredlam }
