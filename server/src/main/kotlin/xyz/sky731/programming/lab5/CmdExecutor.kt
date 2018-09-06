@@ -41,13 +41,13 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
         added("Added bredlam to queue: $bredlam", it)
       } ?: unchanged("Wrong json code")
 
-  private fun info(): Pair<String, List<TreeChange>> =
-      unchanged("""
-      Type collection: ${queue.javaClass}
-      ${if (queue.size > 0) "Type elements in collection: ${queue.peek().javaClass}"
-      else "Unknown elements type"}
-      Size collection: ${queue.size}
-    """.trimIndent())
+  private fun info(): Pair<String, List<TreeChange>> {
+    var result = "Type collection: ${queue.javaClass}\n"
+    if (queue.size > 0) result += "Type elements in collection: ${queue.peek().javaClass}\n"
+    else result += "Unknown elements type\n"
+    result += "Size collection: ${queue.size}"
+    return unchanged(result)
+  }
 
   private fun readQueue(): Pair<String, List<TreeChange>> {
     val removed = queue.toList()

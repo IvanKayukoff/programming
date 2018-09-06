@@ -47,8 +47,7 @@ fun loadCollectionFromDisk(fileName: String): PriorityBlockingQueue<Bredlam> {
     }
 
     println("Found file \"$fileName\", loading..")
-    val queue = QueueHandler.loadFromFile(fileName)
-    return queue
+    return QueueHandler.loadFromFile(fileName)
   }
   catch (e: IOException) {
     println("Error while trying to load the file")

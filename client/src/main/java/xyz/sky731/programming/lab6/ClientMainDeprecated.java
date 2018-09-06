@@ -10,13 +10,13 @@ import java.nio.channels.DatagramChannel;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 
-public class ClientMain {
+public class ClientMainDeprecated {
     private String host;
     private int port;
     private String lastInfo = null;
     private LinkedList<String> cmdQueue;
 
-    private ClientMain(String host, int port) {
+    private ClientMainDeprecated(String host, int port) {
         this.host = host;
         this.port = port;
         cmdQueue = new LinkedList<>();
@@ -111,7 +111,7 @@ public class ClientMain {
 
     public static void main(String[] args) {
         
-        ClientMain sender = new ClientMain("localhost", 26425);
+        ClientMainDeprecated sender = new ClientMainDeprecated("localhost", 26425);
 
         sender.sendMessage("info".getBytes());
 

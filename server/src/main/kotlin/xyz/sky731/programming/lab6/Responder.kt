@@ -37,7 +37,7 @@ class Responder(private val socket: DatagramSocket,
     val answerStr = if (hash == HashSum.MD5(data)) {
       val (response, changes) = executor.execute(request.cmd, request.bredlam)
       callback(changes)
-      "Request delivered successfully\n $response"
+      response
     } else {
       println("REQUEST IS BROKEN!")
       "REQUEST IS BROKEN :( Try again"
