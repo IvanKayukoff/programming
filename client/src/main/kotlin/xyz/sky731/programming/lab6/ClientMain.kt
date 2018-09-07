@@ -5,7 +5,6 @@ import java.net.InetSocketAddress
 import java.net.PortUnreachableException
 import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
-import java.nio.charset.Charset
 
 class ClientMain(val host: String, val port: Int) {
 
@@ -54,7 +53,7 @@ fun main(args: Array<String>) {
   val sender = ClientMain("localhost", 26425)
 
   val reader = BufferedReader(InputStreamReader(System.`in`))
-  var message: String = ""
+  var message = ""
   while (true) {
     try {
       message = reader.readLine()

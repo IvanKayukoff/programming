@@ -16,7 +16,7 @@ import kotlin.system.exitProcess
 class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                 val fileName: String,
                 name: String = "Server GUI") : JFrame(name) {
-  val mainTree = BredlamTree(this)
+  val   mainTree = BredlamTree(this)
   val colorComboBox = JComboBox<ColorWithName>()
   val posXSpinner = JSpinner()
   val posYSpinner = JSpinner()
