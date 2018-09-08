@@ -13,6 +13,13 @@ import java.awt.event.ActionListener
 import java.awt.event.MouseEvent
 import java.awt.geom.Point2D
 import kotlin.concurrent.timer
+import javax.swing.ImageIcon
+import javax.swing.JLabel
+import java.io.File
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+import javax.imageio.IIOException
+import kotlin.system.exitProcess
 
 
 class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(nameFrame) {
@@ -58,7 +65,31 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     val ownPanel = JPanel().apply {
       // border = BorderFactory.createLineBorder(Color.RED)
       preferredSize = Dimension(800, 600)
-      layout = FlowLayout()
+      // layout = FlowLayout()
+      layout = GridBagLayout()
+
+      val c = GridBagConstraints().apply {
+        gridx = GridBagConstraints.RELATIVE
+        gridy = GridBagConstraints.RELATIVE
+        anchor = GridBagConstraints.NORTHWEST
+        insets = Insets(0, 0, 0, 0)
+        fill = GridBagConstraints.HORIZONTAL
+      }
+
+      try {
+        val myPicture = ImageIO.read(File("logo320x80.png"))
+        val picLabel = JLabel(ImageIcon(myPicture)).apply {
+          preferredSize = Dimension(320, 80)
+        }
+        add(picLabel, c)
+      } catch (e: IIOException) {
+        println("Oops, the program requires logo320x80.png at the same directory")
+        exitProcess(1)
+      }
+
+
+      c.fill = GridBagConstraints.NONE
+      c.gridy = 1
 
       val jsonUser = JsonUser()
       val response = client.sendMessage("get_collection")
@@ -154,7 +185,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
       }
 
-      add(graph)
+      add(graph, c)
 
 
       /** Panel with filters */
@@ -406,8 +437,10 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             }
           })
         }, constraints)
-
-      })
+        c.gridx = 1
+        c.gridy = GridBagConstraints.RELATIVE
+        c.gridheight = 2
+      }, c)
 
     }
     contentPane.add(ownPanel)

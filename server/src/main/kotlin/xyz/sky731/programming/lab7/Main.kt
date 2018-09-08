@@ -31,8 +31,8 @@ fun main(args: Array<String>) = SwingUtilities.invokeLater {
       result?.let { gui.updateTree(it) }
     }
   }
-  // LoginWindow("Login to Bredlam server", gui)
-  gui.isVisible = true // FIXME
+  LoginWindow("Login to Bredlam server", gui)
+  gui.isVisible = false
 
   worker.execute()
 }
