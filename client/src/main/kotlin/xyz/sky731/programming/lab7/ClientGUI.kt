@@ -2,7 +2,6 @@ package xyz.sky731.programming.lab7
 
 import cartesian.coordinate.CCPolygon
 import cartesian.coordinate.CCSystem
-import org.intellij.lang.annotations.Flow
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.Bredlams
 import xyz.sky731.programming.lab5.JsonUser
@@ -18,6 +17,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         if (isEmpty) Color.white else color, BasicStroke(1f))
     plot.add(polygon)
   }
+
+  val drawedBredlams = ArrayList<Pair<Bredlam, Color>>()
 
   val colorRedCheckbox = JCheckBox("Red")
   val colorBlueCheckbox = JCheckBox("Blue")
@@ -36,6 +37,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
   val fromPopulationSpinner = JSpinner()
   val toPopulationSpinner = JSpinner()
+
+  val filtersCheckBox = JCheckBox("Filters enabled")
 
   init {
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -114,7 +117,9 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
       }
 
 
+      drawedBredlams.clear()
       bredlams.bredlam.forEach {
+        drawedBredlams.add(Pair(it, it.flagColor.color))
         drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
             if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
             it.flagColor.color, if (it.population > 0) false else true)
@@ -138,7 +143,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
           insets = Insets(10, 10, 0, 0)
 
         }
-        add(JCheckBox("Filters enabled"), constraints)
+        add(filtersCheckBox, constraints)
 
         // constraints.ipadx = 32 // stretches component
         // constraints.gridwidth = GridBagConstraints.REMAINDER // takes the remaining space
@@ -158,22 +163,22 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         constraints.insets = Insets(5, 60, 0, 0)
 
         constraints.gridy = 3
-        add(colorRedCheckbox, constraints)
+        add(colorRedCheckbox.apply { isSelected = true }, constraints)
 
         constraints.gridy = 4
-        add(colorGreenCheckbox, constraints)
+        add(colorGreenCheckbox.apply { isSelected = true }, constraints)
 
         constraints.gridy = 5
-        add(colorBlueCheckbox, constraints)
+        add(colorBlueCheckbox.apply { isSelected = true }, constraints)
 
         constraints.gridy = 6
-        add(colorPinkCheckbox, constraints)
+        add(colorPinkCheckbox.apply { isSelected = true }, constraints)
 
         constraints.gridy = 7
-        add(colorOrangeCheckbox, constraints)
+        add(colorOrangeCheckbox.apply { isSelected = true }, constraints)
 
         constraints.gridy = 8
-        add(colorYellowCheckbox, constraints)
+        add(colorYellowCheckbox.apply { isSelected = true }, constraints)
 
         constraints.insets = Insets(5, 15, 0, 0)
         constraints.gridy = 9
@@ -243,10 +248,92 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             preferredSize = Dimension(50, 20)
           })
 
-          add(JLabel("to: "))
+          add(JLabel(" to: "))
           add(toPopulationSpinner.apply {
-            model = SpinnerNumberModel(0, 0, maxPopulation, 1)
+            model = SpinnerNumberModel(maxPopulation, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
+          })
+        }, constraints)
+
+        constraints.gridy = 15
+        add(JLabel(), constraints)
+
+        constraints.gridy = 16
+        constraints.fill = GridBagConstraints.HORIZONTAL
+        add(JPanel().apply {
+          layout = FlowLayout()
+
+          add(JButton("Start").apply {
+            addActionListener {
+              // TODO
+              /** Selection by filters */
+              var filtered = bredlams.bredlam
+              if (filtersCheckBox.isSelected) {
+                filtered = filtered.filter {
+                  colorBlueCheckbox.isSelected && it.flagColor.color == Color.BLUE ||
+                      colorGreenCheckbox.isSelected && it.flagColor.color == Color.GREEN ||
+                      colorOrangeCheckbox.isSelected && it.flagColor.color == Color.ORANGE ||
+                      colorPinkCheckbox.isSelected && it.flagColor.color == Color.PINK ||
+                      colorRedCheckbox.isSelected && it.flagColor.color == Color.RED ||
+                      colorYellowCheckbox.isSelected && it.flagColor.color == Color.YELLOW
+                }
+
+                filtered = filtered.filter {
+                  it.coordinates.x >= fromXSpinner.value as Double &&
+                      it.coordinates.x <= toXSpinner.value as Double &&
+                      it.coordinates.y >= fromYSpinner.value as Double &&
+                      it.coordinates.y <= toXSpinner.value as Double
+                }
+
+                filtered = filtered.filter { endOfLightCheckbox.isSelected == it.endOfLight }
+
+                filtered = filtered.filter {
+                  it.population >= fromPopulationSpinner.value as Int &&
+                      it.population <= toPopulationSpinner.value as Int
+                }
+
+                filtered = filtered.filter {
+                  it.name.toLowerCase().startsWith(nameTextField.text.toLowerCase())
+                }
+                filtered.forEach {
+                  println("Picked up: $it")
+                }
+              }
+
+              filtered.forEach {
+                val wanted = it
+                val pair = drawedBredlams.find { it.first == wanted }
+
+                // TODO affect to drawedBredlams here maybe you should use ColorWithName
+
+              }
+
+              // repaint()
+            }
+          })
+
+          add(JButton("Stop").apply {
+            addActionListener {
+              // TODO
+
+            }
+          })
+        }, constraints)
+
+        constraints.gridy = 17
+        add(JLabel(" "), constraints)
+
+        constraints.gridy = 18
+        add(JPanel().apply {
+          layout = FlowLayout()
+
+          add(JLabel("Reload collection "))
+
+          add(JButton("Refresh").apply {
+            addActionListener {
+              // TODO
+
+            }
           })
         }, constraints)
 
