@@ -141,7 +141,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
           bredlams.bredlam.forEach {
             if (Math.sqrt((mx - it.coordinates.x) * (mx - it.coordinates.x) +
-                    (my - it.coordinates.y) * (my - it.coordinates.y)) <= Math.sqrt(it.population.toDouble())) {
+                    (my - it.coordinates.y) * (my - it.coordinates.y)) <=
+                if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0) {
               return it.name
             }
           }
@@ -149,7 +150,6 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
           return null
         }
       }
-
 
       drawedBredlams.clear()
       bredlams.bredlam.forEach {
