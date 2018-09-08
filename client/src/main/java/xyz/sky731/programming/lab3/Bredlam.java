@@ -51,7 +51,10 @@ public class Bredlam implements Comparable<Bredlam>, Serializable {
         this.coordinates = coordinates;
     }
 
-    private Bredlam() {}
+    private Bredlam() {
+        flagColor = new ColorWithName(Color.RED, "Red");
+        name = "NoName";
+    }
 
     public String getName() {
         return name != null ? name : "NoNameBredlam";

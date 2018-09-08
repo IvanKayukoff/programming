@@ -8,7 +8,6 @@ import xyz.sky731.programming.lab5.JsonUser
 import xyz.sky731.programming.lab6.ClientMain
 import java.awt.*
 import javax.swing.*
-import sun.plugin.navig.motif.Plugin.start
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.MouseEvent
@@ -24,8 +23,6 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         fillingColor, BasicStroke(1f))
     plot.add(polygon)
   }
-
-  val drawedBredlams = ArrayList<Pair<Bredlam, Color>>()
 
   val colorRedCheckbox = JCheckBox("Red")
   val colorBlueCheckbox = JCheckBox("Blue")
@@ -59,7 +56,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     preferredSize = Dimension(800, 600)
 
     val ownPanel = JPanel().apply {
-      border = BorderFactory.createLineBorder(Color.RED)
+      // border = BorderFactory.createLineBorder(Color.RED)
       preferredSize = Dimension(800, 600)
       layout = FlowLayout()
 
@@ -151,9 +148,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         }
       }
 
-      drawedBredlams.clear()
       bredlams.bredlam.forEach {
-        drawedBredlams.add(Pair(it, it.flagColor.color))
         drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
             if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
             it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
