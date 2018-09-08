@@ -128,16 +128,25 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
       val graph = object : CCSystem(minX, minY, maxX, maxY) {
         init {
           preferredSize = Dimension(460, 460)
+          toolTipText = "help me"
         }
 
-        override fun getToolTipText(e: MouseEvent): String {
-          val coordinates = javaClass.getDeclaredMethod("translate", Point::class.java).apply {
+        override fun getToolTipText(e: MouseEvent): String? {
+          val coordinates = CCSystem::class.java.getDeclaredMethod("translate", Point::class.java).apply {
             isAccessible = true
-          }.invoke(this, Point(e.x, e.y)) as Point2D.Double
+          }.invoke(this, Point(e.x, this.height - e.y)) as Point2D.Double
 
-          println(coordinates)
+          val mx = coordinates.x
+          val my = coordinates.y
 
-          return super.getToolTipText()
+          bredlams.bredlam.forEach {
+            if (Math.sqrt((mx - it.coordinates.x) * (mx - it.coordinates.x) +
+                    (my - it.coordinates.y) * (my - it.coordinates.y)) <= Math.sqrt(it.population.toDouble())) {
+              return it.name
+            }
+          }
+
+          return null
         }
       }
 
@@ -395,8 +404,10 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
           add(JButton("Refresh").apply {
             addActionListener {
-              // TODO
-
+              val gui = ClientGUI(client, nameFrame)
+              this@ClientGUI.isVisible = false
+              gui.isVisible = true
+              this@ClientGUI.dispose()
             }
           })
         }, constraints)
