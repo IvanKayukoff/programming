@@ -8,13 +8,20 @@ import xyz.sky731.programming.lab5.JsonUser
 import xyz.sky731.programming.lab6.ClientMain
 import java.awt.*
 import javax.swing.*
+import sun.plugin.navig.motif.Plugin.start
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import java.awt.event.MouseEvent
+import java.awt.geom.Point2D
+import kotlin.concurrent.timer
+
 
 class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(nameFrame) {
 
-  fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, isEmpty: Boolean) {
+  fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
     val coordinates = Coordinates.caclCircleCoords(x, y, r)
     val polygon = CCPolygon(coordinates.x, coordinates.y, color,
-        if (isEmpty) Color.white else color, BasicStroke(1f))
+        fillingColor, BasicStroke(1f))
     plot.add(polygon)
   }
 
@@ -39,6 +46,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
   val toPopulationSpinner = JSpinner()
 
   val filtersCheckBox = JCheckBox("Filters enabled")
+
+  var started = false
+  val startButton = JButton("Start")
+  val stopButton = JButton("Stop")
+
+  var timer: Timer? = null
 
   init {
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -112,8 +125,20 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
       }
 
       /** Graph panel */
-      val graph = CCSystem(minX, minY, maxX, maxY).apply {
-        preferredSize = Dimension(460, 460)
+      val graph = object : CCSystem(minX, minY, maxX, maxY) {
+        init {
+          preferredSize = Dimension(460, 460)
+        }
+
+        override fun getToolTipText(e: MouseEvent): String {
+          val coordinates = javaClass.getDeclaredMethod("translate", Point::class.java).apply {
+            isAccessible = true
+          }.invoke(this, Point(e.x, e.y)) as Point2D.Double
+
+          println(coordinates)
+
+          return super.getToolTipText()
+        }
       }
 
 
@@ -122,7 +147,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         drawedBredlams.add(Pair(it, it.flagColor.color))
         drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
             if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
-            it.flagColor.color, if (it.population > 0) false else true)
+            it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
       }
 
       add(graph)
@@ -263,9 +288,10 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JButton("Start").apply {
+          add(startButton.apply {
             addActionListener {
-              // TODO
+              isEnabled = false
+              stopButton.isEnabled = true
               /** Selection by filters */
               var filtered = bredlams.bredlam
               if (filtersCheckBox.isSelected) {
@@ -300,21 +326,59 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
                 }
               }
 
-              filtered.forEach {
-                val wanted = it
-                val pair = drawedBredlams.find { it.first == wanted }
+              var tickCounter = 0
+              timer = Timer(50, {
+                graph.clear()
+                (bredlams.bredlam - filtered).forEach {
+                  drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
+                      if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
+                      it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
+                }
+                filtered.forEach {
+                  val color = it.flagColor.color
 
-                // TODO affect to drawedBredlams here maybe you should use ColorWithName
+                  var fillingColor = Color.white
 
-              }
+                  if (it.population == 0) {
+                    fillingColor = if (tickCounter % 140 < 60)
+                      Color(255, 255, 255, (255 - (tickCounter % 140) * 4.25).toInt())
+                    else Color(255, 255, 255, (0 + (tickCounter % 140 - 60) * 3.1875).toInt())
+                  } else {
+                    fillingColor = if (tickCounter % 140 < 60)
+                      Color(color.red, color.green, color.blue, (255 - (tickCounter % 140) * 4.25).toInt())
+                    else Color(color.red, color.green, color.blue, (0 + (tickCounter % 140 - 60) * 3.1875).toInt())
+                  }
 
-              // repaint()
+
+                  drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
+                      if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
+                      if (tickCounter % 140 < 60)
+                        Color(color.red, color.green, color.blue, (255 - (tickCounter % 140) * 4.25).toInt())
+                      else Color(color.red, color.green, color.blue, (0 + (tickCounter % 140 - 60) * 3.1875).toInt()),
+                      fillingColor)
+                }
+                tickCounter++
+                // graph.repaint()
+
+
+              }).apply { start() }
+
             }
           })
 
-          add(JButton("Stop").apply {
+          add(stopButton.apply {
             addActionListener {
               // TODO
+              isEnabled = false
+              startButton.isEnabled = true
+              timer?.stop()
+
+              graph.clear()
+              bredlams.bredlam.forEach {
+                drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
+                    if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
+                    it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
+              }
 
             }
           })
