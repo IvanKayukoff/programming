@@ -13,7 +13,7 @@ data class Bredlam(var name: String = "NoNameBredlam") : Serializable, Comparabl
   @OneToMany
   val people = ArrayList<Human>()
   var endOfLight = false
-  var flagColor = ColorWithName(Color.RED, "Red")
+  var flagColor = "Red"
   var x = 0
   var y = 0
 

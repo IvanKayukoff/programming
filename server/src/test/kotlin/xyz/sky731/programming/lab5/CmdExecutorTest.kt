@@ -15,10 +15,10 @@ class CmdExecutorTest {
 
     val jsonUser = JsonUser()
     val bredlams = jsonUser.unmarshal(response)
-    bredlams.bredlam.forEach {
-      println(it)
-      it.humans.forEach {
-        println("\t" + it)
+    bredlams.bredlam.forEach { bredlam ->
+      println(bredlam)
+      bredlam.people.forEach { man ->
+        println("\t" + man)
       }
     }
   }

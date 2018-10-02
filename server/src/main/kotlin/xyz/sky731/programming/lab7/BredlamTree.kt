@@ -39,7 +39,7 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
         gui.populationTextField.text = selected.size().toString()
 
         gui.colorComboBox.selectedItem = gui.colors.find {
-          it.name == selected.flagColor.name
+          it.name == selected.flagColor
         }
 
         gui.posXSpinner.value = selected.x

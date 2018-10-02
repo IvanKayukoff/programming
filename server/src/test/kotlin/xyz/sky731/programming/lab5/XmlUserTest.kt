@@ -6,15 +6,14 @@ import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab3.Human
 
 class XmlUserTest {
-  val xmlUser = XmlUser("queueFile")
+  private val xmlUser = XmlUser("queueFile")
 
   @Test
   fun marshallingBredlam() {
     val bredlams = Bredlams()
     val bredlamsList = ArrayList<Bredlam>()
     bredlamsList.add(Bredlam("Hello?").apply {
-      this.humans.add(Human("Cockoff", 100000))
-      this.humans.add(Human())
+      this.people.add(Human("Cockoff", 100000, this.id))
     })
     bredlams.bredlam = bredlamsList
 
@@ -32,9 +31,9 @@ class XmlUserTest {
     val bredlams = xmlUser.unmarshal()
     bredlams?.bredlam?.forEach {
       println(it)
-      it.humans.forEach {
+      it.people.forEach { man ->
         print("\t")
-        println(it)
+        println(man)
       }
     }
   }
