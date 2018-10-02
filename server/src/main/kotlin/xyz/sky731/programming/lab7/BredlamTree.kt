@@ -35,15 +35,15 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
       is Bredlam -> {
         gui.tabbedPane.selectedIndex = 0
         gui.nameBredlamTextField.text = selected.name
-        gui.isEndOfLightCheckbox.isSelected = selected.isEndOfLight
-        gui.populationTextField.text = selected.population.toString()
+        gui.isEndOfLightCheckbox.isSelected = selected.endOfLight
+        gui.populationTextField.text = selected.size().toString()
 
         gui.colorComboBox.selectedItem = gui.colors.find {
           it.name == selected.flagColor.name
         }
 
-        gui.posXSpinner.value = selected.coordinates.x
-        gui.posYSpinner.value = selected.coordinates.y
+        gui.posXSpinner.value = selected.x
+        gui.posYSpinner.value = selected.y
       }
       is Human -> {
         gui.tabbedPane.selectedIndex = 1
@@ -66,7 +66,7 @@ class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
         true -> {
           val curNode = DefaultMutableTreeNode(bredlam)
           model?.insertNodeInto(curNode, rootNode, rootNode.childCount)
-          bredlam.humans.forEach {
+          bredlam.people.forEach {
             model?.insertNodeInto(DefaultMutableTreeNode(it), curNode, curNode.childCount)
           }
         }

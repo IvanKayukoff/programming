@@ -9,5 +9,4 @@ class ColorWithName(val color: Color, val name: String) {
 
   constructor(colorWithName: ColorWithName) : this(Color(colorWithName.color.rgb), colorWithName.name)
 
-
 }

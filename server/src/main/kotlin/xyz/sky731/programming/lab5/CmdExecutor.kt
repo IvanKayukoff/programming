@@ -86,7 +86,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
       } ?: unchanged("Wrong json code")
 
   private fun removeLower(bredlam: Bredlam?): Pair<String, List<TreeChange>> = bredlam?.let {
-    val deleted = queue.filter { it < bredlam }
+    val deleted = queue.filter {it < bredlam }
     val isDeleted = queue.removeAll(deleted)
     if (isDeleted) removed("Deleted bredlams less than $bredlam", *deleted.toTypedArray())
     else unchanged("Nothing deleted")

@@ -9,6 +9,8 @@ import java.nio.file.Paths
 import java.util.concurrent.PriorityBlockingQueue
 import javax.swing.SwingUtilities
 import javax.swing.SwingWorker
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) = SwingUtilities.invokeLater {
@@ -43,7 +45,7 @@ fun loadCollectionFromDisk(fileName: String): PriorityBlockingQueue<Bredlam> {
     if (!Files.exists(path)) {
       println("File $fileName not found, creating it")
       Files.createFile(path)
-      return PriorityBlockingQueue(8, Bredlam.BredlamNameComp())
+      return PriorityBlockingQueue(8, Bredlam.Companion.BredlamNameComp())
     }
 
     println("Found file \"$fileName\", loading..")

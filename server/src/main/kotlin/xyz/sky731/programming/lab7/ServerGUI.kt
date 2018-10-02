@@ -123,11 +123,12 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
             contentPane.layout = FlowLayout().apply {
 
               fun peekSelected() = Bredlam(nameBredlamTextField.text).apply {
-                coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
-                isEndOfLight = isEndOfLightCheckbox.isSelected
+                x = posXSpinner.value as Int
+                y = posYSpinner.value as Int
+                endOfLight = isEndOfLightCheckbox.isSelected
                 flagColor = if (colorComboBox.selectedItem is ColorWithName)
                   colorComboBox.selectedItem as ColorWithName
-                else null
+                else ColorWithName(Color.RED, "Red")
               }
 
               fun executeCmdWithPeeked(cmd: String) {
@@ -148,11 +149,12 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                   when (selected) {
                     is Bredlam -> {
                       selected.name = nameBredlamTextField.text
-                      selected.isEndOfLight = isEndOfLightCheckbox.isSelected
+                      selected.endOfLight = isEndOfLightCheckbox.isSelected
                       when (colorComboBox.selectedItem) {
                         is ColorWithName -> selected.flagColor = colorComboBox.selectedItem as ColorWithName
                       }
-                      selected.coordinates = Point(posXSpinner.value as Int, posYSpinner.value as Int)
+                      selected.x = posXSpinner.value as Int
+                      selected.y = posYSpinner.value as Int
                     }
                   }
                   mainTree.model?.nodeChanged(mainTree.lastSelectedPathComponent as TreeNode)
@@ -197,23 +199,20 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       val buttonsBox = Box.createHorizontalBox().apply {
         contentPane.layout = FlowLayout().apply {
 
-          fun peekHumanFromUI() = Human().apply {
-            this.name = nameHumanTextField.text
-            this.money = moneySpinner.value as Int
-          }
+          fun peekHumanFromUI() = Human(nameHumanTextField.text, moneySpinner.value as Int)
 
           add(JButton("New").apply { addActionListener {
             val selected = mainTree.selection
             val elem = peekHumanFromUI()
             when (selected) {
               is Bredlam -> {
-                selected.humans.add(elem)
+                selected.people.add(elem)
                 val curNode = mainTree.lastSelectedPathComponent as DefaultMutableTreeNode
                 mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
                     curNode, curNode.childCount)
               }
               is Human -> {
-                (mainTree.parentOfSelection as Bredlam).humans.add(peekHumanFromUI())
+                (mainTree.parentOfSelection as Bredlam).people.add(peekHumanFromUI())
                 val curNode = (mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
                     .parent as DefaultMutableTreeNode
                 mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
@@ -238,7 +237,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
             when (selected) {
               is Human -> {
                 val selectionParent = mainTree.parentOfSelection as Bredlam
-                selectionParent.humans.remove(selected)
+                selectionParent.people.remove(selected)
               }
             }
             mainTree.model?.removeNodeFromParent(mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
