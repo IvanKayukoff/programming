@@ -1,28 +1,30 @@
 package xyz.sky731.programming.lab3
 
-import xyz.sky731.programming.lab7.ColorWithName
 import xyz.sky731.programming.lab8.Id
 import xyz.sky731.programming.lab8.OneToMany
 import xyz.sky731.programming.lab8.Table
-import java.awt.Color
 import java.io.Serializable
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+
 
 @Table("Bredlam")
-data class Bredlam(var name: String = "NoNameBredlam") : Serializable, Comparable<Bredlam> {
+data class Bredlam(var name: String, var endOfLight: Boolean,
+                   var flagColor: String, var x: Int, var y: Int, val creation: ZonedDateTime,
+                   @Id val id: Int) : Serializable, Comparable<Bredlam> {
 
   @OneToMany
   val people = ArrayList<Human>()
-  var endOfLight = false
-  var flagColor = "Red"
-  var x = 0
-  var y = 0
-
-  @Id
-  val id = amount
 
   init {
     amount++
   }
+
+  constructor(name: String = "NoNameBredlam") : this(name, false,
+      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow")), amount) // FIXME ZoneId
 
   companion object {
     var amount = 1
@@ -35,6 +37,8 @@ data class Bredlam(var name: String = "NoNameBredlam") : Serializable, Comparabl
       }
     }
   }
+
+  fun creationTimestamp() = Timestamp.valueOf(creation.toLocalDateTime())
 
   override fun compareTo(other: Bredlam) = people.size - other.people.size
 
