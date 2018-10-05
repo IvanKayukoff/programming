@@ -1,6 +1,5 @@
 package xyz.sky731.programming.lab8
 
-import xyz.sky731.programming.lab3.Bredlam
 import java.lang.IllegalArgumentException
 import java.sql.Connection
 import java.sql.DriverManager
@@ -110,8 +109,7 @@ class SimpleORM(url: String, username: String, password: String) {
   }
 
   /**
-   * Inserts [any] to db, [any] may have one child(nested ArrayList) as his field which will be inserted by [insertChildren]
-   *
+   * Inserts [any] to db
    * @param T is parent element's type
    * @param U is child element's type, [insertChildren] will be called to insert all children
    */
@@ -127,7 +125,7 @@ class SimpleORM(url: String, username: String, password: String) {
     /** Calls [insertChildren] if collection is not empty */
     val children = any.javaClass.kotlin.declaredMemberProperties
         .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(any) as ArrayList<U>?
-    children?.apply { insertChildren(this) }
+    children?.let { insertChildren(it) }
 
     val statement = connection.prepareStatement("insert into $tableName (" + fields
         .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
@@ -150,6 +148,70 @@ class SimpleORM(url: String, username: String, password: String) {
       values.forEachIndexed { i, s -> statement.setObject(i + 1, s) }
       statement.executeUpdate()
     }
+  }
+
+  /**
+   * Finds [T] object in db with specific primary key
+   *
+   * @return [T] object if found in db, otherwise - null
+   * @param id is [T]'s primary key
+   */
+  inline fun <reified T: Any, reified U: Any> findById(id: Int) : T? {
+    val tableName = getTableName<T>()
+    val primaryKey = T::class.declaredMembers.find { it.annotations.any { it is Id }  }?.name
+        ?: throw IllegalArgumentException("@Id annotation is missing")
+    val statement = connection.prepareStatement("select * from $tableName where $primaryKey=$id")
+    val response = statement.executeQuery()
+
+    if (response.next()) {
+      val constr = T::class.constructors.elementAt(0)
+      return constr.call(*constr.parameters.map {
+        when (it.type.javaType.typeName) {
+          "java.lang.String" -> response.getString(it.name)
+          "java.time.ZonedDateTime" ->
+            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
+                .atZone(ZoneId.of("Europe/Moscow"))
+          "int" -> response.getInt(it.name)
+          "boolean" -> response.getBoolean(it.name)
+          else -> response.getObject(it.name)
+        }
+      }.toTypedArray()).also {
+        val list = T::class.declaredMemberProperties
+            .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(it) as ArrayList<U>?
+        list?.addAll(selectAllChildren<U>(getId<T>()?.get(it) as Int))
+      }
+    }
+
+    return null
+  }
+
+  /**
+   * Deletes [T] object from db by primary key
+   *
+   * @param id is primary key with which we will delete [T] object from db
+   * @param T is parent element's type
+   * @param U is child element's type, [deleteChildrenByFK] will be called for them
+   */
+  inline fun <reified T: Any, reified U: Any> deleteById(id: Int) {
+    deleteChildrenByFK<U>(id)
+
+    val tableName = getTableName<T>()
+    val field = T::class.declaredMembers.find { it.annotations.any {annotation -> annotation is Id }  }?.name
+        ?: throw IllegalArgumentException("@Id annotation is missing")
+    val statement = connection.prepareStatement("delete from $tableName where $field=$id")
+    statement.executeUpdate()
+  }
+
+  /**
+   * @param foreignId is foreign key with which we will delete all children from db
+   * @param T is child element's type
+   */
+  inline fun <reified T: Any> deleteChildrenByFK(foreignId: Int) {
+    val tableName = getTableName<T>()
+    val field = T::class.declaredMembers.find { it.annotations.any {annotation -> annotation is ForeignKey }  }?.name
+        ?: throw IllegalArgumentException("@ForeignKey annotation is missing")
+    val statement = connection.prepareStatement("delete from $tableName where $field=$foreignId")
+    statement.executeUpdate()
   }
 
   fun convert(string: String) = when (string) {
