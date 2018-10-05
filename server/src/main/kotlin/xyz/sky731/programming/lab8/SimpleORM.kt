@@ -43,15 +43,12 @@ class SimpleORM(url: String, username: String, password: String) {
         .map { createChildTable<U>() }
 
     val str = getInitStr<T>()
-
     connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
   inline fun <reified T : Any> createChildTable() {
-
     val tableName = getTableName<T>()
     val str = getInitStr<T>()
-
     connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
@@ -218,6 +215,7 @@ class SimpleORM(url: String, username: String, password: String) {
     "java.sql.Timestamp" -> "timestamp"
     "java.lang.String" -> "text"
     "int" -> "integer"
+    "java.time.ZonedDateTime" -> "text"
     else -> string
   }
 
