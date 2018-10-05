@@ -1,5 +1,6 @@
 package xyz.sky731.programming.lab8
 
+import xyz.sky731.programming.lab3.Bredlam
 import java.lang.IllegalArgumentException
 import java.sql.Connection
 import java.sql.DriverManager
@@ -75,7 +76,8 @@ class SimpleORM(url: String, username: String, password: String) {
           else -> response.getObject(it.name)
         }
       }.toTypedArray()).also {
-        val list = T::class.declaredMemberProperties.find { it.annotations.any { annotation -> annotation is OneToMany } } as ArrayList<U>?
+        val list = T::class.declaredMemberProperties
+            .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(it) as ArrayList<U>?
         list?.addAll(selectAllChildren<U>(getId<T>()?.get(it) as Int))
       })
     }
@@ -105,6 +107,49 @@ class SimpleORM(url: String, username: String, password: String) {
       }.toTypedArray()))
     }
     return list
+  }
+
+  /**
+   * Inserts [any] to db, [any] may have one child(nested ArrayList) as his field which will be inserted by [insertChildren]
+   *
+   * @param T is parent element's type
+   * @param U is child element's type, [insertChildren] will be called to insert all children
+   */
+  inline fun <reified T: Any, reified U: Any> insert(any: Any) {
+    if (!any.javaClass.annotations.any { it is Table })
+      throw IllegalArgumentException("The argument's class is not mapped as Table")
+    val tableName = getTableName<T>()
+    val properties = any.javaClass.kotlin.declaredMemberProperties
+        .filterNot { it.annotations.any { annotation -> annotation is OneToMany } }
+    val fields =  properties.map { it.name }
+    val values =  properties.map { it.get(any) }
+
+    /** Calls [insertChildren] if collection is not empty */
+    val children = any.javaClass.kotlin.declaredMemberProperties
+        .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(any) as ArrayList<U>?
+    children?.apply { insertChildren(this) }
+
+    val statement = connection.prepareStatement("insert into $tableName (" + fields
+        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
+    values.forEachIndexed { i, s -> statement.setObject(i + 1, s) }
+    statement.executeUpdate()
+  }
+
+  /**
+   * @param T is element's type, [T] can have only primitives as his fields
+   * @param list is elements which will be inserted to db
+   **/
+  inline fun <reified T: Any> insertChildren(list: ArrayList<T>) {
+    val tableName = getTableName<T>()
+    for (element in list) {
+      val properties = T::class.java.kotlin.declaredMemberProperties
+      val fields =  properties.map { it.name }
+      val values =  properties.map { it.get(element) }
+      val statement = connection.prepareStatement("insert into $tableName (" + fields
+          .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
+      values.forEachIndexed { i, s -> statement.setObject(i + 1, s) }
+      statement.executeUpdate()
+    }
   }
 
   fun convert(string: String) = when (string) {
