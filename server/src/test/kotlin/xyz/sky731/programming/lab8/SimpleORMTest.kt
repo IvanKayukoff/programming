@@ -120,5 +120,19 @@ class SimpleORMTest {
     }
   }
 
+  @Test
+fun updateTest() {
+    val bredlam1 = Bredlam("XBOX KVEST")
+    val bredlam2 = Bredlam("Gorenje")
+    orm.insert<Bredlam>(bredlam1)
+    orm.insert<Bredlam>(bredlam2)
+
+    bredlam1.name = "XBOX KVEST SPL"
+    orm.update(bredlam1)
+
+    val bredlams = orm.selectAll<Bredlam>().map { it.name }
+    assertArrayEquals(arrayOf("XBOX KVEST SPL", "Gorenje").sortedArray(), bredlams.toTypedArray())
+  }
+
 
 }

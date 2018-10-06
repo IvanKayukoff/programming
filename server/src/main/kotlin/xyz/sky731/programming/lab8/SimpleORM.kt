@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
+import java.util.logging.LogRecord
 import kotlin.reflect.*
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.declaredMembers
@@ -125,33 +125,29 @@ class SimpleORM(url: String, username: String, password: String) {
    * [any] may have a few ArrayList as his fields, which should be marked with @OneToMany annotation
    * @param T is a base element's type
    */
-  inline fun <reified T : Any> insert(any: Any) {
-    insertFromClass(any, T::class)
-  }
+  inline fun <reified T : Any> insert(record: T) : T = insertFromClass(record, T::class) as T
 
-  fun insertFromClass(any: Any, cls: KClass<*>, foreignKey: Pair<String, Int>? = null) {
-    if (!any.javaClass.annotations.any { it is Table })
-      throw IllegalArgumentException("The argument's class is not mapped as Table")
+  fun insertFromClass(record: Any, cls: KClass<*>, foreignKey: Pair<String, Int>? = null) : Any {
     val tableName = getTableName(cls)
-    val idName = cls.declaredMemberProperties.find { it.annotations.any { it is Id } }!!.name
-    val properties = any.javaClass.kotlin.declaredMemberProperties
+    val idField = cls.declaredMemberProperties.find { it.annotations.any { it is Id } }!!
+    val properties = cls.declaredMemberProperties
         .filterNot { it.annotations.any { it is OneToMany } }
-        .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
+        .filterNot { it.annotations.any { it is Id } && (it as KProperty1<Any, Any>).get(record) == null }
 
     val fields = properties.map { it.name }.let { fields ->
       if (foreignKey != null) fields + foreignKey.first
       else fields
     }
-    val values = properties.map { it.get(any) }.let { values ->
+    val values = properties.map { (it as KProperty1<Any, Any>).get(record) }.let { values ->
       if (foreignKey != null) values + foreignKey.second
       else values
     }
 
-    val fieldsOneToMany = any.javaClass.kotlin.declaredMemberProperties
+    val fieldsOneToMany = cls.declaredMemberProperties
         .filter { it.annotations.any { annotation -> annotation is OneToMany } }
 
     val statement = connection.prepareStatement("insert into $tableName (" + fields
-        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ") returning $idName")
+        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ") returning ${idField.name}")
 
     values.forEachIndexed { i, value ->
       if (value?.javaClass?.typeName == "java.time.ZonedDateTime")
@@ -163,18 +159,23 @@ class SimpleORM(url: String, username: String, password: String) {
     val result = statement.executeQuery()
     result.next()
     val id = result.getInt(1)
+    if (idField is KMutableProperty1)
+      (idField as KMutableProperty1<Any, Any>).set(record, id)
+    else
+      throw RuntimeException("Id must be var")
 
     fieldsOneToMany.forEach {
       val foreignName = (it.annotations.find { it is OneToMany } as OneToMany).foreignKey
 
       val foreignKey: Pair<String, Int> = Pair(foreignName, id)
-
       val childType = (it.annotations.find { it is OneToMany } as OneToMany).cls
-      val list = it.get(any) as List<Any>?
+      val list = (it as KProperty1<Any, Any>).get(record) as List<Any>?
       list?.forEach {
         insertFromClass(it, childType, foreignKey)
-      }
+     }
     }
+
+    return record
   }
 
   /**
@@ -193,6 +194,30 @@ class SimpleORM(url: String, username: String, password: String) {
     return createObjects(T::class, response).firstOrNull() as T?
   }
 
+
+  fun <T: Any> update(record: T) {
+    val tableName = getTableName(record::class)
+    val properties = record::class.declaredMemberProperties
+        .filterNot { it.annotations.any { it is OneToMany } }
+        .filterNot { it.annotations.any { it is Id } }
+
+    val fields = properties.map { it.name + " = ?" }
+    val values = properties.map { (it as KProperty1<T, *>).get(record) }
+
+    val idField = record::class.declaredMemberProperties.find { it.annotations.any { it is Id } }!! as KProperty1<Any, Any>
+
+    val statement = connection.prepareStatement("update $tableName set " + fields.joinToString(", ")
+        + " where ${idField.name}=${idField.get(record)}")
+
+    values.forEachIndexed { i, value ->
+      if (value?.javaClass?.typeName == "java.time.ZonedDateTime")
+        statement.setObject(i + 1, (value as ZonedDateTime).toOffsetDateTime())
+      else
+        statement.setObject(i + 1, value)
+    }
+
+    statement.executeUpdate()
+  }
 
   /**
    * Deletes [T] object from db by primary key
