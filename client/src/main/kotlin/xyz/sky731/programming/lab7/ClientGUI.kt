@@ -6,6 +6,7 @@ import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.Bredlams
 import xyz.sky731.programming.lab5.JsonUser
 import xyz.sky731.programming.lab6.ClientMain
+import xyz.sky731.programming.lab8.UTF8Control
 import java.awt.*
 import javax.swing.*
 import java.awt.event.ActionEvent
@@ -18,7 +19,9 @@ import javax.swing.JLabel
 import java.io.File
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
+import java.util.*
 import javax.imageio.IIOException
+import javax.swing.Timer
 import kotlin.system.exitProcess
 
 
@@ -31,12 +34,17 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     plot.add(polygon)
   }
 
-  val colorRedCheckbox = JCheckBox("Red")
-  val colorBlueCheckbox = JCheckBox("Blue")
-  val colorPinkCheckbox = JCheckBox("Pink")
-  val colorOrangeCheckbox = JCheckBox("Orange")
-  val colorYellowCheckbox = JCheckBox("Yellow")
-  val colorGreenCheckbox = JCheckBox("Green")
+  val curLocale = Locale.forLanguageTag("en-AU")
+  // val curLocale = Locale.forLanguageTag("ru-RU")
+  val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+  val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian"))
+
+  val colorRedCheckbox = JCheckBox(rb.getString("color_red"))
+  val colorBlueCheckbox = JCheckBox(rb.getString("color_blue"))
+  val colorPinkCheckbox = JCheckBox(rb.getString("color_pink"))
+  val colorOrangeCheckbox = JCheckBox(rb.getString("color_orange"))
+  val colorYellowCheckbox = JCheckBox(rb.getString("color_yellow"))
+  val colorGreenCheckbox = JCheckBox(rb.getString("color_green"))
 
   val fromXSpinner = JSpinner()
   val toXSpinner = JSpinner()
@@ -44,16 +52,16 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
   val toYSpinner = JSpinner()
 
   val nameTextField = JTextField()
-  val endOfLightCheckbox = JCheckBox("End of light")
+  val endOfLightCheckbox = JCheckBox(rb.getString("end_of_light"))
 
   val fromPopulationSpinner = JSpinner()
   val toPopulationSpinner = JSpinner()
 
-  val filtersCheckBox = JCheckBox("Filters enabled")
+  val filtersCheckBox = JCheckBox(rb.getString("filters_enabled"))
 
   var started = false
-  val startButton = JButton("Start")
-  val stopButton = JButton("Stop")
+  val startButton = JButton(rb.getString("start"))
+  val stopButton = JButton(rb.getString("stop"))
 
   var timer: Timer? = null
 
@@ -61,11 +69,11 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
     isResizable = false
     preferredSize = Dimension(800, 600)
+    title = rb.getString("main_title")
+    // setDefaultLookAndFeelDecorated(true) // FIXME
 
     val ownPanel = JPanel().apply {
-      // border = BorderFactory.createLineBorder(Color.RED)
       preferredSize = Dimension(800, 600)
-      // layout = FlowLayout()
       layout = GridBagLayout()
 
       val c = GridBagConstraints().apply {
@@ -210,7 +218,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
           gridy = 2
           insets = Insets(5, 15, 0, 0)
         }
-        add(JLabel("Colors:"), constraints)
+        add(JLabel(rb.getString("colors")), constraints)
 
         // pushes all components to the left
         constraints.weightx = 1.0
@@ -241,14 +249,14 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
         constraints.insets = Insets(5, 15, 0, 0)
         constraints.gridy = 9
-        add(JLabel("Coordinates:"), constraints)
+        add(JLabel(rb.getString("coordinates")), constraints)
         constraints.fill = GridBagConstraints.NONE
         constraints.insets = Insets(5, 15, 0, 0)
 
         constraints.gridy = 10
         add(JPanel().apply {
           layout = FlowLayout()
-          add(JLabel("X  from: "), constraints)
+          add(JLabel(rb.getString("x_from")), constraints)
 
           constraints.insets = Insets(5, 15, 0, 0)
 
@@ -256,7 +264,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             model = SpinnerNumberModel(minX, minX, maxX, 1)
             preferredSize = Dimension(80, 20)
           })
-          add(JLabel(" to: "))
+          add(JLabel(rb.getString("to")))
           add(toXSpinner.apply {
             model = SpinnerNumberModel(maxX, minX, maxX, 1)
             preferredSize = Dimension(80, 20)
@@ -268,7 +276,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel("Y  from: "))
+          add(JLabel(rb.getString("y_from")))
 
           constraints.insets = Insets(5, 15, 0, 0)
 
@@ -276,7 +284,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             model = SpinnerNumberModel(minY, minY, maxY, 1)
             preferredSize = Dimension(80, 20)
           })
-          add(JLabel(" to: "))
+          add(JLabel(rb.getString("to")))
           add(toYSpinner.apply {
             model = SpinnerNumberModel(maxY, minY, maxY, 1)
             preferredSize = Dimension(80, 20)
@@ -288,7 +296,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel("Name starts with: "))
+          add(JLabel(rb.getString("name_starts_with")))
           add(nameTextField.apply {
             preferredSize = Dimension(130, 20)
           })
@@ -301,13 +309,13 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel("Population from: "))
+          add(JLabel(rb.getString("population_from")))
           add(fromPopulationSpinner.apply {
             model = SpinnerNumberModel(0, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
           })
 
-          add(JLabel(" to: "))
+          add(JLabel(rb.getString("to")))
           add(toPopulationSpinner.apply {
             model = SpinnerNumberModel(maxPopulation, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
@@ -361,7 +369,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
               }
 
               var tickCounter = 0
-              timer = Timer(50, {
+
+              val timerEvent = ActionListener { _ ->
                 graph.clear()
                 (bredlams.bredlam - filtered).forEach {
                   drawCircle(graph, it.x.toDouble(), it.y.toDouble(),
@@ -394,8 +403,9 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
                 tickCounter++
                 // graph.repaint()
 
+              }
 
-              }).apply { start() }
+              timer = Timer(50, timerEvent).apply { start() }
 
             }
           })
@@ -424,9 +434,10 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel("Reload collection "))
+          add(JLabel(rb.getString("reload_collection")))
 
-          add(JButton("Refresh").apply {
+          // here was "Refresh"
+          add(JButton(rb.getString("refresh")).apply {
             addActionListener {
               val gui = ClientGUI(client, nameFrame)
               this@ClientGUI.isVisible = false
@@ -444,5 +455,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     contentPane.add(ownPanel)
     pack()
     isVisible = true
+  }
+
+  fun applyLocale(locale: Locale) {
+    val rb = ResourceBundle.getBundle("Resources", locale)
+
+    this.title = rb.getString("main_title")
+
   }
 }
