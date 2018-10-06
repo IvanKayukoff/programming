@@ -5,10 +5,13 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaType
 
@@ -31,7 +34,9 @@ class SimpleORM(url: String, username: String, password: String) {
    * @param T is a base type
    * [T] class may contain a few fields which marked with @OneToMany annotation
    **/
-  inline fun <reified T: Any> createTable() { createTableFromClass(T::class) }
+  inline fun <reified T : Any> createTable() {
+    createTableFromClass(T::class)
+  }
 
   fun createTableFromClass(cls: KClass<*>, foreignKeyRef: Pair<String, String>? = null) {
     val tableName = getTableName(cls)
@@ -62,73 +67,73 @@ class SimpleORM(url: String, username: String, password: String) {
   }
 
 
-//  inline fun <reified T: Any> selectAll() : PriorityBlockingQueue<T> {
-//    return selectAllFromClass(T::class) as PriorityBlockingQueue<T>
-//  }
-//
-//   /** Selects all [T] elements from db, also fills ArrayList<[U]> which marked as @OneToMany property */
-//  fun selectAllFromClass(cls: KClass<*>) : PriorityBlockingQueue<Any> {
-//    val tableName = getTableName(T::class as KClass<Any>)
-//    val statement = connection.prepareStatement("select * from $tableName")
-//    val response = statement.executeQuery()
-//    val queue = PriorityBlockingQueue<T>()
-//
-//    while (response.next()) {
-//      val constr = T::class.constructors.elementAt(0)
-//      queue.add(constr.call(*constr.parameters.map {
-//        when (it.type.javaType.typeName) {
-//          "java.lang.String" -> response.getString(it.name)
-//          "java.time.ZonedDateTime" ->
-//            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
-//                .atZone(ZoneId.of("Europe/Moscow"))
-//          "int" -> response.getInt(it.name)
-//          "boolean" -> response.getBoolean(it.name)
-//          else -> response.getObject(it.name)
-//        }
-//      }.toTypedArray()).also {
-//        val field = T::class.declaredMemberProperties
-//            .find { it.annotations.any { annotation -> annotation is OneToMany } }
-//        val childType = (field?.annotations?.find { it is OneToMany } as OneToMany).cls
-//        val list = T::class.declaredMemberProperties
-//            .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(it) as ArrayList<Any>?
-//        list?.addAll(selectAllChildren(getId(childType)?.get(it) as Int))
-//      })
-//    }
-//    return queue
-//  }
-//
-//  inline fun <reified T: Any> selectAllChildren(foreignId: Int) : ArrayList<T> {
-//    val tableName = getTableName(T::class as KClass<Any>)
-//    val foreignKey = getForeignKey(T::class as KClass<Any>)
-//    val statement = connection.prepareStatement("select * from $tableName where ${foreignKey?.name}=$foreignId")
-//    val response = statement.executeQuery()
-//    val list = ArrayList<T>()
-//
-//    while (response.next()) {
-//      val constr = T::class.constructors.elementAt(0)
-//      val argumentArray = constr.parameters.map {
-//        when (it.type.javaType.typeName) {
-//          "java.lang.String" -> response.getString(it.name)
-//          "java.time.ZonedDateTime" ->
-//            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
-//                .atZone(ZoneId.of("Europe/Moscow"))
-//          "int" -> response.getInt(it.name)
-//          "boolean" -> response.getBoolean(it.name)
-//          else -> response.getObject(it.name)
-//        }
-//      }.toTypedArray()
-//
-//      list.add(constr.call(argumentArray))
-//    }
-//    return list
-//  }
-//
+  inline fun <reified T : Any> selectAll(): PriorityBlockingQueue<T> {
+    return selectAllFromClass(T::class) as PriorityBlockingQueue<T>
+  }
+
+  /** Selects all [T] elements from db, also fills ArrayList<[U]> which marked as @OneToMany property */
+  fun selectAllFromClass(cls: KClass<*>): PriorityBlockingQueue<Any> {
+    val tableName = getTableName(cls)
+    val statement = connection.prepareStatement("select * from $tableName")
+    val response = statement.executeQuery()
+    val queue = PriorityBlockingQueue<Any>()
+
+    while (response.next()) {
+      val constr = cls.constructors.elementAt(0)
+      val recordParams = constr.parameters.map {
+        when (it.type.javaType.typeName) {
+          "java.lang.String" -> response.getString(it.name)
+          "java.time.ZonedDateTime" -> {
+            val (datetime, offset) = """(.+)([+-]\d\d)$""".toRegex().matchEntire(response.getString(it.name))!!.destructured
+            val datetimeLocal = LocalDateTime.parse(datetime.replace(" ", "T"))
+            val zoneId = ZoneId.of(offset)
+            ZonedDateTime.ofLocal(datetimeLocal, zoneId, ZoneOffset.of(offset))
+          }
+          "int" -> response.getInt(it.name)
+          "boolean" -> response.getBoolean(it.name)
+          else -> response.getObject(it.name)
+        }
+      }.toTypedArray()
+      val record = constr.call(*recordParams)
+      queue.add(record)
+    }
+    return queue
+  }
+
+  inline fun <reified T : Any> selectAllChildren(foreignId: Int): ArrayList<T> {
+    val tableName = getTableName(T::class as KClass<Any>)
+    val foreignKey = getForeignKey(T::class as KClass<Any>)
+    val statement = connection.prepareStatement("select * from $tableName where ${foreignKey?.name}=$foreignId")
+    val response = statement.executeQuery()
+    val list = ArrayList<T>()
+
+    while (response.next()) {
+      val constr = T::class.constructors.elementAt(0)
+      val argumentArray = constr.parameters.map {
+        when (it.type.javaType.typeName) {
+          "java.lang.String" -> response.getString(it.name)
+          "java.time.ZonedDateTime" ->
+            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
+                .atZone(ZoneId.of("Europe/Moscow"))
+          "int" -> response.getInt(it.name)
+          "boolean" -> response.getBoolean(it.name)
+          else -> response.getObject(it.name)
+        }
+      }.toTypedArray()
+
+      list.add(constr.call(*argumentArray))
+    }
+    return list
+  }
+
   /**
    * Inserts [any] to db
    * [any] may have a few ArrayList as his fields, which should be marked with @OneToMany annotation
    * @param T is a base element's type
    */
-  inline fun <reified T: Any> insert(any: Any) { insertFromClass(any, T::class) }
+  inline fun <reified T : Any> insert(any: Any) {
+    insertFromClass(any, T::class)
+  }
 
   fun insertFromClass(any: Any, cls: KClass<*>, foreignKey: Pair<String, Int>? = null) {
     if (!any.javaClass.annotations.any { it is Table })
@@ -138,11 +143,11 @@ class SimpleORM(url: String, username: String, password: String) {
         .filterNot { it.annotations.any { it is OneToMany } }
         .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
 
-    val fields =  properties.map { it.name }.let { fields ->
+    val fields = properties.map { it.name }.let { fields ->
       if (foreignKey != null) fields + foreignKey.first
       else fields
     }
-    val values =  properties.map { it.get(any) }.let { values ->
+    val values = properties.map { it.get(any) }.let { values ->
       if (foreignKey != null) values + foreignKey.second
       else values
     }

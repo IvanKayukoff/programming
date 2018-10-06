@@ -12,15 +12,16 @@ import java.time.ZonedDateTime
 
 
 @Table("Bredlam")
-data class Bredlam(var name: String, var endOfLight: Boolean,
-                   var flagColor: String, var x: Int, var y: Int, val creation: ZonedDateTime,
+data class Bredlam(var name: String = "NoNameBredlam", var endOfLight: Boolean = false,
+                   var flagColor: String = "Blue", var x: Int = 0, var y: Int = 0,
+                   val creation: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
                    @Id val id: Int? = null) : Serializable, Comparable<Bredlam> {
 
   @OneToMany(cls = Human::class, foreignKey = "bredlam_id")
   val people = ArrayList<Human>()
 
-  constructor(name: String = "NoNameBredlam") : this(name, false,
-      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow"))) // FIXME ZoneId
+//  constructor(name: String = "NoNameBredlam") : this(name, false,
+//      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow"))) // FIXME ZoneId
 
   companion object {
 

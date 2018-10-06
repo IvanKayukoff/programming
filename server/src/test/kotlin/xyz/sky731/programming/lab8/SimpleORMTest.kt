@@ -2,10 +2,12 @@ package xyz.sky731.programming.lab8
 
 import org.junit.Before
 import org.junit.Test
+import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeAll
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab3.Human
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 class SimpleORMTest {
@@ -42,11 +44,20 @@ class SimpleORMTest {
   }
 
   @Test
-  fun insertTestWithMan() {
-    val bredlam = Bredlam("CockoffHere!")
-    bredlam.people.add(Human("Cockoff", 1000, 1))
-
+  fun insertSelectTest() {
+    val creation = ZonedDateTime.now(ZonedDateTime.now(ZoneOffset.systemDefault()).offset)
+    val bredlam = Bredlam("CockoffHere!", false, "Red", -1, 1, creation)
     orm.insert<Bredlam>(bredlam)
+
+    val bredlams = orm.selectAll<Bredlam>().toList()
+
+    assertEquals(1, bredlams.size)
+    assertEquals("CockoffHere!", bredlams[0].name)
+    assertEquals(false, bredlams[0].endOfLight)
+    assertEquals("Red", bredlams[0].flagColor)
+    assertEquals(-1, bredlams[0].x)
+    assertEquals(1, bredlams[0].y)
+    assertEquals(creation, bredlams[0].creation)
   }
 
   @Test
