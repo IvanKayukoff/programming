@@ -23,7 +23,9 @@ import javax.swing.Timer
 import kotlin.system.exitProcess
 
 
-class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(nameFrame) {
+class ClientGUI(private val client: ClientMain, nameFrame: String,
+                private var curLocale: Locale = Locale.forLanguageTag("en-AU"),
+                private var initialStart: Boolean = true) : JFrame(nameFrame) {
 
   private fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
     val coordinates = Coordinates.caclCircleCoords(x, y, r)
@@ -32,10 +34,16 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     plot.add(polygon)
   }
 
-  // TODO check for existence default system locale
-  private val curLocale = Locale.forLanguageTag("en-AU")
+  private val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian")).apply {
+    if (initialStart) {
+      selectedItem = localeToName(Locale.getDefault())
+      curLocale = localeFromName(selectedItem as String)
+      initialStart = false
+    } else {
+      selectedItem = localeToName(curLocale)
+    }
+  }
   private val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
-  private val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian"))
 
   private val colorRedCheckbox = JCheckBox(rb.getString("color_red"))
   private val colorBlueCheckbox = JCheckBox(rb.getString("color_blue"))
@@ -446,7 +454,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
           add(refreshButton.apply {
             addActionListener {
-              val gui = ClientGUI(client, nameFrame)
+              val gui = ClientGUI(client, nameFrame, curLocale, initialStart)
               this@ClientGUI.isVisible = false
               gui.isVisible = true
               this@ClientGUI.dispose()
@@ -486,7 +494,22 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     isVisible = true
   }
 
+  private fun localeToName(locale: Locale) = when (locale.toString()) {
+    "ru_RU" -> "Russian"
+    "hu" -> "Hungarian"
+    "et_EE" -> "Estonian"
+    else -> "English(AU)"
+  }
+
+  private fun localeFromName(name: String) = when (name) {
+    "Russian" -> Locale.forLanguageTag("ru-RU")
+    "Hungarian" -> Locale.forLanguageTag("hu")
+    "Estonian" -> Locale.forLanguageTag("et-EE")
+    else -> Locale.forLanguageTag("en-AU")
+  }
+
   private fun applyLocale(locale: Locale) {
+    curLocale = locale
     val rb = ResourceBundle.getBundle("Resources", locale, UTF8Control())
     title = rb.getString("main_title")
 
@@ -509,6 +532,6 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     reloadCollectionLabel.text = rb.getString("reload_collection")
     refreshButton.text = rb.getString("refresh")
     languageLabel.text = rb.getString("language")
-    
+
   }
 }
