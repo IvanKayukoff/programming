@@ -54,7 +54,8 @@ class SimpleORM(url: String, username: String, password: String) {
       it.name + " " + type + if (it.returnType.isMarkedNullable) "" else " not null"
     }.let { tableFields ->
       if (foreignKeyRef != null)
-        tableFields + (foreignKeyRef.first + " integer references " + foreignKeyRef.second)
+        tableFields + (foreignKeyRef.first + " integer references " + foreignKeyRef.second
+            + " on delete cascade on update cascade")
       else tableFields
     }.joinToString(",")
     println(str)
@@ -200,27 +201,13 @@ class SimpleORM(url: String, username: String, password: String) {
    * @param T is parent element's type
    * @param U is child element's type, [deleteChildrenByFK] will be called for them
    */
-//  inline fun <reified T: Any> deleteById(id: Int) {
-//    deleteChildrenByFK<U>(id)
-//
-//    val tableName = getTableName(T::class as KClass<*>)
-//    val field = T::class.declaredMembers.find { it.annotations.any {annotation -> annotation is Id }  }?.name
-//        ?: throw IllegalArgumentException("@Id annotation is missing")
-//    val statement = connection.prepareStatement("delete from $tableName where $field=$id")
-//    statement.executeUpdate()
-//  }
-
-  /**
-   * @param foreignId is foreign key with which we will delete all children from db
-   * @param T is child element's type
-   */
-//  inline fun <reified T: Any> deleteChildrenByFK(foreignId: Int) {
-//    val tableName = getTableName(T::class as KClass<*>)
-//    val field = T::class.declaredMembers.find { it.annotations.any {annotation -> annotation is ForeignKey }  }?.name
-//        ?: throw IllegalArgumentException("@ForeignKey annotation is missing")
-//    val statement = connection.prepareStatement("delete from $tableName where $field=$foreignId")
-//    statement.executeUpdate()
-//  }
+  inline fun <reified T: Any> deleteById(id: Int) {
+    val tableName = getTableName(T::class as KClass<*>)
+    val field = T::class.declaredMembers.find { it.annotations.any {annotation -> annotation is Id }  }?.name
+        ?: throw IllegalArgumentException("@Id annotation is missing")
+    val statement = connection.prepareStatement("delete from $tableName where $field=$id")
+    statement.executeUpdate()
+  }
 
   fun convert(string: String) = when (string) {
     "java.sql.Timestamp" -> "timestamp"

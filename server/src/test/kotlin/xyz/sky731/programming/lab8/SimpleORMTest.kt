@@ -104,5 +104,21 @@ class SimpleORMTest {
     assertEquals("Slave of 0", foundById?.people?.get(0)?.name)
   }
 
+  @Test
+  fun insertAndDeleteByIdTest() {
+    for (i in 0..10) {
+      orm.insert<Bredlam>(Bredlam("$i Bredlam").apply {
+        this.people.add(Human("Slave of $i", i))
+      })
+    }
+
+    val bredlams = orm.selectAll<Bredlam>()
+    assertEquals(11, bredlams.size)
+    for (i in 1..11) {
+      orm.deleteById<Bredlam>(i)
+      assertEquals(11 - i, orm.selectAll<Bredlam>().size)
+    }
+  }
+
 
 }
