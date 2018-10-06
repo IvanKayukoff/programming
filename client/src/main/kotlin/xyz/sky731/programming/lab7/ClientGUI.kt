@@ -99,41 +99,41 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
       val maxPopulation = bredlams.bredlam.run {
         var res = 0
         this.forEach {
-          res = if (it.population > res) it.population else res
+          res = if (it.people.size > res) it.people.size else res
         }
         res
       }
 
       /** Plot normalization */
       var minX = bredlams.bredlam.run {
-        var res = if (this.size > 0) this[0].coordinates.x - Math.sqrt(this[0].population.toDouble()) else -10.0
+        var res = if (this.size > 0) this[0].x - Math.sqrt(this[0].people.size.toDouble()) else -10.0
         this.forEach {
-          res = if (it.coordinates.x - Math.sqrt(it.population.toDouble()) < res) it.coordinates.x -
-              Math.sqrt(it.population.toDouble()) else res
+          res = if (it.x - Math.sqrt(it.people.size.toDouble()) < res) it.x -
+              Math.sqrt(it.people.size.toDouble()) else res
         }
         res
       }
       var minY = bredlams.bredlam.run {
-        var res = if (this.size > 0) this[0].coordinates.y - Math.sqrt(this[0].population.toDouble()) else -10.0
+        var res = if (this.size > 0) this[0].y - Math.sqrt(this[0].people.size.toDouble()) else -10.0
         this.forEach {
-          res = if (it.coordinates.y - Math.sqrt(it.population.toDouble()) < res) it.coordinates.y -
-              Math.sqrt(it.population.toDouble()) else res
+          res = if (it.y - Math.sqrt(it.people.size.toDouble()) < res) it.y -
+              Math.sqrt(it.people.size.toDouble()) else res
         }
         res
       }
       var maxX = bredlams.bredlam.run {
-        var res = if (this.size > 0) this[0].coordinates.x + Math.sqrt(this[0].population.toDouble()) else 10.0
+        var res = if (this.size > 0) this[0].x + Math.sqrt(this[0].people.size.toDouble()) else 10.0
         this.forEach {
-          res = if (it.coordinates.x + Math.sqrt(it.population.toDouble()) > res) it.coordinates.x +
-              Math.sqrt(it.population.toDouble()) else res
+          res = if (it.x + Math.sqrt(it.people.size.toDouble()) > res) it.x +
+              Math.sqrt(it.people.size.toDouble()) else res
         }
         res
       }
       var maxY = bredlams.bredlam.run {
-        var res = if (this.size > 0) this[0].coordinates.y + Math.sqrt(this[0].population.toDouble()) else 10.0
+        var res = if (this.size > 0) this[0].y + Math.sqrt(this[0].people.size.toDouble()) else 10.0
         this.forEach {
-          res = if (it.coordinates.y + Math.sqrt(it.population.toDouble()) > res) it.coordinates.y +
-              Math.sqrt(it.population.toDouble()) else res
+          res = if (it.y + Math.sqrt(it.people.size.toDouble()) > res) it.y +
+              Math.sqrt(it.people.size.toDouble()) else res
         }
         res
       }
@@ -160,17 +160,16 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         }
 
         override fun getToolTipText(e: MouseEvent): String? {
-          val coordinates = CCSystem::class.java.getDeclaredMethod("translate", Point::class.java).apply {
+          CCSystem::class.java.getDeclaredMethod("translate", Point::class.java).apply {
             isAccessible = true
           }.invoke(this, Point(e.x, this.height - e.y)) as Point2D.Double
 
-          val mx = coordinates.x
-          val my = coordinates.y
+          val mx = x
+          val my = y
 
           bredlams.bredlam.forEach {
-            if (Math.sqrt((mx - it.coordinates.x) * (mx - it.coordinates.x) +
-                    (my - it.coordinates.y) * (my - it.coordinates.y)) <=
-                if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0) {
+            if (Math.sqrt(((mx - it.x) * (mx - it.x) + (my - it.y) * (my - it.y)).toDouble()) <=
+                if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0) {
               return it.name
             }
           }
@@ -180,9 +179,9 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
       }
 
       bredlams.bredlam.forEach {
-        drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
-            if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
-            it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
+        drawCircle(graph, it.x.toDouble(), it.y.toDouble(),
+            if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0,
+            ColorWithName(it.flagColor).color, if (it.people.size == 0) Color.WHITE else ColorWithName(it.flagColor).color)
       }
 
       add(graph, c)
@@ -331,26 +330,26 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
               var filtered = bredlams.bredlam
               if (filtersCheckBox.isSelected) {
                 filtered = filtered.filter {
-                  colorBlueCheckbox.isSelected && it.flagColor.color == Color.BLUE ||
-                      colorGreenCheckbox.isSelected && it.flagColor.color == Color.GREEN ||
-                      colorOrangeCheckbox.isSelected && it.flagColor.color == Color.ORANGE ||
-                      colorPinkCheckbox.isSelected && it.flagColor.color == Color.PINK ||
-                      colorRedCheckbox.isSelected && it.flagColor.color == Color.RED ||
-                      colorYellowCheckbox.isSelected && it.flagColor.color == Color.YELLOW
+                  colorBlueCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.BLUE ||
+                      colorGreenCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.GREEN ||
+                      colorOrangeCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.ORANGE ||
+                      colorPinkCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.PINK ||
+                      colorRedCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.RED ||
+                      colorYellowCheckbox.isSelected && ColorWithName(it.flagColor).color == Color.YELLOW
                 }
 
                 filtered = filtered.filter {
-                  it.coordinates.x >= fromXSpinner.value as Double &&
-                      it.coordinates.x <= toXSpinner.value as Double &&
-                      it.coordinates.y >= fromYSpinner.value as Double &&
-                      it.coordinates.y <= toXSpinner.value as Double
+                  it.x >= fromXSpinner.value as Double &&
+                      it.x <= toXSpinner.value as Double &&
+                      it.y >= fromYSpinner.value as Double &&
+                      it.y <= toXSpinner.value as Double
                 }
 
                 filtered = filtered.filter { endOfLightCheckbox.isSelected == it.endOfLight }
 
                 filtered = filtered.filter {
-                  it.population >= fromPopulationSpinner.value as Int &&
-                      it.population <= toPopulationSpinner.value as Int
+                  it.people.size >= fromPopulationSpinner.value as Int &&
+                      it.people.size <= toPopulationSpinner.value as Int
                 }
 
                 filtered = filtered.filter {
@@ -365,16 +364,16 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
               timer = Timer(50, {
                 graph.clear()
                 (bredlams.bredlam - filtered).forEach {
-                  drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
-                      if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
-                      it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
+                  drawCircle(graph, it.x.toDouble(), it.y.toDouble(),
+                      if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0,
+                      ColorWithName(it.flagColor).color, if (it.people.size == 0) Color.WHITE else ColorWithName(it.flagColor).color)
                 }
                 filtered.forEach {
-                  val color = it.flagColor.color
+                  val color = ColorWithName(it.flagColor).color
 
                   var fillingColor = Color.white
 
-                  if (it.population == 0) {
+                  if (it.people.size == 0) {
                     fillingColor = if (tickCounter % 140 < 60)
                       Color(255, 255, 255, (255 - (tickCounter % 140) * 4.25).toInt())
                     else Color(255, 255, 255, (0 + (tickCounter % 140 - 60) * 3.1875).toInt())
@@ -385,8 +384,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
                   }
 
 
-                  drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
-                      if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
+                  drawCircle(graph, it.x.toDouble(), it.y.toDouble(),
+                      if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0,
                       if (tickCounter % 140 < 60)
                         Color(color.red, color.green, color.blue, (255 - (tickCounter % 140) * 4.25).toInt())
                       else Color(color.red, color.green, color.blue, (0 + (tickCounter % 140 - 60) * 3.1875).toInt()),
@@ -403,16 +402,15 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
           add(stopButton.apply {
             addActionListener {
-              // TODO
               isEnabled = false
               startButton.isEnabled = true
               timer?.stop()
 
               graph.clear()
               bredlams.bredlam.forEach {
-                drawCircle(graph, it.coordinates.x.toDouble(), it.coordinates.y.toDouble(),
-                    if (it.population > 0) Math.sqrt(it.population.toDouble()) else 1.0,
-                    it.flagColor.color, if (it.population == 0) Color.WHITE else it.flagColor.color)
+                drawCircle(graph, it.x.toDouble(), it.y.toDouble(),
+                    if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0,
+                    ColorWithName(it.flagColor).color, if (it.people.size == 0) Color.WHITE else ColorWithName(it.flagColor).color)
               }
 
             }

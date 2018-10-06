@@ -1,8 +1,5 @@
 package xyz.sky731.programming.lab6;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class HashSum {
     private HashSum() {
     }

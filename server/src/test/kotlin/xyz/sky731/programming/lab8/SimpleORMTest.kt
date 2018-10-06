@@ -3,7 +3,6 @@ package xyz.sky731.programming.lab8
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.*
-import org.junit.jupiter.api.BeforeAll
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab3.Human
 import java.time.ZoneId
@@ -11,7 +10,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 class SimpleORMTest {
-  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
+  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "postgres", "admin")
 
   @Before
   fun dropAllTables() {
@@ -21,13 +20,12 @@ class SimpleORMTest {
     orm.createTable<Bredlam>()
   }
 
-
   @Test
   fun insertTest1() {
     val bredlam = Bredlam("PrimaryBredlam", false, "Blue", 1, 12,
         ZonedDateTime.now(ZoneId.systemDefault()))
 
-    orm.insert<Bredlam>(bredlam)
+    orm.insert(bredlam)
   }
 
   @Test
@@ -38,16 +36,16 @@ class SimpleORMTest {
         ZonedDateTime.now(ZoneId.systemDefault()), 100)
     val bredlam3 = Bredlam("Kuliti!")
 
-    orm.insert<Bredlam>(bredlam1)
-    orm.insert<Bredlam>(bredlam2)
-    orm.insert<Bredlam>(bredlam3)
+    orm.insert(bredlam1)
+    orm.insert(bredlam2)
+    orm.insert(bredlam3)
   }
 
   @Test
   fun insertSelectTest() {
     val creation = ZonedDateTime.now(ZonedDateTime.now(ZoneOffset.systemDefault()).offset)
     val bredlam = Bredlam("CockoffHere!", false, "Red", -1, 1, creation)
-    orm.insert<Bredlam>(bredlam)
+    orm.insert(bredlam)
 
     val bredlams = orm.selectAll<Bredlam>().toList()
 
@@ -70,8 +68,8 @@ class SimpleORMTest {
     bredlam2.people.add(Human("Kurman", 9000000))
     bredlam2.people.add(Human("Andrew Memov", 0))
 
-    orm.insert<Bredlam>(bredlam)
-    orm.insert<Bredlam>(bredlam2)
+    orm.insert(bredlam)
+    orm.insert(bredlam2)
 
     val bredlams = orm.selectAll<Bredlam>().toList()
     assertEquals(2, bredlams.size)
@@ -91,7 +89,7 @@ class SimpleORMTest {
   @Test
   fun insertAndFindByIdTest() {
     for (i in 0..10) {
-      orm.insert<Bredlam>(Bredlam("$i Bredlam").apply {
+      orm.insert(Bredlam("$i Bredlam").apply {
         this.people.add(Human("Slave of $i", i))
       })
     }
@@ -107,7 +105,7 @@ class SimpleORMTest {
   @Test
   fun insertAndDeleteByIdTest() {
     for (i in 0..10) {
-      orm.insert<Bredlam>(Bredlam("$i Bredlam").apply {
+      orm.insert(Bredlam("$i Bredlam").apply {
         this.people.add(Human("Slave of $i", i))
       })
     }
@@ -121,11 +119,11 @@ class SimpleORMTest {
   }
 
   @Test
-fun updateTest() {
+  fun updateTest() {
     val bredlam1 = Bredlam("XBOX KVEST")
     val bredlam2 = Bredlam("Gorenje")
-    orm.insert<Bredlam>(bredlam1)
-    orm.insert<Bredlam>(bredlam2)
+    orm.insert(bredlam1)
+    orm.insert(bredlam2)
 
     bredlam1.name = "XBOX KVEST SPL"
     orm.update(bredlam1)

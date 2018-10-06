@@ -10,7 +10,7 @@ class ClientMain(val host: String, val port: Int) {
 
   fun sendMessage(message: String): String {
     val baos = ByteArrayOutputStream()
-    val oos = ObjectOutputStream(baos).apply {
+    ObjectOutputStream(baos).apply {
       writeObject(Request(message, null))
       flush()
     }
