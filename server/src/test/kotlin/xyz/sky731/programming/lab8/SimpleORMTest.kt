@@ -22,4 +22,11 @@ class SimpleORMTest {
     orm.createTable<Bredlam>()
   }
 
+//  @Test
+//  fun insertTest() {
+//    val bredlam = Bredlam("TestBredlam", false, "Blue", 1, 0,
+//        ZonedDateTime.now(ZoneId.systemDefault()), 1)
+//    orm.insert<Bredlam, Human>(bredlam)
+//
+//  }
 }
