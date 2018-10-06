@@ -23,7 +23,7 @@ class SimpleORMTest {
   @Test
   fun insertTest1() {
     val bredlam = Bredlam("PrimaryBredlam", false, "Blue", 1, 12,
-        ZonedDateTime.now(ZoneId.systemDefault()), 1)
+        ZonedDateTime.now(ZoneId.systemDefault()))
 
     orm.insert<Bredlam>(bredlam)
   }
@@ -31,9 +31,9 @@ class SimpleORMTest {
   @Test
   fun insertTest2() {
     val bredlam1 = Bredlam("SecondaryBredlam", false, "Red", 0, 1,
-        ZonedDateTime.now(ZoneId.systemDefault()), 0)
+        ZonedDateTime.now(ZoneId.systemDefault()))
     val bredlam2 = Bredlam("OtherBredlam", true, "Green", 0, -15,
-        ZonedDateTime.now(ZoneId.systemDefault()), 3)
+        ZonedDateTime.now(ZoneId.systemDefault()), 100)
     val bredlam3 = Bredlam("Kuliti!")
 
     orm.insert<Bredlam>(bredlam1)
@@ -44,7 +44,7 @@ class SimpleORMTest {
   @Test
   fun insertTestWithMan() {
     val bredlam = Bredlam("CockoffHere!")
-    bredlam.people.add(Human("Cockoff", 1000, bredlam.id))
+    bredlam.people.add(Human("Cockoff", 1000, 1))
 
     orm.insert<Bredlam>(bredlam)
   }
@@ -52,8 +52,8 @@ class SimpleORMTest {
   @Test
   fun insertTestWithPeople() {
     val bredlam = Bredlam("GuysHere!")
-    bredlam.people.add(Human("NintendoMan", 2000, bredlam.id))
-    bredlam.people.add(Human("Rogogit", 1000, bredlam.id))
+    bredlam.people.add(Human("NintendoMan", 2000, 1))
+    bredlam.people.add(Human("Rogogit", 1000, 1))
 
     orm.insert<Bredlam>(bredlam)
   }

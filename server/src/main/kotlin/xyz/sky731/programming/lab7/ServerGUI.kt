@@ -200,7 +200,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
         contentPane.layout = FlowLayout().apply {
 
           fun peekHumanFromUI() = Human(nameHumanTextField.text, moneySpinner.value as Int, 
-              (mainTree.parentOfSelection as Bredlam).id)
+              (mainTree.parentOfSelection as Bredlam).id!!)
 
           add(JButton("New").apply { addActionListener {
             val selected = mainTree.selection

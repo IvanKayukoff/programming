@@ -14,20 +14,16 @@ import java.time.ZonedDateTime
 @Table("Bredlam")
 data class Bredlam(var name: String, var endOfLight: Boolean,
                    var flagColor: String, var x: Int, var y: Int, val creation: ZonedDateTime,
-                   @Id val id: Int) : Serializable, Comparable<Bredlam> {
+                   @Id val id: Int? = null) : Serializable, Comparable<Bredlam> {
 
   @OneToMany(Human::class)
   val people = ArrayList<Human>()
 
-  init {
-    amount++
-  }
-
   constructor(name: String = "NoNameBredlam") : this(name, false,
-      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow")), amount) // FIXME ZoneId
+      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow"))) // FIXME ZoneId
 
   companion object {
-    var amount = 1
+
     class BredlamNameComp : Comparator<Bredlam> {
       override fun compare(p0: Bredlam?, p1: Bredlam?): Int {
         if (p0 != null && p1 != null) {

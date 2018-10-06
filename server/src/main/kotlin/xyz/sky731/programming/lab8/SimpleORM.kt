@@ -120,6 +120,7 @@ class SimpleORM(url: String, username: String, password: String) {
     val tableName = getTableName(cls)
     val properties = any.javaClass.kotlin.declaredMemberProperties
         .filterNot { it.annotations.any { annotation -> annotation is OneToMany } }
+        .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
     val fields =  properties.map { it.name }
     val values =  properties.map { it.get(any) }
 
@@ -222,9 +223,11 @@ class SimpleORM(url: String, username: String, password: String) {
   fun getInitStr(cls: KClass<*>) = cls.declaredMemberProperties.filterNot {
     it.annotations.any { annotation -> annotation is OneToMany }
   }.map {
-    it.name + " " + convert(it.returnType.javaType.typeName) +
-        if (it.annotations.any { annotation -> annotation is Id }) " primary key" else "" +
-            if (it.returnType.isMarkedNullable) "" else " not null"
+    var type = convert(it.returnType.javaType.typeName)
+    if (it.annotations.any { it is Id }) {
+      type = "serial primary key"
+    }
+    it.name + " " + type + if (it.returnType.isMarkedNullable) "" else " not null"
   }
 
   /** Gets name value from "Table" annotation */
