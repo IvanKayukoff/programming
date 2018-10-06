@@ -52,8 +52,8 @@ class SimpleORMTest {
   @Test
   fun insertTestWithPeople() {
     val bredlam = Bredlam("GuysHere!")
-    bredlam.people.add(Human("NintendoMan", 2000, 1))
-    bredlam.people.add(Human("Rogogit", 1000, 1))
+    bredlam.people.add(Human("NintendoMan", 2000))
+    bredlam.people.add(Human("Rogogit", 1000))
 
     orm.insert<Bredlam>(bredlam)
   }

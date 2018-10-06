@@ -6,17 +6,9 @@ import xyz.sky731.programming.lab8.Table
 import java.io.Serializable
 
 @Table("Human")
-class Human(var name: String, var money: Int, @ForeignKey val bredlamId: Int, @Id val id: Int) : Serializable {
-  
-  init {
-    amount++
-  }
+class Human(var name: String, var money: Int, @Id val id: Int? = null) : Serializable {
 
-  constructor(name: String, money: Int, bredlamId: Int) : this(name, money, bredlamId, amount)
-
-  companion object {
-    var amount = 1
-  }
+  constructor(name: String, money: Int) : this(name, money, null)
 
   override fun toString() = name
 }

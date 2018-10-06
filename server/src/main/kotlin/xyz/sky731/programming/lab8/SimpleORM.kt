@@ -19,7 +19,7 @@ annotation class Table(val name: String)
 annotation class Id
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class OneToMany(val cls: KClass<*>)
+annotation class OneToMany(val cls: KClass<*>, val foreignKey: String)
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class ForeignKey
@@ -33,16 +33,32 @@ class SimpleORM(url: String, username: String, password: String) {
    **/
   inline fun <reified T: Any> createTable() { createTableFromClass(T::class) }
 
-  fun createTableFromClass(cls: KClass<*>) {
+  fun createTableFromClass(cls: KClass<*>, foreignKeyRef: Pair<String, String>? = null) {
     val tableName = getTableName(cls)
-    val fields = cls.declaredMemberProperties
-        .filter { it.annotations.any { annotation -> annotation is OneToMany } }
+    val fields = cls.declaredMemberProperties.filter { it.annotations.any { it is OneToMany } }
+
+
+    val str = cls.declaredMemberProperties.filterNot {
+      it.annotations.any { annotation -> annotation is OneToMany }
+    }.map {
+      var type = convert(it.returnType.javaType.typeName)
+      if (it.annotations.any { it is Id }) {
+        type = "serial primary key"
+      }
+      it.name + " " + type + if (it.returnType.isMarkedNullable) "" else " not null"
+    }.let { tableFields ->
+      if (foreignKeyRef != null)
+        tableFields + (foreignKeyRef.first + " integer references " + foreignKeyRef.second)
+      else tableFields
+    }.joinToString(",")
+    println(str)
+
+    connection.createStatement().executeUpdate("create table " + tableName + "( " + str + ")")
+
     fields.forEach { field ->
-      val childType = (field.annotations.find { it is OneToMany } as OneToMany).cls
-      createTableFromClass(childType)
+      val childAnnot = (field.annotations.find { it is OneToMany } as OneToMany)
+      createTableFromClass(childAnnot.cls, Pair(childAnnot.foreignKey, tableName))
     }
-    val str = getInitStr(cls)
-    connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
 
@@ -114,23 +130,37 @@ class SimpleORM(url: String, username: String, password: String) {
    */
   inline fun <reified T: Any> insert(any: Any) { insertFromClass(any, T::class) }
 
-  fun insertFromClass(any: Any, cls: KClass<*>) {
+  fun insertFromClass(any: Any, cls: KClass<*>, foreignKey: Pair<String, Int>? = null) {
     if (!any.javaClass.annotations.any { it is Table })
       throw IllegalArgumentException("The argument's class is not mapped as Table")
     val tableName = getTableName(cls)
     val properties = any.javaClass.kotlin.declaredMemberProperties
-        .filterNot { it.annotations.any { annotation -> annotation is OneToMany } }
+        .filterNot { it.annotations.any { it is OneToMany } }
         .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
-    val fields =  properties.map { it.name }
-    val values =  properties.map { it.get(any) }
+
+    val fields =  properties.map { it.name }.let { fields ->
+      if (foreignKey != null) fields + foreignKey.first
+      else fields
+    }
+    val values =  properties.map { it.get(any) }.let { values ->
+      if (foreignKey != null) values + foreignKey.second
+      else values
+    }
 
     val fieldsOneToMany = any.javaClass.kotlin.declaredMemberProperties
         .filter { it.annotations.any { annotation -> annotation is OneToMany } }
 
     fieldsOneToMany.forEach {
+      val foreignName = (it.annotations.find { it is OneToMany } as OneToMany).foreignKey as String?
+      val foreignValue = any.javaClass.kotlin.declaredMemberProperties
+          .find { it.annotations.any { it is Id } }?.get(any) as Int?
+
+      var foreignKey: Pair<String, Int>? = null
+      if (foreignName != null && foreignValue != null) foreignKey = Pair(foreignName, foreignValue)
+
       val childType = (it.annotations.find { it is OneToMany } as OneToMany).cls
       val list = it.get(any) as ArrayList<Any>?
-      list?.forEach { insertFromClass(it, childType) }
+      list?.forEach { insertFromClass(it, childType, foreignKey) }
     }
 
     val statement = connection.prepareStatement("insert into $tableName (" + fields
@@ -219,19 +249,8 @@ class SimpleORM(url: String, username: String, password: String) {
     else -> string
   }
 
-  /** Creates initialization string which afterwards creates table */
-  fun getInitStr(cls: KClass<*>) = cls.declaredMemberProperties.filterNot {
-    it.annotations.any { annotation -> annotation is OneToMany }
-  }.map {
-    var type = convert(it.returnType.javaType.typeName)
-    if (it.annotations.any { it is Id }) {
-      type = "serial primary key"
-    }
-    it.name + " " + type + if (it.returnType.isMarkedNullable) "" else " not null"
-  }
-
   /** Gets name value from "Table" annotation */
-  fun getTableName(cls: KClass<*>) = cls.annotations.find { it is Table }?.let { (it as Table).name }
+  fun getTableName(cls: KClass<*>) = cls.annotations.find { it is Table }?.let { (it as Table).name.toLowerCase() }
       ?: throw IllegalArgumentException("This class is not mapped as Table")
 
   /** Gets the first field with "Id" annotation */
