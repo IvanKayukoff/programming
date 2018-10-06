@@ -10,6 +10,7 @@ import xyz.sky731.programming.lab8.UTF8Control
 import java.awt.*
 import javax.swing.*
 import java.awt.event.ActionListener
+import java.awt.event.ItemEvent
 import java.awt.event.MouseEvent
 import java.awt.geom.Point2D
 import javax.swing.ImageIcon
@@ -32,8 +33,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
   }
 
   // TODO check for existence default system locale
-  // private val curLocale = Locale.forLanguageTag("en-AU")
-  private val curLocale = Locale.forLanguageTag("et-EE")
+  private val curLocale = Locale.forLanguageTag("en-AU")
   private val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
   private val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian"))
 
@@ -433,7 +433,6 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
           add(JLabel(rb.getString("reload_collection")))
 
-          // here was "Refresh"
           add(JButton(rb.getString("refresh")).apply {
             addActionListener {
               val gui = ClientGUI(client, nameFrame)
@@ -443,6 +442,26 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             }
           })
         }, constraints)
+
+        constraints.gridy = 19
+        add(JPanel().apply {
+          layout = FlowLayout()
+
+          add(JLabel(rb.getString("language")))
+
+          add(languageComboBox.apply { addItemListener {
+            if (it.stateChange == ItemEvent.SELECTED) {
+              when (it.item as String) {
+                "English(AU)" -> applyLocale(Locale.forLanguageTag("en-AU"))
+                "Russian" -> applyLocale(Locale.forLanguageTag("ru-RU"))
+                "Hungarian" -> applyLocale(Locale.forLanguageTag("hu"))
+                "Estonian" -> applyLocale(Locale.forLanguageTag("et-EE"))
+              }
+            }
+          } })
+
+        }, constraints)
+
         c.gridx = 1
         c.gridy = GridBagConstraints.RELATIVE
         c.gridheight = 2
@@ -455,9 +474,9 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
   }
 
   private fun applyLocale(locale: Locale) {
-    val rb = ResourceBundle.getBundle("Resources", locale)
+    val rb = ResourceBundle.getBundle("Resources", locale, UTF8Control())
 
     this.title = rb.getString("main_title")
-
+    // TODO all components should be changed here
   }
 }
