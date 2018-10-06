@@ -18,7 +18,7 @@ data class Bredlam(var name: String = "NoNameBredlam", var endOfLight: Boolean =
                    @Id val id: Int? = null) : Serializable, Comparable<Bredlam> {
 
   @OneToMany(cls = Human::class, foreignKey = "bredlam_id")
-  val people = ArrayList<Human>()
+  var people = ArrayList<Human>()
 
 //  constructor(name: String = "NoNameBredlam") : this(name, false,
 //      "Red", 0, 0, ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Europe/Moscow"))) // FIXME ZoneId

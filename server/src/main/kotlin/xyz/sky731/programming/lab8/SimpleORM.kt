@@ -1,17 +1,17 @@
 package xyz.sky731.programming.lab8
 
 import java.lang.IllegalArgumentException
+import java.lang.RuntimeException
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.ResultSet
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
-import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty1
+import kotlin.reflect.*
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaType
 
@@ -76,52 +76,44 @@ class SimpleORM(url: String, username: String, password: String) {
     val tableName = getTableName(cls)
     val statement = connection.prepareStatement("select * from $tableName")
     val response = statement.executeQuery()
-    val queue = PriorityBlockingQueue<Any>()
+    val queue = PriorityBlockingQueue<Any>(createObjects(cls, response))
 
-    while (response.next()) {
+    return queue
+  }
+
+  private fun createObjects(cls: KClass<*>, result: ResultSet) : List<Any> {
+    val list = ArrayList<Any>()
+    while (result.next()) {
       val constr = cls.constructors.elementAt(0)
       val recordParams = constr.parameters.map {
         when (it.type.javaType.typeName) {
-          "java.lang.String" -> response.getString(it.name)
+          "java.lang.String" -> result.getString(it.name)
           "java.time.ZonedDateTime" -> {
-            val (datetime, offset) = """(.+)([+-]\d\d)$""".toRegex().matchEntire(response.getString(it.name))!!.destructured
+            val (datetime, offset) = """(.+)([+-]\d\d)$""".toRegex().matchEntire(result.getString(it.name))!!.destructured
             val datetimeLocal = LocalDateTime.parse(datetime.replace(" ", "T"))
             val zoneId = ZoneId.of(offset)
             ZonedDateTime.ofLocal(datetimeLocal, zoneId, ZoneOffset.of(offset))
           }
-          "int" -> response.getInt(it.name)
-          "boolean" -> response.getBoolean(it.name)
-          else -> response.getObject(it.name)
+          "int" -> result.getInt(it.name)
+          "boolean" -> result.getBoolean(it.name)
+          else -> result.getObject(it.name)
         }
       }.toTypedArray()
       val record = constr.call(*recordParams)
-      queue.add(record)
-    }
-    return queue
-  }
+      list.add(record)
+      val id = cls.declaredMemberProperties.find { it.annotations.any { it is Id } }?.let { it as KProperty1<Any, Any> }?.get(record)
 
-  inline fun <reified T : Any> selectAllChildren(foreignId: Int): ArrayList<T> {
-    val tableName = getTableName(T::class as KClass<Any>)
-    val foreignKey = getForeignKey(T::class as KClass<Any>)
-    val statement = connection.prepareStatement("select * from $tableName where ${foreignKey?.name}=$foreignId")
-    val response = statement.executeQuery()
-    val list = ArrayList<T>()
+      val assocs = cls.declaredMemberProperties.filter { it.annotations.any { it is OneToMany } }
+      assocs.forEach {
+        val annot = it.annotations.find { it is OneToMany } as OneToMany
 
-    while (response.next()) {
-      val constr = T::class.constructors.elementAt(0)
-      val argumentArray = constr.parameters.map {
-        when (it.type.javaType.typeName) {
-          "java.lang.String" -> response.getString(it.name)
-          "java.time.ZonedDateTime" ->
-            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
-                .atZone(ZoneId.of("Europe/Moscow"))
-          "int" -> response.getInt(it.name)
-          "boolean" -> response.getBoolean(it.name)
-          else -> response.getObject(it.name)
-        }
-      }.toTypedArray()
-
-      list.add(constr.call(*argumentArray))
+        val query = "select * from ${getTableName(annot.cls)} where ${annot.foreignKey}=${id}"
+        val statement = connection.prepareStatement(query)
+        if (it is KMutableProperty1)
+          (it as KMutableProperty1<Any, Any>).set(record, createObjects(annot.cls, statement.executeQuery()))
+        else
+          throw RuntimeException("OneToMany must be var")
+      }
     }
     return list
   }
@@ -139,6 +131,7 @@ class SimpleORM(url: String, username: String, password: String) {
     if (!any.javaClass.annotations.any { it is Table })
       throw IllegalArgumentException("The argument's class is not mapped as Table")
     val tableName = getTableName(cls)
+    val idName = cls.declaredMemberProperties.find { it.annotations.any{ it is Id } }!!.name
     val properties = any.javaClass.kotlin.declaredMemberProperties
         .filterNot { it.annotations.any { it is OneToMany } }
         .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
@@ -155,22 +148,8 @@ class SimpleORM(url: String, username: String, password: String) {
     val fieldsOneToMany = any.javaClass.kotlin.declaredMemberProperties
         .filter { it.annotations.any { annotation -> annotation is OneToMany } }
 
-    fieldsOneToMany.forEach {
-      val foreignName = (it.annotations.find { it is OneToMany } as OneToMany).foreignKey as String?
-      val foreignValue = any.javaClass.kotlin.declaredMemberProperties
-          .find { it.annotations.any { it is Id } }?.get(any) as Int?
-
-      var foreignKey: Pair<String, Int>? = null
-      if (foreignName != null && foreignValue != null) foreignKey = Pair(foreignName, foreignValue)
-
-      val childType = (it.annotations.find { it is OneToMany } as OneToMany).cls
-      val list = it.get(any) as ArrayList<Any>?
-      list?.forEach { insertFromClass(it, childType, foreignKey) }
-    }
-
     val statement = connection.prepareStatement("insert into $tableName (" + fields
-        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
-    println(statement)
+        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ") returning $idName")
 
     values.forEachIndexed { i, value ->
       if (value?.javaClass?.typeName == "java.time.ZonedDateTime")
@@ -179,7 +158,21 @@ class SimpleORM(url: String, username: String, password: String) {
         statement.setObject(i + 1, value)
     }
 
-    statement.executeUpdate()
+    val result = statement.executeQuery()
+    result.next()
+    val id = result.getInt(1)
+
+    fieldsOneToMany.forEach {
+      val foreignName = (it.annotations.find { it is OneToMany } as OneToMany).foreignKey
+
+      val foreignKey: Pair<String, Int> = Pair(foreignName, id)
+
+      val childType = (it.annotations.find { it is OneToMany } as OneToMany).cls
+      val list = it.get(any) as List<Any>?
+      list?.forEach {
+        insertFromClass(it, childType, foreignKey)
+      }
+    }
   }
 
 //  /**

@@ -61,12 +61,20 @@ class SimpleORMTest {
   }
 
   @Test
-  fun insertTestWithPeople() {
+  fun insertSelectTestWithPeople() {
     val bredlam = Bredlam("GuysHere!")
     bredlam.people.add(Human("NintendoMan", 2000))
     bredlam.people.add(Human("Rogogit", 1000))
 
     orm.insert<Bredlam>(bredlam)
+
+    val bredlams = orm.selectAll<Bredlam>().toList()
+    assertEquals(1, bredlams.size)
+    assertEquals(2, bredlams[0].people.size)
+    assertEquals("NintendoMan", bredlams[0].people[0].name)
+    assertEquals(2000, bredlams[0].people[0].money)
+    assertEquals("Rogogit", bredlams[0].people[1].name)
+    assertEquals(1000, bredlams[0].people[1].money)
   }
 
 }
