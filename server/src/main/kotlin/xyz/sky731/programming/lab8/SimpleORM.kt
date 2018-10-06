@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
+import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.jvm.javaType
@@ -18,7 +19,7 @@ annotation class Table(val name: String)
 annotation class Id
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class OneToMany
+annotation class OneToMany(val cls: KClass<*>)
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class ForeignKey
@@ -31,24 +32,27 @@ class SimpleORM(url: String, username: String, password: String) {
    * @param U is a aggregate type
    * [T] class may contain no more than one [U] field
    **/
-  inline fun <reified T : Any, reified U : Any> createTable() {
+  inline fun <reified T : Any> createTable() {
 
-    val tableName = getTableName<T>()
+    val tableName = getTableName(T::class)
 
     /**
      * Creates a new table for every field with "OneToMany" annotation.
      * Children can't have a "OneToMany" annotation
      **/
+    val field = T::class.declaredMemberProperties
+        .find { it.annotations.any { annotation -> annotation is OneToMany } }
+    val childType = (field?.annotations?.find { it is OneToMany } as OneToMany).cls
     T::class.declaredMembers.filter { it.annotations.any { annotation -> annotation is OneToMany } }
-        .map { createChildTable<U>() }
+        .map { createChildTable(childType) }
 
-    val str = getInitStr<T>()
+    val str = getInitStr(T::class)
     connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
-  inline fun <reified T : Any> createChildTable() {
-    val tableName = getTableName<T>()
-    val str = getInitStr<T>()
+  fun createChildTable(cls: KClass<*>) {
+    val tableName = getTableName(cls)
+    val str = getInitStr(cls)
     connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
@@ -220,8 +224,8 @@ class SimpleORM(url: String, username: String, password: String) {
   }
 
   /** Creates initialization string which afterwards creates table */
-  inline fun <reified T : Any> getInitStr() = T::class.declaredMemberProperties.filter {
-    it.annotations.find { annotation -> annotation is OneToMany } == null
+  fun getInitStr(cls: KClass<*>) = cls.declaredMemberProperties.filterNot {
+    it.annotations.any { annotation -> annotation is OneToMany }
   }.map {
     it.name + " " + convert(it.returnType.javaType.typeName) +
         if (it.annotations.any { annotation -> annotation is Id }) " primary key" else "" +
@@ -229,16 +233,16 @@ class SimpleORM(url: String, username: String, password: String) {
   }
 
   /** Gets name value from "Table" annotation */
-  inline fun <reified T : Any> getTableName() = T::class.annotations.find { it is Table }?.let { (it as Table).name }
+  fun getTableName(cls: KClass<*>) = cls.annotations.find { it is Table }?.let { (it as Table).name }
       ?: throw IllegalArgumentException("This class is not mapped as Table")
 
   /** Gets the first field with "Id" annotation */
-  inline fun <reified T : Any> getId() = T::class.declaredMemberProperties.find {
+  fun getId(cls: KClass<*>) = cls.declaredMemberProperties.find {
     it.annotations.any { annotation -> annotation is Id }
   }
 
   /** Gets the first field with "ForeignKey" annotation */
-  inline fun <reified T : Any> getForeignKey() = T::class.declaredMemberProperties.find {
+  fun getForeignKey(cls: KClass<*>) = cls.declaredMemberProperties.find {
     it.annotations.any { annotation -> annotation is ForeignKey }
   }
 }

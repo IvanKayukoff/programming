@@ -16,7 +16,7 @@ data class Bredlam(var name: String, var endOfLight: Boolean,
                    var flagColor: String, var x: Int, var y: Int, val creation: ZonedDateTime,
                    @Id val id: Int) : Serializable, Comparable<Bredlam> {
 
-  @OneToMany
+  @OneToMany(Human::class)
   val people = ArrayList<Human>()
 
   init {
