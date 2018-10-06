@@ -88,5 +88,21 @@ class SimpleORMTest {
     assertEquals(0, bredlams[1].people[1].money)
   }
 
+  @Test
+  fun insertAndFindByIdTest() {
+    for (i in 0..10) {
+      orm.insert<Bredlam>(Bredlam("$i Bredlam").apply {
+        this.people.add(Human("Slave of $i", i))
+      })
+    }
+    val bredlams = orm.selectAll<Bredlam>()
+    assertEquals(11, bredlams.size)
+
+    val foundById = orm.findById<Bredlam>(1)
+    assertEquals("0 Bredlam", foundById?.name)
+    assertEquals(1, foundById?.people?.size)
+    assertEquals("Slave of 0", foundById?.people?.get(0)?.name)
+  }
+
 
 }

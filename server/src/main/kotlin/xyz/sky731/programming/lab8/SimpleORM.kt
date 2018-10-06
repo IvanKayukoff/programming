@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
 import kotlin.reflect.*
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.jvm.javaType
 
 @Target(AnnotationTarget.CLASS)
@@ -81,7 +82,7 @@ class SimpleORM(url: String, username: String, password: String) {
     return queue
   }
 
-  private fun createObjects(cls: KClass<*>, result: ResultSet) : List<Any> {
+  fun createObjects(cls: KClass<*>, result: ResultSet): List<Any> {
     val list = ArrayList<Any>()
     while (result.next()) {
       val constr = cls.constructors.elementAt(0)
@@ -131,7 +132,7 @@ class SimpleORM(url: String, username: String, password: String) {
     if (!any.javaClass.annotations.any { it is Table })
       throw IllegalArgumentException("The argument's class is not mapped as Table")
     val tableName = getTableName(cls)
-    val idName = cls.declaredMemberProperties.find { it.annotations.any{ it is Id } }!!.name
+    val idName = cls.declaredMemberProperties.find { it.annotations.any { it is Id } }!!.name
     val properties = any.javaClass.kotlin.declaredMemberProperties
         .filterNot { it.annotations.any { it is OneToMany } }
         .filterNot { it.annotations.any { it is Id } && it.get(any) == null }
@@ -175,40 +176,22 @@ class SimpleORM(url: String, username: String, password: String) {
     }
   }
 
-//  /**
-//   * Finds [T] object in db with specific primary key
-//   *
-//   * @return [T] object if found in db, otherwise - null
-//   * @param id is [T]'s primary key
-//   */
-//  inline fun <reified T: Any> findById(id: Int) : T? {
-//    val tableName = getTableName(T::class as KClass<*>)
-//    val primaryKey = T::class.declaredMembers.find { it.annotations.any { it is Id }  }?.name
-//        ?: throw IllegalArgumentException("@Id annotation is missing")
-//    val statement = connection.prepareStatement("select * from $tableName where $primaryKey=$id")
-//    val response = statement.executeQuery()
-//
-//    if (response.next()) {
-//      val constr = T::class.constructors.elementAt(0)
-//      return constr.call(*constr.parameters.map {
-//        when (it.type.javaType.typeName) {
-//          "java.lang.String" -> response.getString(it.name)
-//          "java.time.ZonedDateTime" ->
-//            LocalDateTime.parse(response.getString(it.name), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) // FIXME ZoneId
-//                .atZone(ZoneId.of("Europe/Moscow"))
-//          "int" -> response.getInt(it.name)
-//          "boolean" -> response.getBoolean(it.name)
-//          else -> response.getObject(it.name)
-//        }
-//      }.toTypedArray()).also {
-//        val list = T::class.declaredMemberProperties
-//            .find { it.annotations.any { annotation -> annotation is OneToMany } }?.get(it) as ArrayList<Any>?
-//        list?.addAll(selectAllChildren(getId(T::class)?.get(it) as Int))
-//      }
-//    }
-//
-//    return null
-//  }
+  /**
+   * Finds [T] object in db with specific primary key
+   *
+   * @return [T] object if found in db, otherwise - null
+   * @param id is [T]'s primary key
+   */
+  inline fun <reified T : Any> findById(id: Int): T? {
+    val tableName = getTableName(T::class as KClass<*>)
+    val primaryKey = T::class.declaredMembers.find { it.annotations.any { it is Id } }?.name
+        ?: throw IllegalArgumentException("@Id annotation is missing")
+    val statement = connection.prepareStatement("select * from $tableName where $primaryKey=$id")
+    val response = statement.executeQuery()
+
+    return createObjects(T::class, response).firstOrNull() as T?
+  }
+
 
   /**
    * Deletes [T] object from db by primary key
