@@ -13,20 +13,49 @@ class SimpleORMTest {
 
   @Before
   fun dropAllTables() {
-    orm.connection.createStatement().executeUpdate("drop table human")
-    orm.connection.createStatement().executeUpdate("drop table bredlam")
-  }
+    orm.connection.createStatement().executeUpdate("drop table if exists human")
+    orm.connection.createStatement().executeUpdate("drop table if exists bredlam")
 
-  @Test
-  fun createTableTest() {
     orm.createTable<Bredlam>()
   }
 
-//  @Test
-//  fun insertTest() {
-//    val bredlam = Bredlam("TestBredlam", false, "Blue", 1, 0,
-//        ZonedDateTime.now(ZoneId.systemDefault()), 1)
-//    orm.insert<Bredlam, Human>(bredlam)
-//
-//  }
+
+  @Test
+  fun insertTest1() {
+    val bredlam = Bredlam("PrimaryBredlam", false, "Blue", 1, 12,
+        ZonedDateTime.now(ZoneId.systemDefault()), 1)
+
+    orm.insert<Bredlam>(bredlam)
+  }
+
+  @Test
+  fun insertTest2() {
+    val bredlam1 = Bredlam("SecondaryBredlam", false, "Red", 0, 1,
+        ZonedDateTime.now(ZoneId.systemDefault()), 0)
+    val bredlam2 = Bredlam("OtherBredlam", true, "Green", 0, -15,
+        ZonedDateTime.now(ZoneId.systemDefault()), 3)
+    val bredlam3 = Bredlam("Kuliti!")
+
+    orm.insert<Bredlam>(bredlam1)
+    orm.insert<Bredlam>(bredlam2)
+    orm.insert<Bredlam>(bredlam3)
+  }
+
+  @Test
+  fun insertTestWithMan() {
+    val bredlam = Bredlam("CockoffHere!")
+    bredlam.people.add(Human("Cockoff", 1000, bredlam.id))
+
+    orm.insert<Bredlam>(bredlam)
+  }
+
+  @Test
+  fun insertTestWithPeople() {
+    val bredlam = Bredlam("GuysHere!")
+    bredlam.people.add(Human("NintendoMan", 2000, bredlam.id))
+    bredlam.people.add(Human("Rogogit", 1000, bredlam.id))
+
+    orm.insert<Bredlam>(bredlam)
+  }
+
 }

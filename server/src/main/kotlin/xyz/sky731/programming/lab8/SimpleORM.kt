@@ -5,6 +5,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.PriorityBlockingQueue
 import kotlin.reflect.KClass
@@ -44,9 +45,13 @@ class SimpleORM(url: String, username: String, password: String) {
     connection.createStatement().executeUpdate("create table " + tableName + "( " + str.joinToString(",") + ")")
   }
 
+
+//  inline fun <reified T: Any> selectAll() : PriorityBlockingQueue<T> {
+//    return selectAllFromClass(T::class) as PriorityBlockingQueue<T>
+//  }
 //
 //   /** Selects all [T] elements from db, also fills ArrayList<[U]> which marked as @OneToMany property */
-//  inline fun <reified T: Any> selectAll() : PriorityBlockingQueue<T> {
+//  fun selectAllFromClass(cls: KClass<*>) : PriorityBlockingQueue<Any> {
 //    val tableName = getTableName(T::class as KClass<Any>)
 //    val statement = connection.prepareStatement("select * from $tableName")
 //    val response = statement.executeQuery()
@@ -102,50 +107,45 @@ class SimpleORM(url: String, username: String, password: String) {
 //    return list
 //  }
 //
-//  /**
-//   * Inserts [any] to db
-//   * @param T is parent element's type
-//   * @param U is child element's type, [insertChildren] will be called to insert all children
-//   */
-//  inline fun <reified T: Any> insert(any: Any) {
-//    if (!any.javaClass.annotations.any { it is Table })
-//      throw IllegalArgumentException("The argument's class is not mapped as Table")
-//    val tableName = getTableName(T::class as KClass<Any>)
-//    val properties = any.javaClass.kotlin.declaredMemberProperties
-//        .filterNot { it.annotations.any { annotation -> annotation is OneToMany } }
-//    val fields =  properties.map { it.name }
-//    val values =  properties.map { it.get(any) }
-//
-//    /** Calls [insertChildren] if collection is not empty */
-//    val field = any.javaClass.kotlin.declaredMemberProperties
-//        .find { it.annotations.any { annotation -> annotation is OneToMany } }
-//    val childType = (field?.annotations?.find { it is OneToMany } as OneToMany).cls
-//    val list = field.get(any) as ArrayList<Any>?
-//    list?.let { insertChildren(it, childType) }
-//
-//    val statement = connection.prepareStatement("insert into $tableName (" + fields
-//        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
-//    values.forEachIndexed { i, s -> statement.setObject(i + 1, s) }
-//    statement.executeUpdate()
-//  }
-//
-//  /**
-//   * @param T is element's type, [T] can have only primitives as his fields
-//   * @param list is elements which will be inserted to db
-//   **/
-//  fun insertChildren(list: ArrayList<Any>, cls: KClass<*>) {
-//    val tableName = getTableName(cls)
-//    for (element in list) {
-//      val properties = cls.java.kotlin.declaredMemberProperties
-//      val fields =  properties.map { it.name }
-//      val values =  properties.map { it.get(element) }
-//      val statement = connection.prepareStatement("insert into $tableName (" + fields
-//          .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
-//      values.forEachIndexed { i, s -> statement.setObject(i + 1, s) }
-//      statement.executeUpdate()
-//    }
-//  }
-//
+  /**
+   * Inserts [any] to db
+   * [any] may have a few ArrayList as his fields, which should be marked with @OneToMany annotation
+   * @param T is a base element's type
+   */
+  inline fun <reified T: Any> insert(any: Any) { insertFromClass(any, T::class) }
+
+  fun insertFromClass(any: Any, cls: KClass<*>) {
+    if (!any.javaClass.annotations.any { it is Table })
+      throw IllegalArgumentException("The argument's class is not mapped as Table")
+    val tableName = getTableName(cls)
+    val properties = any.javaClass.kotlin.declaredMemberProperties
+        .filterNot { it.annotations.any { annotation -> annotation is OneToMany } }
+    val fields =  properties.map { it.name }
+    val values =  properties.map { it.get(any) }
+
+    val fieldsOneToMany = any.javaClass.kotlin.declaredMemberProperties
+        .filter { it.annotations.any { annotation -> annotation is OneToMany } }
+
+    fieldsOneToMany.forEach {
+      val childType = (it.annotations.find { it is OneToMany } as OneToMany).cls
+      val list = it.get(any) as ArrayList<Any>?
+      list?.forEach { insertFromClass(it, childType) }
+    }
+
+    val statement = connection.prepareStatement("insert into $tableName (" + fields
+        .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ")")
+    println(statement)
+
+    values.forEachIndexed { i, value ->
+      if (value?.javaClass?.typeName == "java.time.ZonedDateTime")
+        statement.setObject(i + 1, (value as ZonedDateTime).toOffsetDateTime())
+      else
+        statement.setObject(i + 1, value)
+    }
+
+    statement.executeUpdate()
+  }
+
 //  /**
 //   * Finds [T] object in db with specific primary key
 //   *
@@ -214,7 +214,7 @@ class SimpleORM(url: String, username: String, password: String) {
     "java.sql.Timestamp" -> "timestamp"
     "java.lang.String" -> "text"
     "int" -> "integer"
-    "java.time.ZonedDateTime" -> "text"
+    "java.time.ZonedDateTime" -> "timestamptz"
     else -> string
   }
 
