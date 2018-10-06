@@ -9,16 +9,13 @@ import xyz.sky731.programming.lab6.ClientMain
 import xyz.sky731.programming.lab8.UTF8Control
 import java.awt.*
 import javax.swing.*
-import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.MouseEvent
 import java.awt.geom.Point2D
-import kotlin.concurrent.timer
 import javax.swing.ImageIcon
 import javax.swing.JLabel
 import java.io.File
 import javax.imageio.ImageIO
-import java.awt.image.BufferedImage
 import java.util.*
 import javax.imageio.IIOException
 import javax.swing.Timer
@@ -27,50 +24,50 @@ import kotlin.system.exitProcess
 
 class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(nameFrame) {
 
-  fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
+   private fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
     val coordinates = Coordinates.caclCircleCoords(x, y, r)
     val polygon = CCPolygon(coordinates.x, coordinates.y, color,
         fillingColor, BasicStroke(1f))
     plot.add(polygon)
   }
 
-  val curLocale = Locale.forLanguageTag("en-AU")
-  // val curLocale = Locale.forLanguageTag("ru-RU")
-  val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
-  val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian"))
+  // TODO check for existence default system locale
+  // private val curLocale = Locale.forLanguageTag("en-AU")
+  private val curLocale = Locale.forLanguageTag("et-EE")
+  private val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+  private val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian"))
 
-  val colorRedCheckbox = JCheckBox(rb.getString("color_red"))
-  val colorBlueCheckbox = JCheckBox(rb.getString("color_blue"))
-  val colorPinkCheckbox = JCheckBox(rb.getString("color_pink"))
-  val colorOrangeCheckbox = JCheckBox(rb.getString("color_orange"))
-  val colorYellowCheckbox = JCheckBox(rb.getString("color_yellow"))
-  val colorGreenCheckbox = JCheckBox(rb.getString("color_green"))
+  private val colorRedCheckbox = JCheckBox(rb.getString("color_red"))
+  private val colorBlueCheckbox = JCheckBox(rb.getString("color_blue"))
+  private val colorPinkCheckbox = JCheckBox(rb.getString("color_pink"))
+  private val colorOrangeCheckbox = JCheckBox(rb.getString("color_orange"))
+  private val colorYellowCheckbox = JCheckBox(rb.getString("color_yellow"))
+  private val colorGreenCheckbox = JCheckBox(rb.getString("color_green"))
 
-  val fromXSpinner = JSpinner()
-  val toXSpinner = JSpinner()
-  val fromYSpinner = JSpinner()
-  val toYSpinner = JSpinner()
+  private val fromXSpinner = JSpinner()
+  private val toXSpinner = JSpinner()
+  private val fromYSpinner = JSpinner()
+  private val toYSpinner = JSpinner()
 
-  val nameTextField = JTextField()
-  val endOfLightCheckbox = JCheckBox(rb.getString("end_of_light"))
+  private val nameTextField = JTextField()
+  private val endOfLightCheckbox = JCheckBox(rb.getString("end_of_light"))
 
-  val fromPopulationSpinner = JSpinner()
-  val toPopulationSpinner = JSpinner()
+  private val fromPopulationSpinner = JSpinner()
+  private val toPopulationSpinner = JSpinner()
 
-  val filtersCheckBox = JCheckBox(rb.getString("filters_enabled"))
+  private val filtersCheckBox = JCheckBox(rb.getString("filters_enabled"))
 
-  var started = false
-  val startButton = JButton(rb.getString("start"))
-  val stopButton = JButton(rb.getString("stop"))
+  private var started = false
+  private val startButton = JButton(rb.getString("start"))
+  private val stopButton = JButton(rb.getString("stop"))
 
-  var timer: Timer? = null
+  private var timer: Timer? = null
 
   init {
     defaultCloseOperation = JFrame.EXIT_ON_CLOSE
     isResizable = false
     preferredSize = Dimension(800, 600)
     title = rb.getString("main_title")
-    // setDefaultLookAndFeelDecorated(true) // FIXME
 
     val ownPanel = JPanel().apply {
       preferredSize = Dimension(800, 600)
@@ -457,7 +454,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
     isVisible = true
   }
 
-  fun applyLocale(locale: Locale) {
+  private fun applyLocale(locale: Locale) {
     val rb = ResourceBundle.getBundle("Resources", locale)
 
     this.title = rb.getString("main_title")
