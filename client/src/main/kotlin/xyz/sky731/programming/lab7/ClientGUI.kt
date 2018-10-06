@@ -25,7 +25,7 @@ import kotlin.system.exitProcess
 
 class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(nameFrame) {
 
-   private fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
+  private fun drawCircle(plot: CCSystem, x: Double, y: Double, r: Double, color: Color, fillingColor: Color) {
     val coordinates = Coordinates.caclCircleCoords(x, y, r)
     val polygon = CCPolygon(coordinates.x, coordinates.y, color,
         fillingColor, BasicStroke(1f))
@@ -60,6 +60,18 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
   private var started = false
   private val startButton = JButton(rb.getString("start"))
   private val stopButton = JButton(rb.getString("stop"))
+
+  private val colorsLabel = JLabel(rb.getString("colors"))
+  private val coordinatesLabel = JLabel(rb.getString("coordinates"))
+  private val xFromLabel = JLabel(rb.getString("x_from"))
+  private val toLabel = JLabel(rb.getString("to"))
+  private val yFromLabel = JLabel(rb.getString("y_from"))
+  private val nameStartsWithLabel = JLabel(rb.getString("name_starts_with"))
+  private val populationFromLabel = JLabel(rb.getString("population_from"))
+  private val reloadCollectionLabel = JLabel(rb.getString("reload_collection"))
+  private val refreshButton = JButton(rb.getString("refresh"))
+  private val languageLabel = JLabel(rb.getString("language"))
+
 
   private var timer: Timer? = null
 
@@ -215,7 +227,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
           gridy = 2
           insets = Insets(5, 15, 0, 0)
         }
-        add(JLabel(rb.getString("colors")), constraints)
+        add(colorsLabel, constraints)
 
         // pushes all components to the left
         constraints.weightx = 1.0
@@ -246,14 +258,14 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
         constraints.insets = Insets(5, 15, 0, 0)
         constraints.gridy = 9
-        add(JLabel(rb.getString("coordinates")), constraints)
+        add(coordinatesLabel, constraints)
         constraints.fill = GridBagConstraints.NONE
         constraints.insets = Insets(5, 15, 0, 0)
 
         constraints.gridy = 10
         add(JPanel().apply {
           layout = FlowLayout()
-          add(JLabel(rb.getString("x_from")), constraints)
+          add(xFromLabel, constraints)
 
           constraints.insets = Insets(5, 15, 0, 0)
 
@@ -261,7 +273,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             model = SpinnerNumberModel(minX, minX, maxX, 1)
             preferredSize = Dimension(80, 20)
           })
-          add(JLabel(rb.getString("to")))
+          add(toLabel)
           add(toXSpinner.apply {
             model = SpinnerNumberModel(maxX, minX, maxX, 1)
             preferredSize = Dimension(80, 20)
@@ -273,7 +285,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel(rb.getString("y_from")))
+          add(yFromLabel)
 
           constraints.insets = Insets(5, 15, 0, 0)
 
@@ -281,7 +293,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
             model = SpinnerNumberModel(minY, minY, maxY, 1)
             preferredSize = Dimension(80, 20)
           })
-          add(JLabel(rb.getString("to")))
+          add(toLabel)
           add(toYSpinner.apply {
             model = SpinnerNumberModel(maxY, minY, maxY, 1)
             preferredSize = Dimension(80, 20)
@@ -293,7 +305,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel(rb.getString("name_starts_with")))
+          add(nameStartsWithLabel)
           add(nameTextField.apply {
             preferredSize = Dimension(130, 20)
           })
@@ -306,13 +318,13 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel(rb.getString("population_from")))
+          add(populationFromLabel)
           add(fromPopulationSpinner.apply {
             model = SpinnerNumberModel(0, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
           })
 
-          add(JLabel(rb.getString("to")))
+          add(toLabel)
           add(toPopulationSpinner.apply {
             model = SpinnerNumberModel(maxPopulation, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
@@ -398,7 +410,6 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
                       fillingColor)
                 }
                 tickCounter++
-                // graph.repaint()
 
               }
 
@@ -431,9 +442,9 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel(rb.getString("reload_collection")))
+          add(reloadCollectionLabel)
 
-          add(JButton(rb.getString("refresh")).apply {
+          add(refreshButton.apply {
             addActionListener {
               val gui = ClientGUI(client, nameFrame)
               this@ClientGUI.isVisible = false
@@ -447,18 +458,20 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
         add(JPanel().apply {
           layout = FlowLayout()
 
-          add(JLabel(rb.getString("language")))
+          add(languageLabel)
 
-          add(languageComboBox.apply { addItemListener {
-            if (it.stateChange == ItemEvent.SELECTED) {
-              when (it.item as String) {
-                "English(AU)" -> applyLocale(Locale.forLanguageTag("en-AU"))
-                "Russian" -> applyLocale(Locale.forLanguageTag("ru-RU"))
-                "Hungarian" -> applyLocale(Locale.forLanguageTag("hu"))
-                "Estonian" -> applyLocale(Locale.forLanguageTag("et-EE"))
+          add(languageComboBox.apply {
+            addItemListener {
+              if (it.stateChange == ItemEvent.SELECTED) {
+                when (it.item as String) {
+                  "English(AU)" -> applyLocale(Locale.forLanguageTag("en-AU"))
+                  "Russian" -> applyLocale(Locale.forLanguageTag("ru-RU"))
+                  "Hungarian" -> applyLocale(Locale.forLanguageTag("hu"))
+                  "Estonian" -> applyLocale(Locale.forLanguageTag("et-EE"))
+                }
               }
             }
-          } })
+          })
 
         }, constraints)
 
@@ -475,8 +488,27 @@ class ClientGUI(private val client: ClientMain, nameFrame: String) : JFrame(name
 
   private fun applyLocale(locale: Locale) {
     val rb = ResourceBundle.getBundle("Resources", locale, UTF8Control())
+    title = rb.getString("main_title")
 
-    this.title = rb.getString("main_title")
-    // TODO all components should be changed here
+    colorRedCheckbox.text = rb.getString("color_red")
+    colorBlueCheckbox.text = rb.getString("color_blue")
+    colorPinkCheckbox.text = rb.getString("color_pink")
+    colorOrangeCheckbox.text = rb.getString("color_orange")
+    colorYellowCheckbox.text = rb.getString("color_yellow")
+    colorGreenCheckbox.text = rb.getString("color_green")
+
+    endOfLightCheckbox.text = rb.getString("end_of_light")
+    filtersCheckBox.text = rb.getString("filters_enabled")
+    startButton.text = rb.getString("start")
+    stopButton.text = rb.getString("stop")
+    xFromLabel.text = rb.getString("x_from")
+    toLabel.text = rb.getString("to")
+    yFromLabel.text = rb.getString("y_from")
+    nameStartsWithLabel.text = rb.getString("name_starts_with")
+    populationFromLabel.text = rb.getString("population_from")
+    reloadCollectionLabel.text = rb.getString("reload_collection")
+    refreshButton.text = rb.getString("refresh")
+    languageLabel.text = rb.getString("language")
+    
   }
 }
