@@ -59,7 +59,7 @@ class SimpleORM(url: String, username: String, password: String) {
     connection.createStatement().executeUpdate("create table $tableName($str)")
 
     fields.forEach { field ->
-      val childAnnot = (field.annotations.find { it is OneToMany } as OneToMany)
+      val childAnnot = field.annotations.find { it is OneToMany } as OneToMany
       createTableFromClass(childAnnot.cls, Pair(childAnnot.foreignKey, tableName))
     }
   }

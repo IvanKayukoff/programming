@@ -7,6 +7,7 @@ import xyz.sky731.programming.lab8.SimpleORM
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.sql.SQLException
 import java.util.concurrent.PriorityBlockingQueue
 import javax.swing.SwingUtilities
 import javax.swing.SwingWorker
@@ -18,6 +19,14 @@ fun main(args: Array<String>) = SwingUtilities.invokeLater {
 
   val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
   val queue = orm.selectAll<Bredlam>()
+
+  if (queue.size == 0) {
+    try {
+      orm.createTable<Bredlam>()
+    } catch (e: SQLException) {
+      println("Table already exists")
+    }
+  }
 
   val gui = ServerGUI(queue, orm)
 

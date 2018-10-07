@@ -5,7 +5,7 @@ import xyz.sky731.programming.lab8.Table
 import java.io.Serializable
 
 @Table("Human")
-class Human(var name: String, var money: Int, @Id var id: Int? = null) : Serializable {
+data class Human(var name: String, var money: Int, @Id var id: Int? = null) : Serializable {
 
   constructor(name: String, money: Int) : this(name, money, null)
 

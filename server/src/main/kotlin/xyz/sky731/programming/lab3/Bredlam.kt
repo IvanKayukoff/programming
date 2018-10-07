@@ -31,6 +31,23 @@ data class Bredlam(var name: String = "NoNameBredlam", var endOfLight: Boolean =
     }
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other == null) {
+      return false
+    } else {
+      if (other.javaClass != this.javaClass) return false
+
+      val o = other as Bredlam
+      if (name == o.name && endOfLight == o.endOfLight && flagColor == o.flagColor && x == o.x
+          && y == o.y && id == o.id) return true
+    }
+    return false
+  }
+
+  override fun hashCode(): Int {
+    return super.hashCode()
+  }
+
   override fun compareTo(other: Bredlam) = people.size - other.people.size
 
   fun size() = people.size

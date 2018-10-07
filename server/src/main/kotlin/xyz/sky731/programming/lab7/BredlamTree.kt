@@ -10,11 +10,9 @@ import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeSelectionModel
 import javax.swing.tree.TreePath
 
-class BredlamTree(val gui: ServerGUI): JTree(makeRoot()) {
+class BredlamTree(private val gui: ServerGUI): JTree(makeRoot()) {
   companion object {
-    fun makeRoot() = DefaultMutableTreeNode("Bredlams").apply {
-      // add(DefaultMutableTreeNode(Bredlam("ConstBredlam")))
-    }
+    fun makeRoot() = DefaultMutableTreeNode("Bredlams")
   }
 
   var selection: Any? = null

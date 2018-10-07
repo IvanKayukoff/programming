@@ -17,7 +17,7 @@ import kotlin.system.exitProcess
 class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                 val orm: SimpleORM,
                 name: String = "Server GUI") : JFrame(name) {
-  val   mainTree = BredlamTree(this)
+  val mainTree = BredlamTree(this)
   val colorComboBox = JComboBox<ColorWithName>()
   val posXSpinner = JSpinner()
   val posYSpinner = JSpinner()
@@ -202,47 +202,53 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
 
           fun peekHumanFromUI() = Human(nameHumanTextField.text, moneySpinner.value as Int)
 
-          add(JButton("New").apply { addActionListener {
-            val selected = mainTree.selection
-            val elem = peekHumanFromUI()
-            when (selected) {
-              is Bredlam -> {
-                selected.people.add(elem)
-                val curNode = mainTree.lastSelectedPathComponent as DefaultMutableTreeNode
-                mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
-                    curNode, curNode.childCount)
-              }
-              is Human -> {
-                (mainTree.parentOfSelection as Bredlam).people.add(peekHumanFromUI())
-                val curNode = (mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
-                    .parent as DefaultMutableTreeNode
-                mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
-                    curNode, curNode.childCount)
+          add(JButton("New").apply {
+            addActionListener {
+              val selected = mainTree.selection
+              val elem = peekHumanFromUI()
+              when (selected) {
+                is Bredlam -> {
+                  selected.people.add(elem)
+                  val curNode = mainTree.lastSelectedPathComponent as DefaultMutableTreeNode
+                  mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
+                      curNode, curNode.childCount)
+                }
+                is Human -> {
+                  (mainTree.parentOfSelection as Bredlam).people.add(peekHumanFromUI())
+                  val curNode = (mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
+                      .parent as DefaultMutableTreeNode
+                  mainTree.model?.insertNodeInto(DefaultMutableTreeNode(elem),
+                      curNode, curNode.childCount)
+                }
               }
             }
-          } })
+          })
           add(Box.createHorizontalStrut(5))
-          add(JButton("Edit").apply { addActionListener {
-            val selected = mainTree.selection
-            when (selected) {
-              is Human -> {
-                selected.name = nameHumanTextField.text
-                selected.money = moneySpinner.value as Int
+          add(JButton("Edit").apply {
+            addActionListener {
+              val selected = mainTree.selection
+              when (selected) {
+                is Human -> {
+                  selected.name = nameHumanTextField.text
+                  selected.money = moneySpinner.value as Int
+                }
               }
+              mainTree.model?.nodeChanged(mainTree.lastSelectedPathComponent as TreeNode)
             }
-            mainTree.model?.nodeChanged(mainTree.lastSelectedPathComponent as TreeNode)
-          } })
+          })
           add(Box.createHorizontalStrut(5))
-          add(JButton("Delete").apply { addActionListener {
-            val selected = mainTree.selection
-            when (selected) {
-              is Human -> {
-                val selectionParent = mainTree.parentOfSelection as Bredlam
-                selectionParent.people.remove(selected)
+          add(JButton("Delete").apply {
+            addActionListener {
+              val selected = mainTree.selection
+              when (selected) {
+                is Human -> {
+                  val selectionParent = mainTree.parentOfSelection as Bredlam
+                  selectionParent.people.remove(selected)
+                }
               }
+              mainTree.model?.removeNodeFromParent(mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
             }
-            mainTree.model?.removeNodeFromParent(mainTree.lastSelectedPathComponent as DefaultMutableTreeNode)
-          } })
+          })
         }
       }
 

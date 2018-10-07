@@ -76,7 +76,6 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
     } ?: unchanged("Collection is already empty")
   }
 
-  // TODO function [save] suppose table already exists
   private fun save(): Pair<String, List<TreeChange>> {
 
     deletedBredlams.forEach {
