@@ -120,8 +120,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
       val jsonUser = JsonUser()
       val response = client.sendMessage("get_collection")
-      println(response) // FIXME
-      val bredlams = if (response != "") jsonUser.unmarshal(response)
+      val bredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
       else Bredlams().apply { bredlam = ArrayList<Bredlam>() }
 
       val maxPopulation = bredlams.bredlam.run {

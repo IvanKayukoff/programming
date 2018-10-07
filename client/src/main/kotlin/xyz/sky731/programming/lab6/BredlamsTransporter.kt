@@ -26,8 +26,9 @@ class BredlamsTransporter : Serializable {
   }
 
   fun realToPseudoBredlam(b: Bredlam) =
-      PseudoBredlam(b.name, b.endOfLight, b.flagColor, b.x, b.y, b.creation.toString())
+      PseudoBredlam(b.name, b.endOfLight, b.flagColor, b.x, b.y, b.creation.toString(), b.people)
 
   fun pseudoToRealBredlam(pb: PseudoBredlam) =
       Bredlam(pb.name, pb.endOfLight, pb.flagColor, pb.x, pb.y, ZonedDateTime.parse(pb.creation))
+          .apply { people.addAll(pb.people) }
 }

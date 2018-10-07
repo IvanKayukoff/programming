@@ -5,5 +5,4 @@ import xyz.sky731.programming.lab6.ClientMain
 fun main(args: Array<String>) {
   val client = ClientMain("localhost", 26425)
   ClientGUI(client, "Client")
-
 }
