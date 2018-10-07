@@ -3,6 +3,7 @@ package xyz.sky731.programming.lab7
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.QueueHandler
 import xyz.sky731.programming.lab6.ServerMain
+import xyz.sky731.programming.lab8.SimpleORM
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -14,17 +15,15 @@ import kotlin.reflect.full.companionObjectInstance
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) = SwingUtilities.invokeLater {
-  val fileName = System.getenv("BREDLAM_FILE") ?: run {
-    println("Environment variable BREDLAM_FILE not found")
-    "queueFile"
-  }
-  val queue = loadCollectionFromDisk(fileName)
 
-  val gui = ServerGUI(queue, fileName)
+  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
+  val queue = orm.selectAll<Bredlam>()
+
+  val gui = ServerGUI(queue, orm)
 
   val worker = object : SwingWorker<Unit, TreeChange>() {
     override fun doInBackground() {
-      ServerMain(queue, fileName) {
+      ServerMain(queue, orm) {
         publish(*it.toTypedArray())
       }.run()
     }

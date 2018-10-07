@@ -13,7 +13,7 @@ class XmlUserTest {
     val bredlams = Bredlams()
     val bredlamsList = ArrayList<Bredlam>()
     bredlamsList.add(Bredlam("Hello?").apply {
-      this.people.add(Human("Cockoff", 100000, this.id!!))
+      this.people.add(Human("Cockoff", 100000))
     })
     bredlams.bredlam = bredlamsList
 

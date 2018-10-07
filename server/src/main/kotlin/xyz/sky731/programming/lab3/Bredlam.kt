@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 data class Bredlam(var name: String = "NoNameBredlam", var endOfLight: Boolean = false,
                    var flagColor: String = "Blue", var x: Int = 0, var y: Int = 0,
                    var creation: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
-                   @Id val id: Int? = null) : Serializable, Comparable<Bredlam> {
+                   @Id var id: Int? = null) : Serializable, Comparable<Bredlam> {
 
   @OneToMany(cls = Human::class, foreignKey = "bredlam_id")
   var people = ArrayList<Human>()

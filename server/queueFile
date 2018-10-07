@@ -3,53 +3,24 @@
     <xyz.sky731.programming.lab3.Bredlam>
       <people>
         <xyz.sky731.programming.lab3.Human>
-          <name>adawd</name>
-          <money>0</money>
-        </xyz.sky731.programming.lab3.Human>
-        <xyz.sky731.programming.lab3.Human>
-          <name>adawd</name>
-          <money>0</money>
-        </xyz.sky731.programming.lab3.Human>
-        <xyz.sky731.programming.lab3.Human>
-          <name>adawd12312</name>
-          <money>0</money>
+          <name>Cockoff</name>
+          <money>100000</money>
         </xyz.sky731.programming.lab3.Human>
       </people>
-      <name>Hello</name>
-      <endOfLight>true</endOfLight>
+      <name>Hello?</name>
+      <endOfLight>false</endOfLight>
       <flagColor>Blue</flagColor>
-      <x>1</x>
-      <y>-1</y>
+      <x>0</x>
+      <y>0</y>
       <creation resolves-to="java.time.Ser">
         <byte>6</byte>
         <int>2018</int>
         <byte>10</byte>
         <byte>7</byte>
-        <byte>19</byte>
-        <byte>18</byte>
-        <byte>11</byte>
-        <int>24000000</int>
-        <byte>12</byte>
-        <byte>7</byte>
-        <string>Europe/Moscow</string>
-      </creation>
-    </xyz.sky731.programming.lab3.Bredlam>
-    <xyz.sky731.programming.lab3.Bredlam>
-      <people/>
-      <name>QQ</name>
-      <endOfLight>true</endOfLight>
-      <flagColor>Pink</flagColor>
-      <x>3</x>
-      <y>-4</y>
-      <creation resolves-to="java.time.Ser">
-        <byte>6</byte>
-        <int>2018</int>
-        <byte>10</byte>
-        <byte>7</byte>
-        <byte>19</byte>
-        <byte>18</byte>
-        <byte>24</byte>
-        <int>322000000</int>
+        <byte>21</byte>
+        <byte>49</byte>
+        <byte>37</byte>
+        <int>775000000</int>
         <byte>12</byte>
         <byte>7</byte>
         <string>Europe/Moscow</string>

@@ -10,7 +10,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 class SimpleORMTest {
-  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "postgres", "admin")
+  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
 
   @Before
   fun dropAllTables() {
@@ -132,5 +132,11 @@ class SimpleORMTest {
     assertArrayEquals(arrayOf("XBOX KVEST SPL", "Gorenje").sortedArray(), bredlams.toTypedArray())
   }
 
+  @Test
+  fun dropTableTest() {
+    orm.dropTable<Bredlam>()
+    orm.createTable<Bredlam>()
+    orm.dropTable<Bredlam>()
+  }
 
 }

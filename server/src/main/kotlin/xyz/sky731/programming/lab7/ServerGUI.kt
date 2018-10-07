@@ -3,6 +3,7 @@ package xyz.sky731.programming.lab7
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab3.Human
 import xyz.sky731.programming.lab5.CmdExecutor
+import xyz.sky731.programming.lab8.SimpleORM
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
@@ -14,7 +15,7 @@ import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
 
 class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
-                val fileName: String,
+                val orm: SimpleORM,
                 name: String = "Server GUI") : JFrame(name) {
   val   mainTree = BredlamTree(this)
   val colorComboBox = JComboBox<ColorWithName>()
@@ -119,7 +120,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
 
           constraints.gridy = 3
           add(JPanel().apply {
-            val executor = CmdExecutor(queue, fileName)
+            val executor = CmdExecutor(queue, orm)
             contentPane.layout = FlowLayout().apply {
 
               fun peekSelected() = Bredlam(nameBredlamTextField.text).apply {
@@ -275,7 +276,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       mnemonic = KeyEvent.VK_L
       toolTipText = "Load collection from file"
       addActionListener {
-        val executor = CmdExecutor(queue, fileName)
+        val executor = CmdExecutor(queue, orm)
         val (response, changes) = executor.execute("load", null)
         updateTree(changes)
         println(response)
@@ -286,7 +287,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       mnemonic = KeyEvent.VK_S
       toolTipText = "Save collection to file"
       addActionListener {
-        val executor = CmdExecutor(queue, fileName)
+        val executor = CmdExecutor(queue, orm)
         val (response, changes) = executor.execute("save", null)
         println(response)
       }

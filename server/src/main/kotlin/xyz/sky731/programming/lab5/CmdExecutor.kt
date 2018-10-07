@@ -3,11 +3,13 @@ package xyz.sky731.programming.lab5
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab6.BredlamsTransporter
 import xyz.sky731.programming.lab7.TreeChange
+import xyz.sky731.programming.lab8.SimpleORM
+import java.sql.SQLException
 
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: String) {
+class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM) {
   private fun added(response: String, vararg elements: Bredlam) =
       Pair(response, elements.map { TreeChange(it, isAdded = true) })
 
@@ -53,7 +55,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
 
   private fun readQueue(): Pair<String, List<TreeChange>> {
     val removed = queue.toList()
-    val added = QueueHandler.loadFromFile(filename)
+    val added = orm.selectAll<Bredlam>()
     queue.clear()
     queue.addAll(added)
     return Pair("Read collection from file", removed.map { TreeChange(it, isAdded = false) }
@@ -69,9 +71,27 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
     } ?: unchanged("Collection is already empty")
   }
 
+// TODO function [save] suppose table already exists
   private fun save(): Pair<String, List<TreeChange>> {
-    QueueHandler.writeToFile(filename, queue)
-    return unchanged("Saved collection to file")
+  // Updates bredlams if exists and otherwise inserts him
+    for (bredlam in queue) {
+      if (bredlam.id != null) {
+        orm.update(bredlam)
+        for (human in bredlam.people) {
+          try {
+            orm.update(human)
+          } catch (e: SQLException) {
+            orm.deleteById<Bredlam>(bredlam.id as Int)
+            orm.insert(bredlam)
+          }
+        }
+      } else {
+        orm.insert(bredlam)
+      }
+    }
+    // We need to update bredlam's id, so call readQueue
+    readQueue()
+    return unchanged("Saved collection to database")
   }
 
   private fun removeFirst(): Pair<String, List<TreeChange>> {
@@ -88,7 +108,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
       } ?: unchanged("Wrong json code")
 
   private fun removeLower(bredlam: Bredlam?): Pair<String, List<TreeChange>> = bredlam?.let {
-    val deleted = queue.filter {it < bredlam }
+    val deleted = queue.filter { it < bredlam }
     val isDeleted = queue.removeAll(deleted)
     if (isDeleted) removed("Deleted bredlams less than $bredlam", *deleted.toTypedArray())
     else unchanged("Nothing deleted")

@@ -3,6 +3,7 @@ package xyz.sky731.programming.lab6
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.CmdExecutor
 import xyz.sky731.programming.lab7.TreeChange
+import xyz.sky731.programming.lab8.SimpleORM
 
 import java.io.*
 import java.net.DatagramPacket
@@ -12,7 +13,7 @@ import java.util.Queue
 
 class Responder(private val socket: DatagramSocket,
                 private var packet: DatagramPacket,
-                filename: String,
+                orm: SimpleORM,
                 queue: Queue<Bredlam>,
                 val callback: (List<TreeChange>) -> Unit) : Runnable {
 
@@ -20,7 +21,7 @@ class Responder(private val socket: DatagramSocket,
     private const val HASH_SIZE = 32
   }
 
-  private val executor = CmdExecutor(queue, filename)
+  private val executor = CmdExecutor(queue, orm)
 
   override fun run() {
     val data = String(packet.data, 0, packet.length - HASH_SIZE)

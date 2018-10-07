@@ -214,6 +214,16 @@ class SimpleORM(url: String, username: String, password: String) {
     statement.executeUpdate()
   }
 
+  inline fun <reified T: Any> dropTable() { dropTableWithClass(T::class) }
+
+  fun dropTableWithClass(cls: KClass<*>) {
+    val tableName = getTableName(cls)
+    val assocs = cls.declaredMemberProperties.filter { it.annotations.any { it is OneToMany } }
+    assocs.forEach { dropTableWithClass(it.javaClass.kotlin) }
+    val statement = connection.prepareStatement("drop table if exists $tableName")
+    statement.executeUpdate()
+  }
+
   /**
    * Deletes [T] object from db by primary key
    *
