@@ -1,10 +1,9 @@
 package xyz.sky731.programming.lab5
 
+import org.junit.Assert
 import org.junit.Test
 import xyz.sky731.programming.lab3.Bredlam
-import xyz.sky731.programming.lab3.Human
-import xyz.sky731.programming.lab7.ColorWithName
-import java.awt.Color
+import xyz.sky731.programming.lab6.BredlamsTransporter
 
 class JsonUserTest {
 
@@ -23,27 +22,20 @@ class JsonUserTest {
     }
 
     val jsonUser = JsonUser()
-    val jsonData = jsonUser.marshal(bredlams)
-    println(jsonData)
-
+    val jsonData = jsonUser.marshal(BredlamsTransporter().apply { setBredlams(bredlams) })
   }
 
-  /* FIXME jsonData is deprecated, rewrite this test
   @Test
-  fun unmarshallingBredlams() {
-    val jsonData = "{\"xyz.sky731.programming.lab5.Bredlams\":{\"bredlam\":[{\"xyz.sky731.programming.lab3.Bredlam\":[{\"name\":\"BlueGuys\",\"humans\":[{\"xyz.sky731.programming.lab3.Human\":[{\"money\":100,\"buildings\":[{\"xyz.sky731.programming.lab3.Home\":{\"cost\":100,\"id\":0}}],\"name\":\"Cockoff\"},{\"money\":100000,\"buildings\":[{\"xyz.sky731.programming.lab3.Home\":{\"cost\":100,\"id\":1}}],\"name\":\"Nintendo\"}]}],\"endOfLight\":false,\"coordinates\":{\"x\":0,\"y\":0}},{\"name\":\"PinkHmm\",\"humans\":[{\"xyz.sky731.programming.lab3.Human\":{\"money\":13,\"buildings\":[{\"xyz.sky731.programming.lab3.Home\":{\"cost\":100,\"id\":2}}],\"name\":\"Manya\"}}],\"endOfLight\":true,\"flagColor\":{\"color\":{\"red\":255,\"green\":175,\"blue\":175,\"alpha\":255},\"name\":\"Pink\"},\"coordinates\":{\"x\":15,\"y\":13}}]}]}}"
-
+  fun unmarshallingTest() {
+    val json = "{\"xyz.sky731.programming.lab6.BredlamsTransporter\":{\"pseudoBredlams\":[{\"xyz.sky731.programming" +
+        ".lab6.PseudoBredlam\":[{\"name\":\"BlueGuys\",\"endOfLight\":false,\"flagColor\":\"Blue\",\"x\":0,\"y\":0,\"" +
+        "creation\":\"2018-10-07T20:26:48.952+03:00[Europe/Moscow]\"},{\"name\":\"PinkHmm\",\"endOfLight\":true,\"" +
+        "flagColor\":\"Pink\",\"x\":15,\"y\":13,\"creation\":\"2018-10-07T20:26:48.953+03:00[Europe/Moscow]\"}]}]}}"
     val jsonUser = JsonUser()
+    val transporter = jsonUser.unmarshal(json)
+    val bredlams = transporter.getBredlams()
 
-    println(jsonData)
-
-    val bredlams = jsonUser.unmarshal(jsonData)
-    bredlams.bredlam.forEach { bredlam ->
-      println(bredlam)
-      bredlam.people.forEach { man ->
-        println("\t" + man)
-      }
-    }
+    Assert.assertEquals("BlueGuys", bredlams.bredlam[0].toString())
+    Assert.assertEquals("PinkHmm", bredlams.bredlam[1].toString())
   }
-  */
 }

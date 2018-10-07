@@ -1,6 +1,7 @@
 package xyz.sky731.programming.lab5
 
 import xyz.sky731.programming.lab3.Bredlam
+import xyz.sky731.programming.lab6.BredlamsTransporter
 import xyz.sky731.programming.lab7.TreeChange
 
 import java.util.*
@@ -31,11 +32,12 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val filename: Strin
   private fun getCollection(): Pair<String, List<TreeChange>> = with(queue) {
     val bredlams = Bredlams()
     bredlams.bredlam = this.toCollection(ArrayList<Bredlam>())
+    val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
     val jsonUser = JsonUser()
-    unchanged(jsonUser.marshal(bredlams))
+    unchanged(jsonUser.marshal(transporter))
   }
 
-  fun add(bredlam: Bredlam?) =
+  private fun add(bredlam: Bredlam?) =
       bredlam?.let {
         queue.add(it)
         added("Added bredlam to queue: $bredlam", it)
