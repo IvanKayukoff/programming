@@ -10,6 +10,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM) {
+
+  companion object {
+    private val deletedBredlams = ArrayList<Bredlam>()
+  }
+
   private fun added(response: String, vararg elements: Bredlam) =
       Pair(response, elements.map { TreeChange(it, isAdded = true) })
 
@@ -71,16 +76,22 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
     } ?: unchanged("Collection is already empty")
   }
 
-// TODO function [save] suppose table already exists
+  // TODO function [save] suppose table already exists
   private fun save(): Pair<String, List<TreeChange>> {
-  // Updates bredlams if exists and otherwise inserts him
+
+    deletedBredlams.forEach {
+      it.id?.let { orm.deleteById<Bredlam>(it) }
+    }
+    deletedBredlams.clear()
+
+    // Updates bredlams if exists and otherwise inserts him
     for (bredlam in queue) {
       if (bredlam.id != null) {
         orm.update(bredlam)
         for (human in bredlam.people) {
-          try {
+          if (human.id != null) {
             orm.update(human)
-          } catch (e: SQLException) {
+          } else {
             orm.deleteById<Bredlam>(bredlam.id as Int)
             orm.insert(bredlam)
           }
@@ -103,6 +114,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
 
   private fun remove(bredlam: Bredlam?) =
       bredlam?.let {
+        deletedBredlams.add(it)
         if (queue.remove(bredlam)) removed("Deleted $bredlam", bredlam)
         else unchanged("$bredlam doesn't exist in the collection")
       } ?: unchanged("Wrong json code")

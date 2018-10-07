@@ -29,7 +29,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
   val moneySpinner = JSpinner()
   val nameHumanTextField = JTextField(15)
 
-  public val colors = ArrayList<ColorWithName>().apply {
+  val colors = ArrayList<ColorWithName>().apply {
     add(ColorWithName(Color.RED, "Red"))
     add(ColorWithName(Color.GREEN, "Green"))
     add(ColorWithName(Color.BLUE, "Blue"))
