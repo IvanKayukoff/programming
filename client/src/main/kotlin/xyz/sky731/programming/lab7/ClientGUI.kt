@@ -21,6 +21,11 @@ import java.util.*
 import javax.imageio.IIOException
 import javax.swing.Timer
 import kotlin.system.exitProcess
+import java.util.Locale
+import java.time.format.FormatStyle
+import java.time.format.DateTimeFormatter
+
+
 
 class ClientGUI(private val client: ClientMain, nameFrame: String,
                 private var curLocale: Locale = Locale.forLanguageTag("en-AU"),
@@ -184,25 +189,28 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
         init {
           preferredSize = Dimension(460, 460)
           toolTipText = "help me"
+          // ToolTipManager.sharedInstance().registerComponent(this@apply)
         }
 
         override fun getToolTipText(e: MouseEvent): String? {
-          CCSystem::class.java.getDeclaredMethod("translate", Point::class.java).apply {
+          val coordinates = CCSystem::class.java.getDeclaredMethod("translate", Point::class.java).apply {
             isAccessible = true
           }.invoke(this, Point(e.x, this.height - e.y)) as Point2D.Double
 
-          val mx = x
-          val my = y
+          val mx = coordinates.x
+          val my = coordinates.y
 
           bredlams.bredlam.forEach {
-            if (Math.sqrt(((mx - it.x) * (mx - it.x) + (my - it.y) * (my - it.y)).toDouble()) <=
+            if (Math.sqrt(((mx - it.x.toDouble()) * (mx - it.x.toDouble()) + (my - it.y.toDouble()) * (my - it.y.toDouble()))) <=
                 if (it.people.size > 0) Math.sqrt(it.people.size.toDouble()) else 1.0) {
-              return it.name
+              val pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(curLocale)
+              return "${it.name}  ${it.creation.format(pattern)}"
             }
           }
 
           return null
         }
+
       }
 
       bredlams.bredlam.forEach {

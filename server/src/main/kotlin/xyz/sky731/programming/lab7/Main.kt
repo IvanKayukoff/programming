@@ -1,5 +1,6 @@
 package xyz.sky731.programming.lab7
 
+import org.postgresql.util.PSQLException
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.QueueHandler
 import xyz.sky731.programming.lab6.ServerMain
@@ -18,15 +19,14 @@ import kotlin.system.exitProcess
 fun main(args: Array<String>) = SwingUtilities.invokeLater {
 
   val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
-  val queue = orm.selectAll<Bredlam>()
 
-  if (queue.size == 0) {
-    try {
-      orm.createTable<Bredlam>()
-    } catch (e: SQLException) {
-      println("Table already exists")
-    }
+  try {
+    orm.createTable<Bredlam>()
+  } catch (e: PSQLException) {
+    println("Table found")
   }
+
+  val queue = orm.selectAll<Bredlam>()
 
   val gui = ServerGUI(queue, orm)
 
