@@ -127,7 +127,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                 y = posYSpinner.value as Int
                 endOfLight = isEndOfLightCheckbox.isSelected
                 flagColor = if (colorComboBox.selectedItem is ColorWithName)
-                  colorComboBox.selectedItem as String
+                  (colorComboBox.selectedItem as ColorWithName).name
                 else "Red"
               }
 
@@ -151,7 +151,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
                       selected.name = nameBredlamTextField.text
                       selected.endOfLight = isEndOfLightCheckbox.isSelected
                       when (colorComboBox.selectedItem) {
-                        is ColorWithName -> selected.flagColor = colorComboBox.selectedItem as String
+                        is ColorWithName -> selected.flagColor = (colorComboBox.selectedItem as ColorWithName).name
                       }
                       selected.x = posXSpinner.value as Int
                       selected.y = posYSpinner.value as Int
@@ -199,8 +199,7 @@ class ServerGUI(val queue: PriorityBlockingQueue<Bredlam>,
       val buttonsBox = Box.createHorizontalBox().apply {
         contentPane.layout = FlowLayout().apply {
 
-          fun peekHumanFromUI() = Human(nameHumanTextField.text, moneySpinner.value as Int, 
-              (mainTree.parentOfSelection as Bredlam).id!!)
+          fun peekHumanFromUI() = Human(nameHumanTextField.text, moneySpinner.value as Int)
 
           add(JButton("New").apply { addActionListener {
             val selected = mainTree.selection

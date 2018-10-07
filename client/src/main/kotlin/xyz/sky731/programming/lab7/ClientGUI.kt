@@ -22,7 +22,6 @@ import javax.imageio.IIOException
 import javax.swing.Timer
 import kotlin.system.exitProcess
 
-
 class ClientGUI(private val client: ClientMain, nameFrame: String,
                 private var curLocale: Locale = Locale.forLanguageTag("en-AU"),
                 private var initialStart: Boolean = true) : JFrame(nameFrame) {
@@ -72,7 +71,10 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
   private val colorsLabel = JLabel(rb.getString("colors"))
   private val coordinatesLabel = JLabel(rb.getString("coordinates"))
   private val xFromLabel = JLabel(rb.getString("x_from"))
+
   private val toLabel = JLabel(rb.getString("to"))
+  private val toLabel1 = JLabel(rb.getString("to"))
+  private val toLabel2 = JLabel(rb.getString("to"))
   private val yFromLabel = JLabel(rb.getString("y_from"))
   private val nameStartsWithLabel = JLabel(rb.getString("name_starts_with"))
   private val populationFromLabel = JLabel(rb.getString("population_from"))
@@ -118,6 +120,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
       val jsonUser = JsonUser()
       val response = client.sendMessage("get_collection")
+      println(response) // FIXME
       val bredlams = if (response != "") jsonUser.unmarshal(response)
       else Bredlams().apply { bredlam = ArrayList<Bredlam>() }
 
@@ -279,12 +282,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
           add(fromXSpinner.apply {
             model = SpinnerNumberModel(minX, minX, maxX, 1)
-            preferredSize = Dimension(80, 20)
+            preferredSize = Dimension(50, 20)
           })
           add(toLabel)
           add(toXSpinner.apply {
             model = SpinnerNumberModel(maxX, minX, maxX, 1)
-            preferredSize = Dimension(80, 20)
+            preferredSize = Dimension(50, 20)
           })
 
         }, constraints)
@@ -299,12 +302,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
           add(fromYSpinner.apply {
             model = SpinnerNumberModel(minY, minY, maxY, 1)
-            preferredSize = Dimension(80, 20)
+            preferredSize = Dimension(50, 20)
           })
-          add(toLabel)
+          add(toLabel1)
           add(toYSpinner.apply {
             model = SpinnerNumberModel(maxY, minY, maxY, 1)
-            preferredSize = Dimension(80, 20)
+            preferredSize = Dimension(50, 20)
           })
 
         }, constraints)
@@ -332,7 +335,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
             preferredSize = Dimension(50, 20)
           })
 
-          add(toLabel)
+          add(toLabel2)
           add(toPopulationSpinner.apply {
             model = SpinnerNumberModel(maxPopulation, 0, maxPopulation, 1)
             preferredSize = Dimension(50, 20)
@@ -513,6 +516,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
     val rb = ResourceBundle.getBundle("Resources", locale, UTF8Control())
     title = rb.getString("main_title")
 
+    coordinatesLabel.text = rb.getString("coordinates")
+    colorsLabel.text = rb.getString("colors")
     colorRedCheckbox.text = rb.getString("color_red")
     colorBlueCheckbox.text = rb.getString("color_blue")
     colorPinkCheckbox.text = rb.getString("color_pink")
@@ -526,6 +531,8 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
     stopButton.text = rb.getString("stop")
     xFromLabel.text = rb.getString("x_from")
     toLabel.text = rb.getString("to")
+    toLabel1.text = rb.getString("to")
+    toLabel2.text = rb.getString("to")
     yFromLabel.text = rb.getString("y_from")
     nameStartsWithLabel.text = rb.getString("name_starts_with")
     populationFromLabel.text = rb.getString("population_from")
