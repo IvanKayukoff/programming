@@ -6,19 +6,30 @@ import xyz.sky731.programming.lab5.QueueHandler
 import xyz.sky731.programming.lab6.ServerMain
 import xyz.sky731.programming.lab8.SimpleORM
 import java.io.IOException
+import java.lang.RuntimeException
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.sql.SQLException
 import java.util.concurrent.PriorityBlockingQueue
 import javax.swing.SwingUtilities
 import javax.swing.SwingWorker
-import kotlin.reflect.full.companionObject
-import kotlin.reflect.full.companionObjectInstance
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) = SwingUtilities.invokeLater {
-  // TODO try connect here
-  val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
+  val orm: SimpleORM
+
+  val username = System.getenv("POSTGRES_USER")
+      ?: throw RuntimeException("POSTGRES_USER environment variable must be installed")
+  val password = System.getenv("POSTGRES_PASSWORD")
+      ?: throw RuntimeException("POSTGRES_PASSWORD environment variable must be installed")
+  val dbUrl = System.getenv("POSTGRES_URL")
+      ?: throw RuntimeException("POSTGRES_URL environment variable must be installed")
+
+  try {
+    orm = SimpleORM(dbUrl, username, password)
+  } catch (e: Exception) {
+    println("Can not connect to database, so exit..")
+    exitProcess(1)
+  }
 
   try {
     orm.createTable<Bredlam>()
