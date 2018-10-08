@@ -143,7 +143,6 @@ class SimpleORM(url: String, username: String, password: String) {
 
     val statement = connection.prepareStatement("insert into $tableName (" + fields
         .joinToString(", ") + ") values (" + values.map { "?" }.joinToString(", ") + ") returning ${idField.name}")
-
     values.forEachIndexed { i, value ->
       if (value.javaClass.typeName == "java.time.ZonedDateTime")
         statement.setObject(i + 1, (value as ZonedDateTime).toOffsetDateTime())

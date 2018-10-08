@@ -17,7 +17,7 @@ import kotlin.reflect.full.companionObjectInstance
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) = SwingUtilities.invokeLater {
-
+  // TODO try connect here
   val orm = SimpleORM("jdbc:postgresql://localhost:5432/postgres", "sky", "sky")
 
   try {
