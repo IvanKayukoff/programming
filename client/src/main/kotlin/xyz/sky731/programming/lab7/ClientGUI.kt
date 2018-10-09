@@ -501,7 +501,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
     }
     contentPane.add(ownPanel)
     pack()
-    isVisible = true
+    isVisible = false
   }
 
   private fun localeToName(locale: Locale) = when (locale.toString()) {
