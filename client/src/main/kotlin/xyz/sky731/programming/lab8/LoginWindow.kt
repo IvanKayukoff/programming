@@ -60,20 +60,41 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       add(passwordField)
     }
 
+    /** Sends cmd with bredlam to server and returns received bredlam */
+    fun sendCommand(cmd: String, arg: Bredlam): Bredlam? {
+      val bredlams = Bredlams().apply {
+        bredlam = ArrayList<Bredlam>()
+        bredlam.add(arg)
+      }
+      val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
+      val jsonUser = JsonUser()
+      val response = client.sendMessage(cmd + " " + jsonUser.marshal(transporter))
+      val respBredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
+      else Bredlams().apply { bredlam = ArrayList<Bredlam>() }.also {
+        JOptionPane.showMessageDialog(null,
+            "There is connection problem, maybe server is unavailable")
+      }
+      return if (respBredlams.bredlam.size > 0) respBredlams.bredlam[0] else null
+    }
+
     val submitButton = JButton("OK").apply {
       addActionListener {
-        val check = logins.any {
-          it[0] == loginField.text && String(passwordField.password).md5() == it[1]
-        }
-        if (check) {
-          mainGui.isVisible = true
-          this@LoginWindow.dispose()
+        if (passwordField.password.size < 3 || loginField.text.length < 3) {
+          JOptionPane.showMessageDialog(null,
+              "Length of login and password can not be less than 3")
         } else {
-          title = "Permission denied"
-          loginField.background = Color.RED
-          passwordField.background = Color.RED
-        }
+          val response = sendCommand("register", Bredlam(loginField.text, false,
+              String(passwordField.password).md5())) ?: return@addActionListener
 
+          if (response.endOfLight) {
+            mainGui.isVisible = true
+            this@LoginWindow.dispose()
+          } else {
+            title = "Wrong login or password"
+            loginField.background = Color.RED
+            passwordField.background = Color.RED
+          }
+        }
       }
     }
     val cancelButton = JButton("Cancel").apply {
@@ -89,21 +110,10 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
           JOptionPane.showMessageDialog(null,
               "Length of login and password can not be less than 3")
         } else {
-          val bredlams = Bredlams().apply {
-            bredlam = ArrayList<Bredlam>()
-            bredlam.add(Bredlam(loginField.text, false, String(passwordField.password).md5()))
-          }
-          val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
-          val jsonUser = JsonUser()
-          val response = client.sendMessage("register " + jsonUser.marshal(transporter))
-          val respBredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
-          else Bredlams().apply { bredlam = ArrayList<Bredlam>() }.also {
-            JOptionPane.showMessageDialog(null,
-                "There is connection problem, maybe server is unavailable")
-            return@addActionListener
-          }
+          val response = sendCommand("register", Bredlam(loginField.text, false,
+              String(passwordField.password).md5())) ?: return@addActionListener
 
-          if (respBredlams.bredlam[0].endOfLight) {
+          if (response.endOfLight) {
             JOptionPane.showMessageDialog(null,
                 "Registration success, now you can authorize")
           } else {
