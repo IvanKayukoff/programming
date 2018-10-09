@@ -1,8 +1,10 @@
 package xyz.sky731.programming.lab5
 
+import sun.reflect.generics.tree.Tree
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab6.BredlamsTransporter
 import xyz.sky731.programming.lab7.TreeChange
+import xyz.sky731.programming.lab8.Account
 import xyz.sky731.programming.lab8.SimpleORM
 import java.sql.SQLException
 
@@ -32,7 +34,28 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
     "remove_lower" -> removeLower(arg)
     "add" -> add(arg)
     "get_collection" -> getCollection()
+    "login" -> login(arg)
     else -> unchanged("Unknown command")
+  }
+
+  /** Really dirty hack, but there is no ways to implement authorization mechanism
+   *  without significant code rewriting.
+   *  So, info contains login and password :) Where:
+   *  info.name acts as login
+   *  info.flagColor acts as password which appears as MD5 hash-sum
+   *  @return info.flagColor, true if authorization success, false - otherwise
+   **/
+  private fun login(info: Bredlam?) : Pair<String, List<TreeChange>> {
+    val accounts = orm.selectAll<Account>()
+    if (info == null) return unchanged("The account's data are not represented")
+
+    info.endOfLight = accounts.find { acc -> acc.login == info.name && acc.password == info.flagColor } != null
+
+    val bredlams = Bredlams()
+    bredlams.bredlam = ArrayList<Bredlam>().apply { add(info) }
+    val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
+    val jsonUser = JsonUser()
+    return unchanged(jsonUser.marshal(transporter))
   }
 
   /** Returns json-formatted bredlams */

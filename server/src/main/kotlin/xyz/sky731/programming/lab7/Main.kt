@@ -34,7 +34,7 @@ fun main(args: Array<String>) = SwingUtilities.invokeLater {
   try {
     orm.createTable<Bredlam>()
   } catch (e: PSQLException) {
-    println("Table found")
+    println("Table with bredlams found")
   }
 
   val queue = orm.selectAll<Bredlam>()
