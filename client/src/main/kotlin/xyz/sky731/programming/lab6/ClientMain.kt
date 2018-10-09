@@ -1,5 +1,6 @@
 package xyz.sky731.programming.lab6
 
+import xyz.sky731.programming.lab3.Bredlam
 import java.io.*
 import java.net.InetSocketAddress
 import java.net.PortUnreachableException
@@ -8,10 +9,10 @@ import java.nio.channels.DatagramChannel
 
 class ClientMain(val host: String, val port: Int) {
 
-  fun sendMessage(message: String): String {
+  fun sendMessage(message: String, arg: Bredlam?): String {
     val baos = ByteArrayOutputStream()
     ObjectOutputStream(baos).apply {
-      writeObject(Request(message, null))
+      writeObject(Request(message, arg))
       flush()
     }
 
@@ -62,7 +63,7 @@ fun main(args: Array<String>) {
       System.exit(1)
     }
 
-    val response = message.run { sender.sendMessage(this@run) }
+    val response = message.run { sender.sendMessage(this@run, null) }
     println(response)
   }
 }

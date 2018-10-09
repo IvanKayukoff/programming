@@ -66,9 +66,9 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
         bredlam = ArrayList<Bredlam>()
         bredlam.add(arg)
       }
-      val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
+      // val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
       val jsonUser = JsonUser()
-      val response = client.sendMessage(cmd + " " + jsonUser.marshal(transporter))
+      val response = client.sendMessage(cmd, arg)
       val respBredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
       else Bredlams().apply { bredlam = ArrayList<Bredlam>() }.also {
         JOptionPane.showMessageDialog(null,
@@ -83,7 +83,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
           JOptionPane.showMessageDialog(null,
               "Length of login and password can not be less than 3")
         } else {
-          val response = sendCommand("register", Bredlam(loginField.text, false,
+          val response = sendCommand("login", Bredlam(loginField.text, false,
               String(passwordField.password).md5())) ?: return@addActionListener
 
           if (response.endOfLight) {

@@ -124,7 +124,7 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
       c.gridy = 1
 
       val jsonUser = JsonUser()
-      val response = client.sendMessage("get_collection")
+      val response = client.sendMessage("get_collection", null)
       val bredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
       else Bredlams().apply { bredlam = ArrayList<Bredlam>() }
 
