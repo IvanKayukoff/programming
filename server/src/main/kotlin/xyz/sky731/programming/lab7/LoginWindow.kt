@@ -36,7 +36,7 @@ class LoginWindow(header: String, mainGui: ServerGUI) : JFrame(header) {
     try {
       logins = File("logins.csv").readLines().map { it.split(",") }
     } catch (e: IOException) {
-      println("Logins file not found. Any login is wrong")
+      println("File with admin accounts: \"login.csv\" not found). Any login is wrong")
     }
 
     defaultCloseOperation = EXIT_ON_CLOSE

@@ -35,6 +35,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
     "add" -> add(arg)
     "get_collection" -> getCollection()
     "login" -> login(arg)
+    "register" -> register(arg)
     else -> unchanged("Unknown command")
   }
 
@@ -43,13 +44,33 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
    *  So, info contains login and password :) Where:
    *  info.name acts as login
    *  info.flagColor acts as password which appears as MD5 hash-sum
-   *  @return info.flagColor, true if authorization success, false - otherwise
+   *  Result is info.endOfLight, true if authorization success, false - otherwise
    **/
   private fun login(info: Bredlam?) : Pair<String, List<TreeChange>> {
     val accounts = orm.selectAll<Account>()
     if (info == null) return unchanged("The account's data are not represented")
 
     info.endOfLight = accounts.find { acc -> acc.login == info.name && acc.password == info.flagColor } != null
+
+    val bredlams = Bredlams()
+    bredlams.bredlam = ArrayList<Bredlam>().apply { add(info) }
+    val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
+    val jsonUser = JsonUser()
+    return unchanged(jsonUser.marshal(transporter))
+  }
+
+  /** One more cheat here, as in the previous function: [login], info contains login and password, where:
+   *  info.name is login
+   *  info.flagColor is password
+   *  Result is info.endOfLight, true if registration success, false - otherwise
+   **/
+  private fun register(info: Bredlam?) : Pair<String, List<TreeChange>> {
+    val accounts = orm.selectAll<Account>()
+    if (info == null) return unchanged("The account's data are not represented")
+
+    info.endOfLight = accounts.find { acc -> acc.login == info.name && acc.password == info.flagColor } == null
+    val newAccount = Account(info.name, info.flagColor)
+    orm.insert(newAccount)
 
     val bredlams = Bredlams()
     bredlams.bredlam = ArrayList<Bredlam>().apply { add(info) }

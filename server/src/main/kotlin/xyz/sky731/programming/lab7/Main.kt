@@ -4,6 +4,7 @@ import org.postgresql.util.PSQLException
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.QueueHandler
 import xyz.sky731.programming.lab6.ServerMain
+import xyz.sky731.programming.lab8.Account
 import xyz.sky731.programming.lab8.SimpleORM
 import java.io.IOException
 import java.lang.RuntimeException
@@ -33,9 +34,11 @@ fun main(args: Array<String>) = SwingUtilities.invokeLater {
 
   try {
     orm.createTable<Bredlam>()
-  } catch (e: PSQLException) {
-    println("Table with bredlams found")
-  }
+  } catch (e: PSQLException) { println("Table with bredlams found") }
+
+  try {
+    orm.createTable<Account>()
+  } catch (e: PSQLException) { println("Table with accounts found") }
 
   val queue = orm.selectAll<Bredlam>()
 
