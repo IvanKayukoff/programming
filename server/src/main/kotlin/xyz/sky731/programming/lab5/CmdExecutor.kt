@@ -68,7 +68,7 @@ class CmdExecutor(private val queue: Queue<Bredlam>, private val orm: SimpleORM)
     val accounts = orm.selectAll<Account>()
     if (info == null) return unchanged("The account's data are not represented")
 
-    info.endOfLight = accounts.find { acc -> acc.login == info.name && acc.password == info.flagColor } == null
+    info.endOfLight = accounts.find { acc -> acc.login == info.name } == null
     val newAccount = Account(info.name, info.flagColor)
     orm.insert(newAccount)
 

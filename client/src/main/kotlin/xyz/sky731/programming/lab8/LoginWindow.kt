@@ -38,13 +38,6 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
     loginField.addMouseListener(mouseAdapter)
     passwordField.addMouseListener(mouseAdapter)
 
-    var logins: List<List<String>> = emptyList()
-    try {
-      logins = File("logins.csv").readLines().map { it.split(",") }
-    } catch (e: IOException) {
-      println("File with admin accounts: \"login.csv\" not found). Any login is wrong")
-    }
-
     defaultCloseOperation = EXIT_ON_CLOSE
     val loginLabel = JLabel("Login:")
     val loginBox = Box.createHorizontalBox().apply {
@@ -62,11 +55,6 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
 
     /** Sends cmd with bredlam to server and returns received bredlam */
     fun sendCommand(cmd: String, arg: Bredlam): Bredlam? {
-      val bredlams = Bredlams().apply {
-        bredlam = ArrayList<Bredlam>()
-        bredlam.add(arg)
-      }
-      // val transporter = BredlamsTransporter().apply { setBredlams(bredlams) }
       val jsonUser = JsonUser()
       val response = client.sendMessage(cmd, arg)
       val respBredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
@@ -79,9 +67,10 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
 
     val submitButton = JButton("OK").apply {
       addActionListener {
-        if (passwordField.password.size < 3 || loginField.text.length < 3) {
+        if (passwordField.password.size < 3 || loginField.text.length < 3
+            || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
           JOptionPane.showMessageDialog(null,
-              "Length of login and password can not be less than 3")
+              "Length of login and password can not be less than 3 and can not contain spaces")
         } else {
           val response = sendCommand("login", Bredlam(loginField.text, false,
               String(passwordField.password).md5())) ?: return@addActionListener
@@ -97,6 +86,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
         }
       }
     }
+
     val cancelButton = JButton("Cancel").apply {
       addActionListener {
         this@LoginWindow.dispose()
@@ -106,9 +96,10 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
 
     val registerButton = JButton("Register").apply {
       addActionListener {
-        if (passwordField.password.size < 3 || loginField.text.length < 3) {
+        if (passwordField.password.size < 3 || loginField.text.length < 3
+            || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
           JOptionPane.showMessageDialog(null,
-              "Length of login and password can not be less than 3")
+              "Length of login and password can not be less than 3 and can not contain spaces")
         } else {
           val response = sendCommand("register", Bredlam(loginField.text, false,
               String(passwordField.password).md5())) ?: return@addActionListener
