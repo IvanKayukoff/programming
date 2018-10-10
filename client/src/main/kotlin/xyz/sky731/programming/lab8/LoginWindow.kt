@@ -3,16 +3,15 @@ package xyz.sky731.programming.lab8
 import xyz.sky731.programming.lab3.Bredlam
 import xyz.sky731.programming.lab5.Bredlams
 import xyz.sky731.programming.lab5.JsonUser
-import xyz.sky731.programming.lab6.BredlamsTransporter
 import xyz.sky731.programming.lab6.ClientMain
 import xyz.sky731.programming.lab7.ClientGUI
 import java.awt.Color
+import java.awt.event.ItemEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.io.File
-import java.io.IOException
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.util.*
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
@@ -23,8 +22,22 @@ fun String.md5(): String {
 }
 
 class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFrame(header) {
-  private val passwordField = JPasswordField(18)
-  private val loginField = JTextField(18)
+  private val passwordField = JPasswordField(15)
+  private val loginField = JTextField(15)
+
+  private var curLocale = Locale.forLanguageTag("en-AU")
+
+  private val languageComboBox = JComboBox<String>(arrayOf("English(AU)", "Russian", "Hungarian", "Estonian")).apply {
+    selectedItem = localeToName(Locale.getDefault())
+    curLocale = localeFromName(selectedItem as String)
+  }
+  private val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+
+  private val loginLabel = JLabel(rb.getString("login_label"))
+  private val passLabel = JLabel(rb.getString("password_label"))
+  private val submitButton = JButton(rb.getString("ok"))
+  private val registerButton = JButton(rb.getString("register"))
+  private val cancelButton = JButton(rb.getString("cancel"))
 
   init {
     val mouseAdapter = object : MouseAdapter() {
@@ -39,14 +52,12 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
     passwordField.addMouseListener(mouseAdapter)
 
     defaultCloseOperation = EXIT_ON_CLOSE
-    val loginLabel = JLabel("Login:")
     val loginBox = Box.createHorizontalBox().apply {
       add(loginLabel)
       add(Box.createHorizontalStrut(6))
       add(loginField)
     }
 
-    val passLabel = JLabel("Password:")
     val passBox = Box.createHorizontalBox().apply {
       add(passLabel)
       add(Box.createHorizontalStrut(6))
@@ -65,7 +76,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       return if (respBredlams.bredlam.size > 0) respBredlams.bredlam[0] else null
     }
 
-    val submitButton = JButton("OK").apply {
+    submitButton.apply {
       addActionListener {
         if (passwordField.password.size < 3 || loginField.text.length < 3
             || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
@@ -87,14 +98,14 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       }
     }
 
-    val cancelButton = JButton("Cancel").apply {
+    cancelButton.apply {
       addActionListener {
         this@LoginWindow.dispose()
         mainGui.dispose()
       }
     }
 
-    val registerButton = JButton("Register").apply {
+    registerButton.apply {
       addActionListener {
         if (passwordField.password.size < 3 || loginField.text.length < 3
             || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
@@ -124,7 +135,21 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       add(cancelButton)
     }
 
-    loginLabel.preferredSize = passLabel.preferredSize
+    val languagesBox = Box.createHorizontalBox().apply {
+      add(languageComboBox.apply {
+        addItemListener {
+          if (it.stateChange == ItemEvent.SELECTED) {
+            when (it.item as String) {
+              "English(AU)" -> applyLocale(Locale.forLanguageTag("en-AU"))
+              "Russian" -> applyLocale(Locale.forLanguageTag("ru-RU"))
+              "Hungarian" -> applyLocale(Locale.forLanguageTag("hu"))
+              "Estonian" -> applyLocale(Locale.forLanguageTag("et-EE"))
+            }
+          }
+        }
+      })
+    }
+
 
     val mainBox = Box.createVerticalBox().apply {
       border = EmptyBorder(12, 12, 12, 12)
@@ -133,12 +158,60 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       add(passBox)
       add(Box.createVerticalStrut(17))
       add(buttonsBox)
+      add(Box.createVerticalStrut(17))
+      add(languagesBox)
     }
+
+    alignApply()
+
     contentPane = mainBox
     pack()
     isResizable = false
     isVisible = true
 
     rootPane.defaultButton = submitButton
+  }
+
+  private fun localeToName(locale: Locale) = when (locale.toString()) {
+    "ru_RU" -> "Russian"
+    "hu" -> "Hungarian"
+    "et_EE" -> "Estonian"
+    else -> "English(AU)"
+  }
+
+  private fun localeFromName(name: String) = when (name) {
+    "Russian" -> Locale.forLanguageTag("ru-RU")
+    "Hungarian" -> Locale.forLanguageTag("hu")
+    "Estonian" -> Locale.forLanguageTag("et-EE")
+    else -> Locale.forLanguageTag("en-AU")
+  }
+
+  private fun alignApply() {
+    if (loginLabel.preferredSize.width >= passLabel.preferredSize.width) {
+      passLabel.preferredSize = loginLabel.preferredSize
+    } else {
+      loginLabel.preferredSize = passLabel.preferredSize
+    }
+
+    if (loginField.preferredSize.width >= passwordField.preferredSize.width) {
+      passwordField.preferredSize = loginField.preferredSize
+    } else {
+      loginField.preferredSize = passwordField.preferredSize
+    }
+  }
+
+  private fun applyLocale(locale: Locale) {
+    curLocale = locale
+    val rb = ResourceBundle.getBundle("Resources", locale, UTF8Control())
+
+    title = rb.getString("login_title")
+    loginLabel.text = rb.getString("login_label")
+    passLabel.text = rb.getString("password_label")
+    submitButton.text = rb.getString("ok")
+    registerButton.text = rb.getString("register")
+    cancelButton.text = rb.getString("cancel")
+
+    alignApply()
+    pack()
   }
 }
