@@ -44,7 +44,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       override fun mouseClicked(e: MouseEvent?) {
         loginField.background = Color.WHITE
         passwordField.background = Color.WHITE
-        this@LoginWindow.title = "Login to Bredlam server"
+        setCurTitle()
       }
     }
 
@@ -69,10 +69,8 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       val jsonUser = JsonUser()
       val response = client.sendMessage(cmd, arg)
       val respBredlams = if (response != "") jsonUser.unmarshal(response).getBredlams()
-      else Bredlams().apply { bredlam = ArrayList<Bredlam>() }.also {
-        JOptionPane.showMessageDialog(null,
-            "There is connection problem, maybe server is unavailable")
-      }
+      else Bredlams().apply { bredlam = ArrayList<Bredlam>() }.also { msgSrvUnavailable() }
+
       return if (respBredlams.bredlam.size > 0) respBredlams.bredlam[0] else null
     }
 
@@ -80,8 +78,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       addActionListener {
         if (passwordField.password.size < 3 || loginField.text.length < 3
             || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
-          JOptionPane.showMessageDialog(null,
-              "Length of login and password can not be less than 3 and can not contain spaces")
+          msgInvalidInput()
         } else {
           val response = sendCommand("login", Bredlam(loginField.text, false,
               String(passwordField.password).md5())) ?: return@addActionListener
@@ -90,7 +87,7 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
             mainGui.isVisible = true
             this@LoginWindow.dispose()
           } else {
-            title = "Wrong login or password"
+            setAccessDeniedTitle()
             loginField.background = Color.RED
             passwordField.background = Color.RED
           }
@@ -109,18 +106,15 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
       addActionListener {
         if (passwordField.password.size < 3 || loginField.text.length < 3
             || passwordField.password.any { it == ' ' } || loginField.text.toCharArray().any { it == ' ' }) {
-          JOptionPane.showMessageDialog(null,
-              "Length of login and password can not be less than 3 and can not contain spaces")
+          msgInvalidInput()
         } else {
           val response = sendCommand("register", Bredlam(loginField.text, false,
               String(passwordField.password).md5())) ?: return@addActionListener
 
           if (response.endOfLight) {
-            JOptionPane.showMessageDialog(null,
-                "Registration success, now you can authorize")
+            msgRegSucceed()
           } else {
-            JOptionPane.showMessageDialog(null,
-                "Registration failed, this login is already taken")
+            msgRegFailed()
           }
         }
       }
@@ -170,6 +164,40 @@ class LoginWindow(header: String, mainGui: ClientGUI, client: ClientMain) : JFra
     isVisible = true
 
     rootPane.defaultButton = submitButton
+  }
+
+  private fun setAccessDeniedTitle() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    title = rb.getString("access_denied")
+  }
+
+  private fun setCurTitle() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    title = rb.getString("login_title")
+  }
+
+  private fun msgRegFailed() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    JOptionPane.showMessageDialog(null,
+        rb.getString("registration_failed"))
+  }
+
+  private fun msgRegSucceed() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    JOptionPane.showMessageDialog(null,
+        rb.getString("registration_succeed"))
+  }
+
+  private fun msgInvalidInput() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    JOptionPane.showMessageDialog(null,
+        rb.getString("invalid_input"))
+  }
+
+  private fun msgSrvUnavailable() {
+    val rb = ResourceBundle.getBundle("Resources", curLocale, UTF8Control())
+    JOptionPane.showMessageDialog(null,
+        rb.getString("server_unavailable"))
   }
 
   private fun localeToName(locale: Locale) = when (locale.toString()) {

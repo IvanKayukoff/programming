@@ -18,6 +18,6 @@ fun main(args: Array<String>) {
 
   val client = ClientMain(serverIp, port)
   val mainGUI = ClientGUI(client, "Client")
-  val loginWindow = LoginWindow("Login to Bredlam viewer", mainGUI, client)
+  val loginWindow = LoginWindow("Login to Bredlam Viewer", mainGUI, client)
   mainGUI.isVisible = false
 }

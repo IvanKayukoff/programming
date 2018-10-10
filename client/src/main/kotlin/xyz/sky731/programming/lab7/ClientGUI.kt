@@ -289,12 +289,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
           add(fromXSpinner.apply {
             model = SpinnerNumberModel(minX, minX, maxX, 1)
-            preferredSize = Dimension(50, 20)
+            preferredSize = Dimension(70, 20)
           })
           add(toLabel)
           add(toXSpinner.apply {
             model = SpinnerNumberModel(maxX, minX, maxX, 1)
-            preferredSize = Dimension(50, 20)
+            preferredSize = Dimension(70, 20)
           })
 
         }, constraints)
@@ -309,12 +309,12 @@ class ClientGUI(private val client: ClientMain, nameFrame: String,
 
           add(fromYSpinner.apply {
             model = SpinnerNumberModel(minY, minY, maxY, 1)
-            preferredSize = Dimension(50, 20)
+            preferredSize = Dimension(70, 20)
           })
           add(toLabel1)
           add(toYSpinner.apply {
             model = SpinnerNumberModel(maxY, minY, maxY, 1)
-            preferredSize = Dimension(50, 20)
+            preferredSize = Dimension(70, 20)
           })
 
         }, constraints)
