@@ -4,7 +4,9 @@ Creates database `postgres` and user `sky` with password `sky`.
 Also, forwards port 5432 and fills bredlam and human tables
 with some funny values.
 
-## Using
+## Usage
+
+Execute a couple of commands inside the `docker_init` directory
 
 Build container:
 ```bash
